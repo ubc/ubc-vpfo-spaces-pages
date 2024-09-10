@@ -36,8 +36,24 @@ class Airtable_Api {
 
 		$building = $response['records'][0];
 
-		dd( $building );
-
 		return $building;
+	}
+
+	public function get_classroom_by_slug( string $classroom_slug ) {
+		$params = array(
+			'filterByFormula' => sprintf( "AND( slug = '%s' )", $classroom_slug ),
+			'maxRecords'      => 1,
+		);
+
+		$request  = $this->airtable->getContent( 'Classroom', $params );
+		$response = $request->getResponse();
+
+		if ( ! $response['records'] || empty( $response['records'] ) ) {
+			return null;
+		}
+
+		$classroom = $response['records'][0];
+
+		return $classroom;
 	}
 }
