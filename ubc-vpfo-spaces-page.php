@@ -46,7 +46,7 @@ define( 'UBC_VPFO_SPACES_PAGE_VERSION', '1.0.0' );
  * This action is documented in includes/class-ubc-vpfo-spaces-page-activator.php
  */
 function activate_ubc_vpfo_spaces_page() {
-    update_option( 'ubc_vpfo_spaces_page_permalinks_flushed', 0 );
+	update_option( 'ubc_vpfo_spaces_page_permalinks_flushed', 0 );
 }
 
 /**
@@ -54,7 +54,7 @@ function activate_ubc_vpfo_spaces_page() {
  * This action is documented in includes/class-ubc-vpfo-spaces-page-deactivator.php
  */
 function deactivate_ubc_vpfo_spaces_page() {
-    delete_option( 'ubc_vpfo_spaces_page_permalinks_flushed' );
+	delete_option( 'ubc_vpfo_spaces_page_permalinks_flushed' );
 }
 
 register_activation_hook( __FILE__, 'activate_ubc_vpfo_spaces_page' );
