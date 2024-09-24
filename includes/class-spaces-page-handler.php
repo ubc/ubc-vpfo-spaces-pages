@@ -75,7 +75,7 @@ class Spaces_Page_Handler {
 		}
 
 		$template_name = 'building-single.php';
-		$args = array(
+		$args          = array(
 			'building' => $building,
 		);
 
@@ -120,7 +120,7 @@ class Spaces_Page_Handler {
 		}
 
 		$template_name = 'classroom-single.php';
-		$args = array(
+		$args          = array(
 			'classroom' => $classroom,
 		);
 

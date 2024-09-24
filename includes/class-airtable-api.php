@@ -49,6 +49,7 @@ class Airtable_Api {
 		$response = $request->getResponse();
 
 		if ( ! $response['records'] || empty( $response['records'] ) ) {
+			
 			return null;
 		}
 
