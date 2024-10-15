@@ -7,16 +7,33 @@ defined( 'ABSPATH' ) || exit;
 use TANIOS\Airtable\Airtable;
 
 class Airtable_Api {
-	private $airtable;
+	private $van_airtable;
+	private $okan_airtable;
+
+	const CACHE_TTL      = 3600;
+	const ROOMS_PER_PAGE = 10;
+
+	private static $campus_mapping = array(
+		'vancouver' => 'van_airtable',
+		'okanagan'  => 'okan_airtable',
+	);
 
 	public function __construct() {
-		$api_key = UBC_VPFO_SPACES_PAGE_AIRTABLE_API_KEY;
-		$base_id = UBC_VPFO_SPACES_PAGE_AIRTABLE_BASE_ID;
+		$api_key      = UBC_VPFO_FIND_A_SPACE_AIRTABLE_API_KEY;
+		$van_base_id  = UBC_VPFO_FIND_A_SPACE_AIRTABLE_BASE_ID_VAN;
+		$okan_base_id = UBC_VPFO_FIND_A_SPACE_AIRTABLE_BASE_ID_OKAN;
 
-		$this->airtable = new Airtable(
+		$this->van_airtable = new Airtable(
 			array(
 				'api_key' => $api_key,
-				'base'    => $base_id,
+				'base'    => $van_base_id,
+			)
+		);
+
+		$this->okan_airtable = new Airtable(
+			array(
+				'api_key' => $api_key,
+				'base'    => $okan_base_id,
 			)
 		);
 	}
@@ -27,7 +44,7 @@ class Airtable_Api {
 			'maxRecords'      => 1,
 		);
 
-		$request  = $this->airtable->getContent( 'Buildings', $params );
+		$request  = $this->van_airtable->getContent( 'Buildings', $params );
 		$response = $request->getResponse();
 
 		if ( ! $response['records'] || empty( $response['records'] ) ) {
@@ -45,11 +62,10 @@ class Airtable_Api {
 			'maxRecords'      => 1,
 		);
 
-		$request  = $this->airtable->getContent( 'Classroom', $params );
+		$request  = $this->van_airtable->getContent( 'Classrooms', $params );
 		$response = $request->getResponse();
 
 		if ( ! $response['records'] || empty( $response['records'] ) ) {
-			
 			return null;
 		}
 
