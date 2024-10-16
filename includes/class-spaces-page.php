@@ -75,7 +75,7 @@ class Spaces_Page {
 		$this->plugin_name = 'ubc-vpfo-spaces-page';
 
 		// Only load the plugin when the Airtable API key and Base ID are defined.
-		if ( defined( 'UBC_VPFO_SPACES_PAGE_AIRTABLE_API_KEY' ) && defined( 'UBC_VPFO_SPACES_PAGE_AIRTABLE_BASE_ID' ) ) {
+		if ( defined( 'UBC_VPFO_SPACES_PAGE_AIRTABLE_API_KEY' ) && defined( 'UBC_VPFO_SPACES_PAGE_AIRTABLE_BASE_ID_VAN' ) ) {
 			$this->load_dependencies();
 		}
 	}
