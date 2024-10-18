@@ -36,6 +36,7 @@ class Spaces_Page_Handler {
 
 		add_action( 'init', array( $this, 'handle_building_rewrite' ) );
 		add_action( 'template_redirect', array( $this, 'handle_building_template_redirect' ) );
+		add_filter( 'wpseo_title', array( $this, 'modify_building_yoast_seo_title' ), 10 ); // Yoast SEO title filter
 
 		add_action( 'init', array( $this, 'handle_classroom_rewrite' ) );
 		add_action( 'template_redirect', array( $this, 'handle_classroom_template_redirect' ) );
@@ -84,6 +85,38 @@ class Spaces_Page_Handler {
 		}
 
 		exit;
+	}
+
+	public function modify_building_yoast_seo_title( $title ) {
+		if ( ! function_exists( 'wpseo_replace_vars' ) ) {
+			return $title; // Yoast SEO is not active, return the default title
+		}
+
+		$building_slug = get_query_var( 'building_slug' );
+
+		if ( ! $building_slug ) {
+			return $title; // Not a building page, return the default title
+		}
+
+		// Access the API and retrieve the building data
+		$building = $this->airtable_api->get_building_by_slug( $building_slug );
+
+		if ( null === $building ) {
+			return $title; // No building found, keep the default title
+		}
+
+		// Get the building name from the fields
+		$building_name = isset($building->fields->{'Building Name'}[0]) ? $building->fields->{'Building Name'}[0] : null;
+
+		// Get the separator from Yoast SEO using wpseo_replace_vars
+		$separator = wpseo_replace_vars( '%%sep%%', array() );
+
+		if ( $building_name ) {
+			// Modify the Yoast title with building name and the separator
+			$title = $building_name . ' ' . $separator . ' ' . get_bloginfo( 'name' );
+		}
+
+		return $title;
 	}
 
 	public function handle_classroom_rewrite() {
