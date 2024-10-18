@@ -13,9 +13,9 @@
  * @package           Ubc_Vpfo_Spaces_Page
  *
  * @wordpress-plugin
- * Plugin Name:       UBC VPFO Spaces Page
+ * Plugin Name:       UBC VPFO Learning Spaces Virtual Pages
  * Plugin URI:        https://paper-leaf.com
- * Description:       This is a description of the plugin.
+ * Description:       Creates virtual pages for Learning Spaces buildings and classrooms and provides templates for those pages.
  * Version:           1.0.0
  * Author:            Paperleaf ZGM
  * Author URI:        https://paper-leaf.com/
@@ -40,6 +40,11 @@ require_once 'vendor/autoload.php';
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'UBC_VPFO_SPACES_PAGE_VERSION', '1.0.0' );
+
+/**
+ * Enqueue plugin assets
+ */
+require plugin_dir_path( __FILE__ ) . 'includes/enqueues.php';
 
 /**
  * The code that runs during plugin activation.

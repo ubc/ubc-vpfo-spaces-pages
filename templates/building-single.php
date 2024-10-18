@@ -5,7 +5,7 @@ $building = $args['building'];
 dd( $building );
 ?>
 
-<div class="vpfo-spaces-page-container">
+<div class="vpfo-spaces-page">
 
 </div>
 
