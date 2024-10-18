@@ -2,6 +2,7 @@
     // Bootstrap base config
     @import "~bootstrap/scss/functions";
     @import "~bootstrap/scss/variables";
+    @import "~bootstrap/scss/variables-dark";
 
     // Plugin BS Variables
     @import "styles/_bootstrap-variables";
@@ -10,6 +11,15 @@
     @import "~bootstrap/scss/maps";
     @import "~bootstrap/scss/mixins";
     @import "~bootstrap/scss/utilities";
+
+    // Universal Bootstrap layout & components for all projects
+    @import "~bootstrap/scss/reboot";
+    @import "~bootstrap/scss/containers";
+    @import "~bootstrap/scss/grid";
+    @import "~bootstrap/scss/transitions";
+
+    // Universal Bootstrap helpers for all projects
+    @import "~bootstrap/scss/helpers";
 
     // Optional Bootstrap Components - uncomment to activate
     // @import "~bootstrap/scss/root";
