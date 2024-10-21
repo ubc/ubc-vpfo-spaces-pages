@@ -40,6 +40,7 @@ class Spaces_Page_Handler {
 
 		add_action( 'init', array( $this, 'handle_classroom_rewrite' ) );
 		add_action( 'template_redirect', array( $this, 'handle_classroom_template_redirect' ) );
+		add_filter( 'wpseo_title', array( $this, 'modify_classroom_yoast_seo_title' ), 10 ); // Yoast SEO title filter
 	}
 
 	public function handle_building_rewrite() {
@@ -107,13 +108,15 @@ class Spaces_Page_Handler {
 
 		// Get the building name from the fields
 		$building_name = isset($building->fields->{'Building Name'}[0]) ? $building->fields->{'Building Name'}[0] : null;
+		$building_code = isset($building->fields->{'Code'}) ? $building->fields->{'Code'} : null;
 
 		// Get the separator from Yoast SEO using wpseo_replace_vars
 		$separator = wpseo_replace_vars( '%%sep%%', array() );
 
 		if ( $building_name ) {
 			// Modify the Yoast title with building name and the separator
-			$title = $building_name . ' ' . $separator . ' ' . get_bloginfo( 'name' );
+			$title = $building_name;
+			$title .= ' ' . $separator . ' ' . get_bloginfo( 'name' );
 		}
 
 		return $title;
@@ -162,5 +165,37 @@ class Spaces_Page_Handler {
 		}
 
 		exit;
+	}
+
+	public function modify_classroom_yoast_seo_title( $title ) {
+		if ( ! function_exists( 'wpseo_replace_vars' ) ) {
+			return $title; // Yoast SEO is not active, return the default title
+		}
+
+		$classroom_slug = get_query_var( 'classroom_slug' );
+
+		if ( ! $classroom_slug ) {
+			return $title; // Not a classroom page, return the default title
+		}
+
+		// Access the API and retrieve the classroom data
+		$classroom = $this->airtable_api->get_classroom_by_slug( $classroom_slug );
+
+		if ( null === $classroom ) {
+			return $title; // No classroom found, keep the default title
+		}
+
+		// Get the classroom name from the fields
+		$classroom_name = isset($classroom->fields->{'Title'}) ? $classroom->fields->{'Title'} : null;
+
+		// Get the separator from Yoast SEO using wpseo_replace_vars
+		$separator = wpseo_replace_vars( '%%sep%%', array() );
+
+		if ( $classroom_name ) {
+			// Modify the Yoast title with classroom name and the separator
+			$title = $classroom_name . ' ' . $separator . ' ' . get_bloginfo( 'name' );
+		}
+
+		return $title;
 	}
 }
