@@ -2,45 +2,44 @@
 get_header();
 
 $building        = $args['building'];
-$building_fields = $building->fields;
+$building_fields = json_decode(json_encode($building->fields), true);
 
-$building_name        = isset( $building_fields->{'Building Name'}[0] ) ? $building_fields->{'Building Name'}[0] : null;
-$building_code        = isset( $building_fields->{'Building Code'}[0] ) ? $building_fields->{'Building Code'}[0] : null;
+$building_name        = $building_fields['Building Name'][0] ?? null;
+$building_code        = $building_fields['Building Code'][0] ?? null;
 $building_name_w_code = $building_name && $building_code ? $building_name . ' - ' . $building_code : $building_name;
 
 $breadcrumb_home         = get_bloginfo( 'url' );
-$breadcrumb_find_a_space = null !== get_page_by_path( 'find-a-space' ) ? get_permalink( get_page_by_path( 'find-a-space' ) ) : null;
+$breadcrumb_find_a_space = get_page_by_path( 'find-a-space' ) !== null ? get_permalink( get_page_by_path( 'find-a-space' ) ) : null;
 $breadcrumb              = '<a href="' . $breadcrumb_home . '" class="d-inline-block" title="' . get_bloginfo( 'name' ) . '" rel="bookmark">' . get_bloginfo( 'name' ) . '</a>';
 $breadcrumb             .= $breadcrumb_find_a_space ? '<i class="fas fa-chevron-right mx-4"></i><a href="' . $breadcrumb_find_a_space . '" class="d-inline-block">' . __( 'Find a Space', 'ubc-vpfo-spaces-pages' ) . '</a>' : '';
 $breadcrumb             .= $building_name_w_code ? '<i class="fas fa-chevron-right mx-4"></i><span class="d-inline-block">' . $building_name_w_code . '</span>' : '';
 
-$alert_message = isset( $building_fields->{'Alert Message'} ) ? $building_fields->{'Alert Message'} : null;
+$alert_message = $building_fields['Alert Message'] ?? null;
 
-$building_address = isset( $building_fields->{'Building Address (override)'} ) ? $building_fields->{'Building Address (override)'} : null;
-$building_campus  = isset( $building_fields->{'Campus'} ) ? $building_fields->{'Campus'} : 'Vancouver'; // TODO - get real dynamic data if applicable
+$building_address = $building_fields['Building Address (override)'] ?? null;
+$building_campus  = $building_fields['Campus'] ?? 'Vancouver'; // TODO - get real dynamic data if applicable
 
-$building_hours_original = isset( $building_fields->{'Hours'}[0] ) ? $building_fields->{'Hours'}[0] : null;
-$building_hours_override = isset( $building_fields->{'Hours (override)'} ) ? $building_fields->{'Hours (override)'} : null;
-$building_hours          = $building_hours_override ? $building_hours_override : $building_hours_original;
+$building_hours_original = $building_fields['Hours'][0] ?? null;
+$building_hours_override = $building_fields['Hours (override)'] ?? null;
+$building_hours          = $building_hours_override ?? $building_hours_original;
 $building_hours          = $building_hours ? array_map( 'trim', explode( ';', $building_hours ) ) : array();
 
-$building_notes = isset( $building_fields->{'Building Notes'} ) ? nl2br( $building_fields->{'Building Notes'} ) : null; // TODO - the data returned by this column needs to be reformatted to include only the notes and nothing about hours
+$building_notes = isset( $building_fields['Building Notes'] ) ? nl2br( $building_fields['Building Notes'] ) : null; // TODO - the data returned by this column needs to be reformatted to include only the notes and nothing about hours
 
-$building_image_object = isset( $building_fields->{'Building Image'}[0] ) ? $building_fields->{'Building Image'}[0] : (object) array();
+$building_image = $building_fields['Building Image'][0] ?? array();
 
-$building_image           = array();
-$building_image['url']    = isset( $building_image_object->thumbnails->full->url ) ? $building_image_object->thumbnails->full->url : null;
-$building_image['width']  = isset( $building_image_object->thumbnails->full->width ) ? $building_image_object->thumbnails->full->width : null;
-$building_image['height'] = isset( $building_image_object->thumbnails->full->height ) ? $building_image_object->thumbnails->full->height : null;
-$building_image['alt']    = $building_name ? $building_name : null;
+$building_image_url    = $building_image['url'] ?? null;
+$building_image_width  = $building_image['width'] ?? null;
+$building_image_height = $building_image['height'] ?? null;
+$building_image_alt    = $building_name ?? null;
 
-$building_image_string  = isset( $building_image['url'] ) ? '<img src="' . $building_image['url'] . '"' : '';
-$building_image_string .= isset( $building_image['width'] ) ? ' width="' . $building_image['width'] . '"' : '';
-$building_image_string .= isset( $building_image['height'] ) ? ' height="' . $building_image['height'] . '"' : '';
-$building_image_string .= isset( $building_image['alt'] ) ? ' alt="' . $building_image['alt'] . '"' : '';
-$building_image_string .= isset( $building_image['url'] ) ? '>' : '';
+$building_image_string  = isset( $building_image_url ) ? '<img src="' . $building_image_url . '"' : '';
+$building_image_string .= isset( $building_image_width ) ? ' width="' . $building_image_width . '"' : '';
+$building_image_string .= isset( $building_image_height ) ? ' height="' . $building_image_height . '"' : '';
+$building_image_string .= isset( $building_image_alt ) ? ' alt="' . $building_image_alt . '"' : '';
+$building_image_string .= isset( $building_image_url ) ? '>' : '';
 
-$building_map = isset( $building_fields->{'Map Link'} ) ? $building_fields->{'Map Link'} : null;
+$building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Link'] : null;
 
 $building_classrooms = isset( $args['building_classrooms'] ) && ! empty( $args['building_classrooms'] ) ? $args['building_classrooms'] : array();
 ?>
@@ -55,22 +54,20 @@ $building_classrooms = isset( $args['building_classrooms'] ) && ! empty( $args['
 				</div>
 			<?php } ?>
 
-			
-				<div class="d-flex flex-column flex-lg-row justify-content-lg-between">
-					<h1 class="text-uppercase">
-						<?php
-						if ( $building_name_w_code ) {
-							echo wp_kses_post( $building_name_w_code );
-						} elseif ( $building_name ) {
-							echo wp_kses_post( $building_name );
-						} else {
-							esc_html_e( 'Learning Spaces', 'ubc-vpfo-spaces-pages' );
-						}
-						?>
-					</h1>
-					<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary"><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
-				</div>
-			
+			<div class="d-flex flex-column flex-lg-row justify-content-lg-between">
+				<h1 class="text-uppercase">
+					<?php
+					if ( $building_name_w_code ) {
+						echo wp_kses_post( $building_name_w_code );
+					} elseif ( $building_name ) {
+						echo wp_kses_post( $building_name );
+					} else {
+						esc_html_e( 'Learning Spaces', 'ubc-vpfo-spaces-pages' );
+					}
+					?>
+				</h1>
+				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary"><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
+			</div>
 
 			<?php if ( $alert_message ) { ?>
 				<div class="alert-message d-flex align-items-top align-items-lg-center">
