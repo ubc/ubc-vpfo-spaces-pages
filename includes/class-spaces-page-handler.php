@@ -69,7 +69,9 @@ class Spaces_Page_Handler {
 			return;
 		}
 
-		$building = $this->airtable_api->get_building_by_slug( $building_slug );
+		$building            = $this->airtable_api->get_building_by_slug( $building_slug );
+		$building_code       = isset( $building->fields->{'Code'} ) ? $building->fields->{'Code'} : null;
+		$building_classrooms = $building_code ? $this->airtable_api->get_classrooms_for_building( $building_code ) : array();
 
 		// If the lookup had no results, allow WordPress to 404.
 		if ( null === $building ) {
@@ -78,7 +80,8 @@ class Spaces_Page_Handler {
 
 		$template_name = 'building-single.php';
 		$args          = array(
-			'building' => $building,
+			'building'            => $building,
+			'building_classrooms' => $building_classrooms,
 		);
 
 		if ( ! locate_template( sprintf( 'spaces-page/%s', $template_name ), true, true, $args ) ) {
@@ -107,15 +110,15 @@ class Spaces_Page_Handler {
 		}
 
 		// Get the building name from the fields
-		$building_name = isset($building->fields->{'Building Name'}[0]) ? $building->fields->{'Building Name'}[0] : null;
-		$building_code = isset($building->fields->{'Code'}) ? $building->fields->{'Code'} : null;
+		$building_name = isset( $building->fields->{'Building Name'}[0] ) ? $building->fields->{'Building Name'}[0] : null;
+		$building_code = isset( $building->fields->{'Code'} ) ? $building->fields->{'Code'} : null;
 
 		// Get the separator from Yoast SEO using wpseo_replace_vars
 		$separator = wpseo_replace_vars( '%%sep%%', array() );
 
 		if ( $building_name ) {
 			// Modify the Yoast title with building name and the separator
-			$title = $building_name;
+			$title  = $building_name;
 			$title .= ' ' . $separator . ' ' . get_bloginfo( 'name' );
 		}
 
@@ -186,7 +189,7 @@ class Spaces_Page_Handler {
 		}
 
 		// Get the classroom name from the fields
-		$classroom_name = isset($classroom->fields->{'Title'}) ? $classroom->fields->{'Title'} : null;
+		$classroom_name = isset( $classroom->fields->{'Title'} ) ? $classroom->fields->{'Title'} : null;
 
 		// Get the separator from Yoast SEO using wpseo_replace_vars
 		$separator = wpseo_replace_vars( '%%sep%%', array() );

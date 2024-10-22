@@ -12,7 +12,7 @@ to install/update packages
 # CodeSniffer project alias
 function set_phpcs_alias() {
     if [ -f "./vendor/bin/phpcs" ]; then
-        alias phpcsproject='./vendor/bin/phpcs . -v'
+        alias phpcsproject='./vendor/bin/phpcs . --standard=phpcs.xml --report=full --report-file=codescan.txt'
     else
         unalias phpcsproject 2>/dev/null
     fi
@@ -30,4 +30,4 @@ set_phpcs_alias
 6) Quit any open terminal applications and relaunch them
 7) From the ubc-vpfo-find-a-space project root directory, run the command: 
 ```phpcsproject```
-to scan your code according to WordPress Extra coding standards
+to scan your code according to WordPress Extra coding standards. The results will output to a file in the project root folder called ```codescan.txt```
