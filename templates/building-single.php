@@ -1,18 +1,54 @@
 <?php
+// Define variables needed before we call the header to support redirect logic
+$building        = $args['building'];
+$building_fields = json_decode( wp_json_encode( $building->fields ), true );
+
+$building_classrooms = isset( $args['building_classrooms'] ) && ! empty( $args['building_classrooms'] ) ? $args['building_classrooms'] : (object) array();
+
+// Get the total number of classrooms before slicing for pagination
+$total_classrooms = count( $building_classrooms );
+
+// Define the number of items per page
+$classrooms_per_page = 12;
+
+// Calculate the total number of pages and cast to integer
+$max_pages = (int) ceil( $total_classrooms / $classrooms_per_page );
+
+// Get the current page from the URL parameter and ensure it's within bounds
+$classrooms_page = isset( $_GET['page'] ) ? absint( $_GET['page'] ) : 1;
+
+// Prep for the redirect logic
+// Strip the fragment (anything after #) from the URL
+$current_url = get_bloginfo( 'url' ) . $_SERVER['REQUEST_URI'];
+$parsed_url  = wp_parse_url( $current_url );
+
+// Rebuild the URL without the fragment
+$base_url = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $parsed_url['path'];
+$query    = isset( $parsed_url['query'] ) ? '?' . $parsed_url['query'] : '';
+
+// Calculate the last page URL and apply the page parameter
+$last_page_url = add_query_arg( 'page', $max_pages, $base_url . $query );
+
+// Perform the redirect if the current page is greater than the max
+if ( $classrooms_page > $max_pages ) {
+	wp_safe_redirect( $last_page_url );
+	exit;
+}
+
 get_header();
 
-$building        = $args['building'];
-$building_fields = json_decode(json_encode($building->fields), true);
-
-$building_name        = $building_fields['Building Name'][0] ?? null;
-$building_code        = $building_fields['Building Code'][0] ?? null;
-$building_name_w_code = $building_name && $building_code ? $building_name . ' - ' . $building_code : $building_name;
+// set up the rest of our variables
+$building_name_original = $building_fields['Building Name'][0] ?? null;
+$building_name_override = $building_fields['Building Name (override)'] ?? null;
+$building_name          = $building_name_override ?? $building_name_original;
+$building_code          = $building_fields['Building Code'][0] ?? null;
+$building_name_w_code   = $building_name && $building_code ? $building_name . ' - ' . $building_code : $building_name;
 
 $breadcrumb_home         = get_bloginfo( 'url' );
 $breadcrumb_find_a_space = get_page_by_path( 'find-a-space' ) !== null ? get_permalink( get_page_by_path( 'find-a-space' ) ) : null;
 $breadcrumb              = '<a href="' . $breadcrumb_home . '" class="d-inline-block" title="' . get_bloginfo( 'name' ) . '" rel="bookmark">' . get_bloginfo( 'name' ) . '</a>';
 $breadcrumb             .= $breadcrumb_find_a_space ? '<i class="fas fa-chevron-right mx-4"></i><a href="' . $breadcrumb_find_a_space . '" class="d-inline-block">' . __( 'Find a Space', 'ubc-vpfo-spaces-pages' ) . '</a>' : '';
-$breadcrumb             .= $building_name_w_code ? '<i class="fas fa-chevron-right mx-4"></i><span class="d-inline-block">' . $building_name_w_code . '</span>' : '';
+$breadcrumb             .= $building_name_w_code ? '<i class="fas fa-chevron-right mx-4"></i><span class="d-inline-block current-page">' . $building_name_w_code . '</span>' : '';
 
 $alert_message = $building_fields['Alert Message'] ?? null;
 
@@ -40,8 +76,6 @@ $building_image_string .= isset( $building_image_alt ) ? ' alt="' . $building_im
 $building_image_string .= isset( $building_image_url ) ? '>' : '';
 
 $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Link'] : null;
-
-$building_classrooms = isset( $args['building_classrooms'] ) && ! empty( $args['building_classrooms'] ) ? $args['building_classrooms'] : array();
 ?>
 
 <section class="vpfo-spaces-page">
@@ -49,13 +83,13 @@ $building_classrooms = isset( $args['building_classrooms'] ) && ! empty( $args['
 
 		<section class="building-header mt-9">
 			<?php if ( $breadcrumb && ! empty( $breadcrumb ) ) { ?>
-				<div class="breadcrumb d-md-flex align-items-md-center px-0 mb-5 text-uppercase">
+				<div class="breadcrumb d-flex flex-wrap align-items-center px-0 mb-9 text-uppercase">
 					<?php echo wp_kses_post( $breadcrumb ); ?>
 				</div>
 			<?php } ?>
 
-			<div class="d-flex flex-column flex-lg-row justify-content-lg-between">
-				<h1 class="text-uppercase">
+			<div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center mb-13">
+				<h1 class="text-uppercase fw-bold mb-9 mb-md-0">
 					<?php
 					if ( $building_name_w_code ) {
 						echo wp_kses_post( $building_name_w_code );
@@ -66,12 +100,12 @@ $building_classrooms = isset( $args['building_classrooms'] ) && ! empty( $args['
 					}
 					?>
 				</h1>
-				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary"><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
+				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary btn-border-thick me-auto me-md-0 ms-md-auto  d-flex align-items-center"><i class="fas fa-chevron-left me-3"></i><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
 			</div>
 
 			<?php if ( $alert_message ) { ?>
-				<div class="alert-message d-flex align-items-top align-items-lg-center">
-					<i class="fa-solid fa-circle-info"></i>
+				<div class="alert-message d-flex align-items-top align-items-lg-center p-5 mb-5">
+					<i class="fa-solid fa-circle-info pt-1"></i>
 					<span><?php echo wp_kses_post( $alert_message ); ?></span>
 				</div>
 			<?php } ?>
@@ -79,8 +113,8 @@ $building_classrooms = isset( $args['building_classrooms'] ) && ! empty( $args['
 
 		<section class="building-details">
 			<div class="row">
-				<div class="col-lg-6 pe-lg-5">
-					<div class="building-info">
+				<div class="col-lg-6 pe-lg-5 order-2 order-lg-1">
+					<div class="building-info px-5 py-7">
 						<?php if ( $building_address ) { ?>
 							<div class="building-address">
 								<h2 class="text-uppercase"><?php esc_html_e( 'Address', 'ubc-vpfo-spaces-pages' ); ?></h2>
@@ -106,14 +140,14 @@ $building_classrooms = isset( $args['building_classrooms'] ) && ! empty( $args['
 
 						<?php if ( $building_notes ) { ?>
 							<div class="building-notes">
-								<h2 class="text-uppercase"><?php esc_html_e( 'Building Notes', 'ubc-vpfo-spaces-pages' ); ?></h2>
+								<h2 class="text-uppercase upsize"><?php esc_html_e( 'Building Notes', 'ubc-vpfo-spaces-pages' ); ?></h2>
 								<p><?php echo wp_kses_post( $building_notes ); ?></p>
 							</div>
 						<?php } ?>
 
 						<?php // TODO - figure out real dynamic data and labelling for this whole section ?>
 						<div class="building-resources">
-							<h2 class="text-uppercase"><?php esc_html_e( 'Building Resources', 'ubc-vpfo-spaces-pages' ); ?> - Label TBD</h2>
+							<h2 class="text-uppercase upsize"><?php esc_html_e( 'Resources', 'ubc-vpfo-spaces-pages' ); ?></h2>
 							
 							<div class="d-flex align-items-center building-amenities">
 								<p class="mb-0"><?php esc_html_e( 'Inclusive Washrooms', 'ubc-vpfo-spaces-pages' ); ?></p>
@@ -140,39 +174,114 @@ $building_classrooms = isset( $args['building_classrooms'] ) && ! empty( $args['
 									<i class="fa-solid fa-location-dot ms-2"></i>
 								</a>
 							</div>
+
+							<div class="building-aed-map">
+								<a href="#" class="d-flex align-items-center">
+									<p class="mb-0"><?php esc_html_e( 'AED Shuttle Map', 'ubc-vpfo-spaces-pages' ); ?></p>
+									<i class="fa-solid fa-location-dot ms-2"></i>
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
 
-				<div class="col-lg-6 ps-lg-5">
-					<?php if ( $building_map ) { ?>
-						<div class="building-map ratio ratio-4x3">
-							<iframe src="<?php echo esc_url( $building_map ); ?>" title="Wayfinding Map"></iframe>
-						</div>
-					<?php } ?>
+				<div class="col-lg-6 ps-lg-5 order-1 order-lg-2">
+					<?php if ( $building_map || ( $building_image_string && ! empty( $building_image_string ) ) ) { ?>
+						<div class="row">
+							<?php if ( $building_map ) { ?>
+								<div class="col-md-6 col-lg-12">
+									<div class="building-map ratio mb-5 mb-md-0 mb-lg-5">
+										<iframe src="<?php echo esc_url( $building_map ); ?>" title="Wayfinding Map"></iframe>
+									</div>
+								</div>
+							<?php } ?>
 
-					<?php if ( $building_image_string && ! empty( $building_image_string ) ) { ?>
-						<div class="building-image">
-							<?php echo wp_kses_post( $building_image_string ); ?>
+							<?php if ( $building_image_string && ! empty( $building_image_string ) ) { ?>
+								<div class="col-md-6 col-lg-12">
+									<div class="building-image">
+										<?php echo wp_kses_post( $building_image_string ); ?>
+									</div>
+								</div>
+							<?php } ?>
 						</div>
 					<?php } ?>
 				</div>
 			</div>
 		</section>
 
-		<?php if ( ! empty( $building_classrooms ) ) { ?>
-			<section class="building-classrooms">
+		<?php
+		if ( ! empty( $building_classrooms ) ) {
+			// Get the sorted and paginated classrooms - see includes/helpers.php
+			$paginated_classrooms = get_sorted_and_paginated_classrooms( $building_classrooms, $classrooms_page );
+			?>
+
+			<section class="building-classrooms mt-9">
 				<h2 class="text-uppercase"><?php esc_html_e( 'Classrooms &amp; Spaces', 'ubc-vpfo-spaces-pages' ); ?><?php echo ' — ' . wp_kses_post( $building_name ); ?></h2>
 
-				<?php
-				foreach ( $building_classrooms as $building_classroom ) {
-					load_template( plugin_dir_path( __DIR__ ) . 'templates/partials/classroom-card.php', false, array( 'building_classroom' => $building_classroom ) );
-				}
-				?>
+				<div class="classroom-list" id="classroom-list">
+					<?php
+					foreach ( $paginated_classrooms as $classroom ) {
+						load_template( plugin_dir_path( __DIR__ ) . 'templates/partials/classroom-card.php', false, array( 'classroom' => $classroom['fields'] ) );
+					}
+					?>
+				</div>
+
+				<?php if ( count( $building_classrooms ) >= 12 ) { ?>
+
+					<div class="classroom-list-nav d-flex mt-9">
+						<!-- Prev Page Link -->
+						<a href="
+						<?php
+						// If $classrooms_page is 2 or less, remove the 'page' query arg and append '#classroom-list'
+						if ( $classrooms_page <= 2 ) {
+							// Remove 'page' query arg and append '#classroom-list'
+							echo esc_url( remove_query_arg( 'page' ) . '#classroom-list' );
+						} else {
+							// Otherwise, link to the previous page with '#classroom-list'
+							echo esc_url( add_query_arg( 'page', $classrooms_page - 1 ) . '#classroom-list' );
+						}
+						?>
+						" class="btn btn-primary me-3" 
+						<?php
+						echo $classrooms_page <= 1 ? 'disabled' : '';
+						?>
+						>
+							<i class="fas fa-chevron-left me-2"></i>
+						<?php
+						esc_html_e( 'Prev Page', 'ubc-vpfo-spaces-pages' );
+						?>
+						</a>
+
+						<!-- Next Page Link -->
+						<a href="
+						<?php
+						// If $classrooms_page is the last page, keep the query arg for the last page with '#classroom-list'
+						if ( $classrooms_page === $max_pages ) {
+							echo esc_url( add_query_arg( 'page', $max_pages ) . '#classroom-list' );
+						} else {
+							// Otherwise, link to the next page with '#classroom-list'
+							echo esc_url( add_query_arg( 'page', $classrooms_page + 1 ) . '#classroom-list' );
+						}
+						?>
+						" class="btn btn-primary" 
+						<?php
+						echo count( $paginated_classrooms ) < 12 || $classrooms_page === $max_pages ? 'disabled' : '';
+						?>
+						>
+						<?php
+						esc_html_e( 'Next Page', 'ubc-vpfo-spaces-pages' );
+						?>
+							<i class="fas fa-chevron-right ms-2"></i>
+						</a>
+					</div>
+				<?php } ?>
+
 			</section>
 			<?php
 		}
 		?>
+
+		<div class="pattern-slice mt-9"></div>
 		
 	</div>
 </section>

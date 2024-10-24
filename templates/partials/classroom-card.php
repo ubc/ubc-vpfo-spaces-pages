@@ -1,6 +1,5 @@
 <?php
-$building_classroom = $args['building_classroom'];
-$classroom          = json_decode(json_encode($building_classroom->fields), true);
+$classroom = $args['classroom'] ?? array();
 
 $classroom_building_code = $classroom['Building Code'] ?? null;
 $classroom_room_number   = $classroom['Room Number'] ?? null;
@@ -9,29 +8,54 @@ $classroom_building_name = $classroom['Building Name'] ?? null;
 $classroom_capacity      = $classroom['Capacity'] ?? null;
 $classroom_layout        = $classroom['Layout'] ?? 'Data Source In Progress'; // TODO - get real data and fallback
 $classroom_slug          = $classroom['Slug'] ?? null;
+if ( '-' === $classroom_slug ) {
+	$classroom_slug = null;
+}
 
 $classroom_thumbnail = $classroom['Image Gallery'][0] ?? null;
 
-$classroom_thumbnail_string  = isset( $classroom_thumbnail['url'] ) ? '<img src="' . $classroom_thumbnail['url'] . '"' : '';
-$classroom_thumbnail_string .= isset( $classroom_thumbnail['width'] ) ? ' width="' . $classroom_thumbnail['width'] . '"' : '';
-$classroom_thumbnail_string .= isset( $classroom_thumbnail['height'] ) ? ' height="' . $classroom_thumbnail['height'] . '"' : '';
-$classroom_thumbnail_string .= $classroom_title ? ' alt="' . $classroom_title . '"' : '';
-$classroom_thumbnail_string .= isset( $classroom_thumbnail['url'] ) ? '>' : '';
+$classroom_thumbnail_string = null;
+
+if ( isset( $classroom_thumbnail['url'] ) ) {
+	$classroom_thumbnail_string  = '<img src="' . $classroom_thumbnail['url'] . '"';
+	$classroom_thumbnail_string .= isset( $classroom_thumbnail['width'] ) ? ' width="' . $classroom_thumbnail['width'] . '"' : '';
+	$classroom_thumbnail_string .= isset( $classroom_thumbnail['height'] ) ? ' height="' . $classroom_thumbnail['height'] . '"' : '';
+	$classroom_thumbnail_string .= $classroom_title ? ' alt="' . $classroom_title . '"' : '';
+	$classroom_thumbnail_string .= '>';
+}
+
 ?>
 
-<div class="classroom-card d-flex flex-column flex-md-row pt-5">
-	<?php if ( $classroom_thumbnail_string && ! empty( $classroom_thumbnail_string ) ) { ?>
+<div class="classroom-card d-flex flex-column flex-md-row pt-5 pt-md-0 ps-md-5 position-relative">
+	<div class="accent position-absolute"></div>
+
+	<?php if ( $classroom_thumbnail_string ) { ?>
 		<div class="classroom-thumbnail">
 			<?php echo wp_kses_post( $classroom_thumbnail_string ); ?>
 		</div>
+	<?php } else { ?>
+		<div class="classroom-thumbnail no-image"></div>
 	<?php } ?>
 
-	<div class="classroom-details">
-		<h2 class="classroom-title"><?php echo wp_kses_post( $classroom_title ); ?></h2>
-		<div class="classroom-building-name"><?php echo wp_kses_post( $classroom_building_name ); ?></div>
-		<div class="classroom-capacity"><?php echo wp_kses_post( $classroom_capacity ); ?> Capacity</div>
-		<div class="classroom-layout"><?php echo wp_kses_post( $classroom_layout ); ?></div>
-		<a href="<?php echo esc_url( get_bloginfo( 'url' ) . '/classrooms/' . $classroom_slug ); ?>" class="btn btn-primary"><?php esc_html_e( 'View Space', 'ubc-vpfo-spaces-pages' ); ?></a>
+	<div class="classroom-details p-5 ps-md-0 ms-md-9 flex-grow-1">
+		<div class="d-flex align-items-start justify-content-between mb-5">
+			<div>
+				<h2 class="mb-0 fw-bold text-uppercase"><?php echo wp_kses_post( $classroom_title ); ?></h2>
+				<div class="classroom-building-name fw-bold text-uppercase mt-2"><?php echo wp_kses_post( $classroom_building_name ); ?></div>
+			</div>
+			<a href="<?php echo esc_url( get_bloginfo( 'url' ) . '/classrooms/' . $classroom_slug ); ?>" class="btn btn-secondary ms-5 text-nowrap"><?php esc_html_e( 'View Space', 'ubc-vpfo-spaces-pages' ); ?></a>
+		</div>
+
+		<div class="d-flex align-items-start">
+			<dl>
+				<dt><?php esc_html_e( 'Capacity', 'ubc-vpfo-spaces-pages' ); ?></dt>
+				<dd><?php echo wp_kses_post( $classroom_capacity ); ?></dd>
+			</dl>
+			<dl class="ms-9">
+				<dt><?php esc_html_e( 'Style &amp; Layout', 'ubc-vpfo-spaces-pages' ); ?></dt>
+				<dd><?php echo wp_kses_post( $classroom_layout ); ?></dd>
+			</dl>
+		</div>
 	</div>
 </div>
 
