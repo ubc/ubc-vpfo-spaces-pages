@@ -58,30 +58,30 @@ if ( isset( $classroom_thumbnail['url'] ) ) {
 			<a href="<?php echo esc_url( get_bloginfo( 'url' ) . '/classrooms/' . $classroom_slug ); ?>" class="btn btn-secondary ms-5 text-nowrap"><?php esc_html_e( 'View Space', 'ubc-vpfo-spaces-pages' ); ?></a>
 		</div>
 
-		<?php 
+		<?php
 		if ( $classroom_capacity || $classroom_style_layout ) {
-		?>
+			?>
 			<div class="d-flex align-items-start">
 				<?php
 				if ( $classroom_capacity ) {
-				?>
-				<dl>
-					<dt><?php esc_html_e( 'Capacity', 'ubc-vpfo-spaces-pages' ); ?></dt>
-					<dd><?php echo wp_kses_post( $classroom_capacity ); ?></dd>
-				</dl>
-				<?php
+					?>
+					<dl>
+						<dt><?php esc_html_e( 'Capacity', 'ubc-vpfo-spaces-pages' ); ?></dt>
+						<dd><?php echo wp_kses_post( $classroom_capacity ); ?></dd>
+					</dl>
+					<?php
 				}
 				if ( $classroom_style_layout ) {
-				?>
-				<dl class="ms-9">
-					<dt><?php esc_html_e( 'Style &amp; Layout', 'ubc-vpfo-spaces-pages' ); ?></dt>
-					<dd><?php echo wp_kses_post( $classroom_style_layout ); ?></dd>
-				</dl>
-				<?php 
+					?>
+					<dl class="ms-9">
+						<dt><?php esc_html_e( 'Style &amp; Layout', 'ubc-vpfo-spaces-pages' ); ?></dt>
+						<dd><?php echo wp_kses_post( $classroom_style_layout ); ?></dd>
+					</dl>
+					<?php
 				}
 				?>
 			</div>
-		<?php
+			<?php
 		}
 		?>
 	</div>
