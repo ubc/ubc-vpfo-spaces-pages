@@ -11,4 +11,7 @@
     <!-- Ignore the node_modules directory -->
     <exclude-pattern>node_modules/*</exclude-pattern>
 
+    <!-- Ignore fontawesome directory -->
+    <exclude-pattern>fonts/fontawesome/*</exclude-pattern>
+
 </ruleset>

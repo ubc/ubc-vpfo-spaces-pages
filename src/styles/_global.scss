@@ -1,5 +1,84 @@
-// styles for both buildings and classrooms templates here
+// import only the bootstrap assets we need here to use their breakpoint mixins with our custom styles
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
 
 .vpfo-spaces-page {
-    font-family: $font-whitney;
+	-webkit-font-smoothing: antialiased;
+	font-family: $font-whitney;
+	color: $ubc-blue;
+
+	.btn {
+		@include btn;
+	}
+
+	.btn-primary {
+		@include btn-primary;
+	}
+
+	.btn-secondary {
+		@include btn-secondary;
+	}
+
+	.btn-border-thick {
+		border-width: 0.125rem;
+	}
+
+	.breadcrumb {
+		font-size: 0.875rem;
+		font-weight: 500;
+		line-height: 1.375rem;
+		height: auto;
+		min-height: unset;
+		gap: 0.75rem 0;
+
+		.current-page {
+			color: $ubc-brand-blue;
+		}
+
+		a {
+			color: $ubc-blue;
+			text-decoration: none;
+
+			&:hover, &:focus, &:active {
+				outline: none;
+				text-decoration: underline;
+			}
+		}
+
+		i {
+			font-size: 0.5rem;
+		}
+	}
+
+	.alert-message {
+		background: $ubc-brand-blue;
+		color: $utility-white;
+		font-size: 1rem;
+		line-height: 1.5;
+		font-weight: 500;
+		gap: 0 0.75rem;
+	}
+
+	.pattern-slice {
+		background-image: url('images/svg/learning-spaces-template-pattern-light-bg.svg');
+		background-repeat: repeat-x;
+		background-position: center left;
+		height: 6rem;
+		width: calc(100% + 40px);
+		margin-left: -20px;
+		margin-right: -20px;
+
+		@media (min-width: 980px) {
+			width: calc(100% + 60px);
+			margin-left: -30px;
+			margin-right: -30px;
+		}
+
+		@include media-breakpoint-up(xl) {
+			width: calc(100% + (100vw - 1170px) + 30px);
+			margin-left: calc((100vw - 1170px) / 2 * -1 - 15px);
+			margin-right: unset;
+		}
+	}
 }

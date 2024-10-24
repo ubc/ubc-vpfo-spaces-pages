@@ -2,7 +2,7 @@
 
 $classroom = $args['classroom'];
 
-dd( $classroom );
+dd( $classroom->fields );
 ?>
 
 <div class="vpfo-spaces-page">
