@@ -6,8 +6,20 @@ $classroom_room_number   = $classroom['Room Number'] ?? null;
 $classroom_title         = $classroom_building_code . ' ' . $classroom_room_number;
 $classroom_building_name = $classroom['Building Name'] ?? null;
 $classroom_capacity      = $classroom['Capacity'] ?? null;
-$classroom_layout        = $classroom['Layout'] ?? 'Data Source In Progress'; // TODO - get real data and fallback
-$classroom_slug          = $classroom['Slug'] ?? null;
+$classroom_layout_type   = $classroom['Filter_RoomLayoutType'] ?? null;
+$classroom_furniture     = $classroom['Filter_Furniture'] ?? null;
+
+if ( $classroom_layout_type && $classroom_furniture ) {
+	$classroom_style_layout = $classroom_layout_type . '; ' . $classroom_furniture;
+} elseif ( $classroom_layout_type ) {
+	$classroom_style_layout = $classroom_layout_type;
+} elseif ( $classroom_furniture ) {
+	$classroom_style_layout = $classroom_furniture;
+} else {
+	$classroom_style_layout = null;
+}
+
+$classroom_slug = $classroom['Slug'] ?? null;
 if ( '-' === $classroom_slug ) {
 	$classroom_slug = null;
 }
@@ -46,16 +58,32 @@ if ( isset( $classroom_thumbnail['url'] ) ) {
 			<a href="<?php echo esc_url( get_bloginfo( 'url' ) . '/classrooms/' . $classroom_slug ); ?>" class="btn btn-secondary ms-5 text-nowrap"><?php esc_html_e( 'View Space', 'ubc-vpfo-spaces-pages' ); ?></a>
 		</div>
 
-		<div class="d-flex align-items-start">
-			<dl>
-				<dt><?php esc_html_e( 'Capacity', 'ubc-vpfo-spaces-pages' ); ?></dt>
-				<dd><?php echo wp_kses_post( $classroom_capacity ); ?></dd>
-			</dl>
-			<dl class="ms-9">
-				<dt><?php esc_html_e( 'Style &amp; Layout', 'ubc-vpfo-spaces-pages' ); ?></dt>
-				<dd><?php echo wp_kses_post( $classroom_layout ); ?></dd>
-			</dl>
-		</div>
+		<?php 
+		if ( $classroom_capacity || $classroom_style_layout ) {
+		?>
+			<div class="d-flex align-items-start">
+				<?php
+				if ( $classroom_capacity ) {
+				?>
+				<dl>
+					<dt><?php esc_html_e( 'Capacity', 'ubc-vpfo-spaces-pages' ); ?></dt>
+					<dd><?php echo wp_kses_post( $classroom_capacity ); ?></dd>
+				</dl>
+				<?php
+				}
+				if ( $classroom_style_layout ) {
+				?>
+				<dl class="ms-9">
+					<dt><?php esc_html_e( 'Style &amp; Layout', 'ubc-vpfo-spaces-pages' ); ?></dt>
+					<dd><?php echo wp_kses_post( $classroom_style_layout ); ?></dd>
+				</dl>
+				<?php 
+				}
+				?>
+			</div>
+		<?php
+		}
+		?>
 	</div>
 </div>
 
