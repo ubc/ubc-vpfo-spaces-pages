@@ -79,7 +79,7 @@ class Airtable_Api
         );
 
         $response = $this->get(table: 'Classrooms', params: $params, resource: $classroom_slug, location: 'van_airtable');
-
+        ray($response)->die();
         if (!$response['records'] || empty($response['records'])) {
             return null;
         }
@@ -91,6 +91,7 @@ class Airtable_Api
 
     public function get(string $table, array $params, string $resource, string $location): mixed
     {
+
         $cache_key = $this->getCacheKey($location, $table, $params, $resource);
 
         if (get_transient($cache_key)) {
@@ -105,11 +106,13 @@ class Airtable_Api
 
     public function getCacheKey(string $location, string $table, array $params, string $resource): string
     {
-        $key = sprintf('%s_%s_%s_%s', $location, $table, $resource, hash(MHASH_XXH32, wp_json_encode($params)));
+        $key = sprintf('%s_%s_%s_%s', $location, $table, $resource, hash('xxh32', wp_json_encode($params)));
         return sprintf('%s_%s', $this->cachePrefix, $key);
     }
 
     /**
+     * issue #3
+     *
      * @todo magically determine the sites location, likely from the current blogs wp_options.
      *   Likely read from the plugin settings.
      */
