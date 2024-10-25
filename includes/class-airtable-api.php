@@ -112,7 +112,8 @@ class Airtable_Api {
 		};
 
 		$response = $request->getContent( $table, $params )->getResponse();
+		wp_cache_set( $cache_key, $response );
 
-		return wp_cache_set( $cache_key, $response );
+		return wp_cache_get( $cache_key );
 	}
 }
