@@ -11,13 +11,13 @@ class Airtable_Api {
 	private $van_airtable;
 	private $okan_airtable;
 
-	const CACHE_TTL      = 3600;
+	const CACHE_TTL = 3600;
 	const ROOMS_PER_PAGE = 10;
 
-    const LOCATION_VAN = 'van_airtable';
-    const LOCATION_OKAN = 'okan_airtable';
+	const LOCATION_VAN = 'van_airtable';
+	const LOCATION_OKAN = 'okan_airtable';
 
-    public $cachePrefix = 'airtable_cache_';
+	public $cachePrefix = 'airtable_cache_';
 
 	private static $campus_mapping = array(
 		'vancouver' => 'van_airtable',
@@ -50,7 +50,7 @@ class Airtable_Api {
 			'maxRecords'      => 1,
 		);
 
-        $response  = $this->get('van_airtable', 'Buildings', $params );
+		$response = $this->get( 'van_airtable', 'Buildings', $params, $building_slug );
 
 		if ( ! $response['records'] || empty( $response['records'] ) ) {
 			return null;
@@ -101,16 +101,18 @@ class Airtable_Api {
 		return $classroom;
 	}
 
-    public function get($location, $table, $params = array())
-    {
-        if ($location === self::LOCATION_VAN) {
-            $request = $this->van_airtable;
-        }
+	public function get( $location, $table, $params = array(), $cache_key ) {
+		if ( wp_cache_get( $cache_key ) ) {
+			return wp_cache_get( $cache_key );
+		}
 
-        if ($location === self::LOCATION_OKAN) {
-            $request = $this->okan_airtable;
-        }
+		$request = match ( $location ) {
+			self::LOCATION_VAN  => $this->van_airtable,
+			self::LOCATION_OKAN => $this->okan_airtable,
+		};
 
-        return $request->getContent($table, $params)->getResponse();
-    }
+		$response = $request->getContent( $table, $params )->getResponse();
+
+		return wp_cache_set( $cache_key, $response );
+	}
 }
