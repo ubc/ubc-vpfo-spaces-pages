@@ -4,18 +4,20 @@ namespace UbcVpfoSpacesPage;
 
 defined( 'ABSPATH' ) || exit;
 
-use UbcVpfoSpacesPage\AirTableCache;
 use TANIOS\Airtable\Airtable;
 
 class Airtable_Api {
-
-    use AirTableCache;
 
 	private $van_airtable;
 	private $okan_airtable;
 
 	const CACHE_TTL      = 3600;
 	const ROOMS_PER_PAGE = 10;
+
+    const LOCATION_VAN = 'van_airtable';
+    const LOCATION_OKAN = 'okan_airtable';
+
+    public $cachePrefix = 'airtable_cache_';
 
 	private static $campus_mapping = array(
 		'vancouver' => 'van_airtable',
@@ -98,4 +100,17 @@ class Airtable_Api {
 
 		return $classroom;
 	}
+
+    public function get($location, $table, $params = array())
+    {
+        if ($location === self::LOCATION_VAN) {
+            $request = $this->van_airtable;
+        }
+
+        if ($location === self::LOCATION_OKAN) {
+            $request = $this->okan_airtable;
+        }
+
+        return $request->getContent($table, $params)->getResponse();
+    }
 }
