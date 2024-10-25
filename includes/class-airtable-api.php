@@ -4,7 +4,7 @@ namespace UbcVpfoSpacesPage;
 
 defined( 'ABSPATH' ) || exit;
 
-use AirTableCache;
+use UbcVpfoSpacesPage\AirTableCache;
 use TANIOS\Airtable\Airtable;
 
 class Airtable_Api {

@@ -1,4 +1,5 @@
 <?php
+namespace UbcVpfoSpacesPage;
 
 trait AirTableCache
 {
