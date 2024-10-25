@@ -72,8 +72,7 @@ class Airtable_Api {
 			'filterByFormula' => sprintf( "AND( {Building Code} = '%s' )", $building_code ),
 		);
 
-		$request  = $this->van_airtable->getContent( 'Classrooms', $params );
-		$response = $request->getResponse();
+        $response = $this->get( 'van_airtable', 'Classrooms', $params, $building_code );
 
 		if ( ! $response['records'] || empty( $response['records'] ) ) {
 			return null; // No classrooms found
@@ -89,8 +88,7 @@ class Airtable_Api {
 			'maxRecords'      => 1,
 		);
 
-		$request  = $this->van_airtable->getContent( 'Classrooms', $params );
-		$response = $request->getResponse();
+        $response = $this->get( 'van_airtable', 'Classrooms', $params, $classroom_slug );
 
 		if ( ! $response['records'] || empty( $response['records'] ) ) {
 			return null;
@@ -102,7 +100,7 @@ class Airtable_Api {
 	}
 
 	public function get( $location, $table, $params = array(), $cache_key ) {
-		if ( wp_cache_get( $cache_key ) ) {
+        if ( wp_cache_get( $cache_key ) ) {
 			return wp_cache_get( $cache_key );
 		}
 
@@ -112,7 +110,7 @@ class Airtable_Api {
 		};
 
 		$response = $request->getContent( $table, $params )->getResponse();
-		wp_cache_set( $cache_key, $response );
+		wp_cache_set( key: $cache_key, data: $response, expire: self::CACHE_TTL );
 
 		return wp_cache_get( $cache_key );
 	}
