@@ -4,9 +4,13 @@ namespace UbcVpfoSpacesPage;
 
 defined( 'ABSPATH' ) || exit;
 
+use AirTableCache;
 use TANIOS\Airtable\Airtable;
 
 class Airtable_Api {
+
+    use AirTableCache;
+
 	private $van_airtable;
 	private $okan_airtable;
 
@@ -44,8 +48,7 @@ class Airtable_Api {
 			'maxRecords'      => 1,
 		);
 
-		$request  = $this->van_airtable->getContent( 'Buildings', $params );
-		$response = $request->getResponse();
+        $response  = $this->get('van_airtable', 'Buildings', $params );
 
 		if ( ! $response['records'] || empty( $response['records'] ) ) {
 			return null;
