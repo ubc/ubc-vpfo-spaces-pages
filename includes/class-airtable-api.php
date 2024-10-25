@@ -74,12 +74,12 @@ class Airtable_Api
     public function get_classroom_by_slug(string $classroom_slug)
     {
         $params = array(
-            'filterByFormula' => sprintf("AND( slug = '%s' )", $classroom_slug),
+            'filterByFormula' => sprintf( "AND( slug = '%s' )", $classroom_slug ),
             'maxRecords'      => 1,
         );
 
         $response = $this->get(table: 'Classrooms', params: $params, resource: $classroom_slug, location: 'van_airtable');
-        ray($response)->die();
+
         if (!$response['records'] || empty($response['records'])) {
             return null;
         }
@@ -91,8 +91,7 @@ class Airtable_Api
 
     public function get(string $table, array $params, string $resource, string $location): mixed
     {
-
-        $cache_key = $this->getCacheKey($location, $table, $params, $resource);
+        $cache_key = $this->getCacheKey(table: $table, params: $params, resource: $resource, location: $location);
 
         if (get_transient($cache_key)) {
             return get_transient($cache_key);
@@ -104,7 +103,7 @@ class Airtable_Api
         return get_transient($cache_key);
     }
 
-    public function getCacheKey(string $location, string $table, array $params, string $resource): string
+    public function getCacheKey(string $table, array $params, string $resource, string $location): string
     {
         $key = sprintf('%s_%s_%s_%s', $location, $table, $resource, hash('xxh32', wp_json_encode($params)));
         return sprintf('%s_%s', $this->cachePrefix, $key);
