@@ -10,6 +10,7 @@ class Airtable_Api
 {
 
     public Airtable $airtable;
+    public string $site_location;
     private $van_airtable;
     private $okan_airtable;
 
@@ -19,7 +20,7 @@ class Airtable_Api
     const LOCATION_VAN = 'van_airtable';
     const LOCATION_OKAN = 'okan_airtable';
 
-    public $cachePrefix = 'airtable_cache_';
+    public $cache_prefix = 'airtable_cache_';
 
     private static $campus_mapping = array(
         'vancouver' => 'van_airtable',
@@ -38,7 +39,7 @@ class Airtable_Api
             'maxRecords'      => 1,
         );
 
-        $response = $this->get(table: 'Buildings', params: $params, resource: $building_slug, location: 'van_airtable');
+        $response = $this->get(table: 'Buildings', params: $params, resource: $building_slug);
 
         if (!$response['records'] || empty($response['records'])) {
             return null;
@@ -61,7 +62,7 @@ class Airtable_Api
             'filterByFormula' => sprintf("AND( {Building Code} = '%s' )", $building_code),
         );
 
-        $response = $this->get(table: 'Classrooms', params: $params, resource: $building_code, location: 'van_airtable');
+        $response = $this->get(table: 'Classrooms', params: $params, resource: $building_code);
 
         if (!$response || empty($response)) {
             return null; // No classrooms found
@@ -78,7 +79,7 @@ class Airtable_Api
             'maxRecords'      => 1,
         );
 
-        $response = $this->get(table: 'Classrooms', params: $params, resource: $classroom_slug, location: 'van_airtable');
+        $response = $this->get(table: 'Classrooms', params: $params, resource: $classroom_slug);
 
         if (!$response || empty($response)) {
             return null;
@@ -89,9 +90,9 @@ class Airtable_Api
         return $classroom;
     }
 
-    public function get(string $table, array $params, string $resource, string $location): mixed
+    public function get(string $table, array $params, string $resource): mixed
     {
-        $cache_key = $this->getCacheKey(table: $table, params: $params, resource: $resource, location: $location);
+        $cache_key = $this->getCacheKey(table: $table, params: $params, resource: $resource);
 
         if (get_transient($cache_key)) {
             return get_transient($cache_key);
@@ -107,23 +108,17 @@ class Airtable_Api
         return set_transient(transient: $cache_key, value: $response['records'], expiration: self::CACHE_TTL);
     }
 
-    public function getCacheKey(string $table, array $params, string $resource, string $location): string
-    {
-        $key = sprintf('%s_%s_%s_%s', $location, $table, $resource, hash('xxh32', wp_json_encode($params)));
-        return sprintf('%s_%s', $this->cachePrefix, $key);
-    }
-
     /**
      * @todo issue #3 magically determine the sites location, likely from the current blogs wp_options.
      *   Likely read from the plugin settings.
      */
     public function negotiateAirTableLocation(): Airtable
     {
-        $location = self::LOCATION_VAN;
+        $this->site_location = self::LOCATION_VAN;
 
         $api_key = UBC_VPFO_FIND_A_SPACE_AIRTABLE_API_KEY;
 
-        $base_id = match ($location) {
+        $base_id = match ($this->site_location) {
             self::LOCATION_VAN  => UBC_VPFO_FIND_A_SPACE_AIRTABLE_BASE_ID_VAN,
             self::LOCATION_OKAN => UBC_VPFO_FIND_A_SPACE_AIRTABLE_BASE_ID_OKAN,
         };
@@ -135,5 +130,12 @@ class Airtable_Api
             )
         );
     }
+
+    public function getCacheKey(string $table, array $params, string $resource): string
+    {
+        $key = sprintf('%s_%s_%s_%s', $this->site_location, $table, $resource, hash('xxh32', wp_json_encode($params)));
+        return sprintf('%s_%s', $this->cache_prefix, $key);
+    }
+
 
 }
