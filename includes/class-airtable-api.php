@@ -63,28 +63,28 @@ class Airtable_Api
 
         $response = $this->get(table: 'Classrooms', params: $params, resource: $building_code, location: 'van_airtable');
 
-        if (!$response['records'] || empty($response['records'])) {
+        if (!$response || empty($response)) {
             return null; // No classrooms found
         }
 
         // Return the list of classrooms
-        return $response['records'];
+        return $response;
     }
 
     public function get_classroom_by_slug(string $classroom_slug)
     {
         $params = array(
-            'filterByFormula' => sprintf( "AND( slug = '%s' )", $classroom_slug ),
+            'filterByFormula' => sprintf("AND( slug = '%s' )", $classroom_slug),
             'maxRecords'      => 1,
         );
 
         $response = $this->get(table: 'Classrooms', params: $params, resource: $classroom_slug, location: 'van_airtable');
 
-        if (!$response['records'] || empty($response['records'])) {
+        if (!$response || empty($response)) {
             return null;
         }
 
-        $classroom = $response['records'][0];
+        $classroom = $response[0];
 
         return $classroom;
     }
@@ -98,7 +98,12 @@ class Airtable_Api
         }
 
         $response = $this->airtable->getContent($table, $params)->getResponse();
-        set_transient(transient: $cache_key, value: $response, expiration: self::CACHE_TTL);
+
+        if (!$response['records'] || empty($response['records'])) {
+            return null;
+        }
+
+        set_transient(transient: $cache_key, value: $response['records'], expiration: self::CACHE_TTL);
 
         return get_transient($cache_key);
     }
