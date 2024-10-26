@@ -99,13 +99,12 @@ class Airtable_Api
 
         $response = $this->airtable->getContent($table, $params)->getResponse();
 
+        // If there's no records then we the slug is likely wrong.
         if (!$response['records'] || empty($response['records'])) {
             return null;
         }
 
-        set_transient(transient: $cache_key, value: $response['records'], expiration: self::CACHE_TTL);
-
-        return get_transient($cache_key);
+        return set_transient(transient: $cache_key, value: $response['records'], expiration: self::CACHE_TTL);
     }
 
     public function getCacheKey(string $table, array $params, string $resource, string $location): string
@@ -115,9 +114,7 @@ class Airtable_Api
     }
 
     /**
-     * issue #3
-     *
-     * @todo magically determine the sites location, likely from the current blogs wp_options.
+     * @todo issue #3 magically determine the sites location, likely from the current blogs wp_options.
      *   Likely read from the plugin settings.
      */
     public function negotiateAirTableLocation(): Airtable
