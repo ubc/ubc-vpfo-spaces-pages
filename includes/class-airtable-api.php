@@ -103,7 +103,9 @@ class Airtable_Api
             return null;
         }
 
-        return set_transient(transient: $cache_key, value: $response['records'], expiration: self::CACHE_TTL);
+        set_transient(transient: $cache_key, value: $response['records'], expiration: self::CACHE_TTL);
+
+        return get_transient($cache_key);
     }
 
     /**
