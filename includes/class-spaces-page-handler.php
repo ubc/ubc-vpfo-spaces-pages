@@ -70,6 +70,7 @@ class Spaces_Page_Handler {
 		}
 
 		$building            = $this->airtable_api->get_building_by_slug( $building_slug );
+
 		$building_code       = isset( $building->fields->{'Code'} ) ? $building->fields->{'Code'} : null;
 		$building_classrooms = $building_code ? $this->airtable_api->get_classrooms_for_building( $building_code ) : (object) array();
 
