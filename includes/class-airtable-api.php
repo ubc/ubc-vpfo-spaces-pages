@@ -41,13 +41,11 @@ class Airtable_Api
 
         $response = $this->get(table: 'Buildings', params: $params, resource: $building_slug);
 
-        if (!$response['records'] || empty($response['records'])) {
+        if (!$response || empty($response)) {
             return null;
         }
 
-        $building = $response['records'][0];
-
-        return $building;
+        return $response[0];
     }
 
     public function get_classrooms_for_building(string $building_code)
