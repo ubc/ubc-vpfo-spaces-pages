@@ -435,19 +435,23 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 											?>
 											<div class="classroom-accessibility">
 												<h3><?php esc_html_e( 'Accessibility', 'ubc-vpfo-spaces-pages' ); ?></h3>
-												<ul>
-													<?php foreach ( $classroom_accessibility as $accessibility_item ) { ?>
-														<li>
-															<?php
-															echo wp_kses_post( $accessibility_item );
-															?>
-														</li>
-														<?php
-													}
-													?>
-												</ul>
-
 												<?php
+												if ( ! empty( $classroom_accessibility ) ) {
+													?>
+													<ul>
+														<?php foreach ( $classroom_accessibility as $accessibility_item ) { ?>
+															<li>
+																<?php
+																echo wp_kses_post( $accessibility_item );
+																?>
+															</li>
+															<?php
+														}
+														?>
+													</ul>
+													<?php
+												}
+
 												if ( $classroom_accessibility_content ) {
 													?>
 													<p><?php echo wp_kses_post( $classroom_accessibility_content ); ?></p>
@@ -470,7 +474,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 
 										if ( ! empty( $classroom_features ) ) {
 											?>
-											<div class="classroom-is-features">
+											<div class="classroom-features">
 												<h3><?php esc_html_e( 'Features', 'ubc-vpfo-spaces-pages' ); ?></h3>
 												<ul>
 													<?php
@@ -485,6 +489,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 													}
 													?>
 												</ul>
+											</div>
 											<?php
 										}
 
@@ -600,7 +605,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 				<div class="col-md-6 d-md-flex align-items-md-center">
 					<div class="book-space-content p-5">
 						<h2 class="mb-4"><?php esc_html_e( 'Book a space', 'ubc-vpfo-spaces-pages' ); ?></h2>
-						<p><?php esc_html_e( 'To find out how to book this room, visit the Room Booking Request page.', 'ubc-vpfo-spaces-pages' ); ?></p>
+						<p class="mt-0"><?php esc_html_e( 'To find out how to book this room, visit the Room Booking Request page.', 'ubc-vpfo-spaces-pages' ); ?></p>
 						<a href="<?php echo esc_url( 'https://facultystaff.students.ubc.ca/enrolment-services/scheduling-records-systems-management/scheduling-services/room-booking-requests-general-teaching-space' ); ?>" class="btn btn-primary" target="_blank" title="UBC Room Booking Requests">
 							<span><?php esc_html_e( 'Book Space', 'ubc-vpfo-spaces-pages' ); ?></span>
 							<i class="fas fa-arrow-up-right-from-square ms-3"></i>
