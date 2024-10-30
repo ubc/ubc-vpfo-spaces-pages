@@ -8,6 +8,12 @@
 	font-family: $font-whitney;
 	color: $ubc-blue;
 
+	h1 {
+		font-size: 2.25rem;
+		line-height: 1.1667;
+		font-weight: 700;
+	}
+
 	.btn {
 		@include btn;
 	}
@@ -54,10 +60,18 @@
 	.alert-message {
 		background: $ubc-brand-blue;
 		color: $utility-white;
-		font-size: 1rem;
+		font-size: 1.125rem;
 		line-height: 1.5;
 		font-weight: 500;
-		gap: 0 0.75rem;
+		gap: 1rem 0.75rem;
+
+		i {
+			font-size: 1rem;
+		}
+
+		@include media-breakpoint-up(sm) {
+			font-size: 1rem;
+		}
 	}
 
 	.pattern-slice {

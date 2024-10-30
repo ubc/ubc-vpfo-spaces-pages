@@ -14,14 +14,7 @@
 			font-size: 1rem;
 
 			h2 {
-				font-size: 0.875rem;
-				line-height: 1;
-				font-weight: 700;
-				margin: 0 0 0.5rem 0;
-
-				&.upsize {
-					font-size: 1rem;
-				}
+				@include h2-info;
 			}
 
 			p {

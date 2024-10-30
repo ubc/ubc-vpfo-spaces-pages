@@ -6,7 +6,7 @@
  */
 
 // Front-end enqueue
-function ubc_vpfo_spaces_pages_enqueue_styles() {
+function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 	wp_enqueue_style(
 		'ubc-vpfo-spaces-pages-style',
 		plugin_dir_url( __DIR__ ) . 'style.css',
@@ -27,5 +27,26 @@ function ubc_vpfo_spaces_pages_enqueue_styles() {
 		array(), // Dependencies
 		'6.6.0'
 	);
+
+	// conditionally load the glider JS if it's a classroom
+	global $is_classroom_template;
+
+	if ( isset( $is_classroom_template ) && $is_classroom_template ) {
+		wp_enqueue_script(
+			'classrooms-image-gallery-glider',
+			plugin_dir_url( __DIR__ ) . 'js/classrooms-image-gallery-glider.js',
+			array(),
+			'1.0',
+			array( 'strategy' => 'defer' )
+		);
+
+		wp_enqueue_script(
+			'bootstrap',
+			plugin_dir_url( __DIR__ ) . 'js/bootstrap.js',
+			array(),
+			'1.0',
+			array( 'strategy' => 'defer' )
+		);
+	}
 }
-add_action( 'wp_enqueue_scripts', 'ubc_vpfo_spaces_pages_enqueue_styles' );
+add_action( 'wp_enqueue_scripts', 'ubc_vpfo_spaces_pages_enqueue_styles_scripts' );
