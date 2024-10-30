@@ -53,7 +53,16 @@ $breadcrumb             .= $building_name_w_code ? '<i class="fas fa-chevron-rig
 $alert_message = $building_fields['Alert Message'] ?? null;
 
 $building_address = $building_fields['Building Address (override)'] ?? null;
-$building_campus  = $building_fields['Campus'] ?? 'Vancouver'; // TODO - get real dynamic data if applicable
+
+$building_campus_code = $building_fields['Campus Code'][0] ?? null;
+if ( $building_campus_code === 'UBCV' ) {
+	$building_campus = 'Vancouver';
+} elseif ( $building_campus_code === 'UBCO' ) {
+	$building_campus = 'Okanagan';
+}
+else {
+	$building_campus = null;
+}
 
 $building_hours_original = $building_fields['Hours'][0] ?? null;
 $building_hours_override = $building_fields['Hours (override)'] ?? null;
