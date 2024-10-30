@@ -55,12 +55,11 @@ $alert_message = $building_fields['Alert Message'] ?? null;
 $building_address = $building_fields['Building Address (override)'] ?? null;
 
 $building_campus_code = $building_fields['Campus Code'][0] ?? null;
-if ( $building_campus_code === 'UBCV' ) {
+if ( 'UBCV' === $building_campus_code ) {
 	$building_campus = 'Vancouver';
-} elseif ( $building_campus_code === 'UBCO' ) {
+} elseif ( 'UBCO' === $building_campus_code ) {
 	$building_campus = 'Okanagan';
-}
-else {
+} else {
 	$building_campus = null;
 }
 

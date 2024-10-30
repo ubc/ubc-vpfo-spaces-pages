@@ -436,7 +436,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 											<div class="classroom-accessibility">
 												<h3><?php esc_html_e( 'Accessibility', 'ubc-vpfo-spaces-pages' ); ?></h3>
 												<?php
-												if ( ! empty ( $classroom_accessibility ) ) {
+												if ( ! empty( $classroom_accessibility ) ) {
 													?>
 													<ul>
 														<?php foreach ( $classroom_accessibility as $accessibility_item ) { ?>
