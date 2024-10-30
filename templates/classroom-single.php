@@ -99,11 +99,15 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 	<div class="container-lg px-xl-0">
 
 		<section class="classroom-header mt-9">
-			<?php if ( $breadcrumb && ! empty( $breadcrumb ) ) { ?>
+			<?php
+			if ( $breadcrumb && ! empty( $breadcrumb ) ) {
+				?>
 				<div class="breadcrumb d-flex flex-wrap align-items-center px-0 mb-9 text-uppercase">
 					<?php echo wp_kses_post( $breadcrumb ); ?>
 				</div>
-			<?php } ?>
+				<?php
+			}
+			?>
 
 			<div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-start mb-9">
 				<div class="classroom-title">
