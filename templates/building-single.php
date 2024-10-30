@@ -104,7 +104,7 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 			</div>
 
 			<?php if ( $alert_message ) { ?>
-				<div class="alert-message d-flex align-items-top align-items-lg-center p-5 mb-5">
+				<div class="alert-message d-flex flex-column flex-sm-row align-items-sm-top p-5 mb-5">
 					<i class="fa-solid fa-circle-info pt-1"></i>
 					<span><?php echo wp_kses_post( $alert_message ); ?></span>
 				</div>
@@ -140,14 +140,14 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 
 						<?php if ( $building_notes ) { ?>
 							<div class="building-notes">
-								<h2 class="text-uppercase upsize"><?php esc_html_e( 'Building Notes', 'ubc-vpfo-spaces-pages' ); ?></h2>
+								<h2 class="text-uppercase"><?php esc_html_e( 'Building Notes', 'ubc-vpfo-spaces-pages' ); ?></h2>
 								<p><?php echo wp_kses_post( $building_notes ); ?></p>
 							</div>
 						<?php } ?>
 
 						<?php // TODO - figure out real dynamic data and labelling for this whole section ?>
 						<div class="building-resources">
-							<h2 class="text-uppercase upsize"><?php esc_html_e( 'Resources', 'ubc-vpfo-spaces-pages' ); ?></h2>
+							<h2 class="text-uppercase"><?php esc_html_e( 'Resources', 'ubc-vpfo-spaces-pages' ); ?></h2>
 							
 							<div class="d-flex align-items-center building-amenities">
 								<p class="mb-0"><?php esc_html_e( 'Inclusive Washrooms', 'ubc-vpfo-spaces-pages' ); ?></p>

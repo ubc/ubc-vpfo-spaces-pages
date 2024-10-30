@@ -69,7 +69,7 @@ class Spaces_Page_Handler {
 			return;
 		}
 
-		$building            = $this->airtable_api->get_building_by_slug( $building_slug );
+		$building = $this->airtable_api->get_building_by_slug( $building_slug );
 
 		$building_code       = isset( $building->fields->{'Code'} ) ? $building->fields->{'Code'} : null;
 		$building_classrooms = $building_code ? $this->airtable_api->get_classrooms_for_building( $building_code ) : (object) array();
@@ -146,6 +146,10 @@ class Spaces_Page_Handler {
 
 	public function handle_classroom_template_redirect() {
 
+		// global flag for conditional enqueue of glider js
+		global $is_classroom_template; // Define a global flag
+		$is_classroom_template = true; // Set flag to true for classroom template
+
 		$classroom_slug = get_query_var( 'classroom_slug' );
 
 		if ( ! $classroom_slug ) {
@@ -154,6 +158,9 @@ class Spaces_Page_Handler {
 
 		$classroom = $this->airtable_api->get_classroom_by_slug( $classroom_slug );
 
+		$classroom_building_code = isset( $classroom->fields->{'Building Code'} ) ? $classroom->fields->{'Building Code'} : '';
+		$classroom_building_slug = $this->airtable_api->get_classroom_building_slug( $classroom_building_code );
+
 		// If the lookup had no results, allow WordPress to 404.
 		if ( null === $classroom ) {
 			return;
@@ -161,7 +168,8 @@ class Spaces_Page_Handler {
 
 		$template_name = 'classroom-single.php';
 		$args          = array(
-			'classroom' => $classroom,
+			'classroom'               => $classroom,
+			'classroom_building_slug' => $classroom_building_slug,
 		);
 
 		if ( ! locate_template( sprintf( 'spaces-page/%s', $template_name ), true, true, $args ) ) {

@@ -2,140 +2,153 @@
 
 namespace UbcVpfoSpacesPage;
 
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 
 use TANIOS\Airtable\Airtable;
 
-class Airtable_Api
-{
+class Airtable_Api {
 
-    public Airtable $airtable;
-    public string $site_location;
-    private $van_airtable;
-    private $okan_airtable;
+	public Airtable $airtable;
+	public string $site_location;
+	private $van_airtable;
+	private $okan_airtable;
 
-    const CACHE_TTL = 3600;
-    const ROOMS_PER_PAGE = 10;
+	const CACHE_TTL      = 3600;
+	const ROOMS_PER_PAGE = 10;
 
-    const LOCATION_VAN = 'van_airtable';
-    const LOCATION_OKAN = 'okan_airtable';
+	const LOCATION_VAN  = 'van_airtable';
+	const LOCATION_OKAN = 'okan_airtable';
 
-    public $cache_prefix = 'airtable_cache_';
+	public $cache_prefix = 'airtable_cache_';
 
-    private static $campus_mapping = array(
-        'vancouver' => 'van_airtable',
-        'okanagan'  => 'okan_airtable',
-    );
+	private static $campus_mapping = array(
+		'vancouver' => 'van_airtable',
+		'okanagan'  => 'okan_airtable',
+	);
 
-    public function __construct()
-    {
-        $this->airtable = $this->negotiateAirTableLocation();
-    }
+	public function __construct() {
+		$this->airtable = $this->negotiate_air_table_location();
+	}
 
-    public function get_building_by_slug(string $building_slug)
-    {
-        $params = array(
-            'filterByFormula' => sprintf("AND( slug = '%s' )", $building_slug),
-            'maxRecords'      => 1,
-        );
+	public function get_building_by_slug( string $building_slug ) {
+		$params = array(
+			'filterByFormula' => sprintf( "AND( slug = '%s' )", $building_slug ),
+			'maxRecords'      => 1,
+		);
 
-        $response = $this->get(table: 'Buildings', params: $params, resource: $building_slug);
+		$response = $this->get( table: 'Buildings', params: $params, request_resource: $building_slug );
 
-        if (!$response || empty($response)) {
-            return null;
-        }
+		if ( ! $response || empty( $response ) ) {
+			return null;
+		}
 
-        return $response[0];
-    }
+		return $response[0];
+	}
 
-    public function get_classrooms_for_building(string $building_code)
-    {
-        // Check if the building code is provided
-        if (!$building_code) {
-            return null; // No building code provided
-        }
+	public function get_classrooms_for_building( string $building_code ) {
+		// Check if the building code is provided
+		if ( ! $building_code ) {
+			return null; // No building code provided
+		}
 
-        // Query the classrooms based on the building code
-        $params = array(
-            'filterByFormula' => sprintf("AND( {Building Code} = '%s' )", $building_code),
-        );
+		// Query the classrooms based on the building code
+		$params = array(
+			'filterByFormula' => sprintf( "AND( {Building Code} = '%s', NOT( {Is Hidden} ) )", $building_code ),
+		);
 
-        $response = $this->get(table: 'Classrooms', params: $params, resource: $building_code);
+		$response = $this->get( table: 'Classrooms', params: $params, request_resource: $building_code );
 
-        if (!$response || empty($response)) {
-            return null; // No classrooms found
-        }
+		if ( ! $response || empty( $response ) ) {
+			return null; // No classrooms found
+		}
 
-        // Return the list of classrooms
-        return $response;
-    }
+		// Return the list of classrooms
+		return $response;
+	}
 
-    public function get_classroom_by_slug(string $classroom_slug)
-    {
-        $params = array(
-            'filterByFormula' => sprintf("AND( slug = '%s' )", $classroom_slug),
-            'maxRecords'      => 1,
-        );
+	public function get_classroom_by_slug( string $classroom_slug ) {
+		$params = array(
+			'filterByFormula' => sprintf( "AND( slug = '%s' )", $classroom_slug ),
+			'maxRecords'      => 1,
+		);
 
-        $response = $this->get(table: 'Classrooms', params: $params, resource: $classroom_slug);
+		$response = $this->get( table: 'Classrooms', params: $params, request_resource: $classroom_slug );
 
-        if (!$response || empty($response)) {
-            return null;
-        }
+		if ( ! $response || empty( $response ) ) {
+			return null;
+		}
 
-        $classroom = $response[0];
+		$classroom = $response[0];
 
-        return $classroom;
-    }
+		return $classroom;
+	}
 
-    public function get(string $table, array $params, string $resource): mixed
-    {
-        $cache_key = $this->getCacheKey(table: $table, params: $params, resource: $resource);
+	public function get_classroom_building_slug( string $classroom_building_code ) {
+		// Check if the building code is provided
+		if ( ! $classroom_building_code ) {
+			return ''; // No building code provided
+		}
 
-        if (get_transient($cache_key)) {
-            return get_transient($cache_key);
-        }
+		$params = array(
+			'filterByFormula' => sprintf( "AND( {Code} = '%s' )", $classroom_building_code ),
+			'maxRecords'      => 1,
+		);
 
-        $response = $this->airtable->getContent($table, $params)->getResponse();
+		$response = $this->get( table: 'Buildings', params: $params, request_resource: $classroom_building_code );
 
-        // If there's no records then we the slug is likely wrong.
-        if (!$response['records'] || empty($response['records'])) {
-            return null;
-        }
+		if ( ! $response || empty( $response ) ) {
+			return null;
+		}
 
-        set_transient(transient: $cache_key, value: $response['records'], expiration: self::CACHE_TTL);
+		$building      = $response[0];
+		$building_slug = $building->fields->{'Slug'};
 
-        return get_transient($cache_key);
-    }
+		return $building_slug;
+	}
 
-    /**
-     * @todo issue #3 magically determine the sites location, likely from the current blogs wp_options.
-     *   Likely read from the plugin settings.
-     */
-    public function negotiateAirTableLocation(): Airtable
-    {
-        $this->site_location = self::LOCATION_VAN;
+	public function get( string $table, array $params, string $request_resource ): mixed {
+		$cache_key = $this->get_cache_key( table: $table, params: $params, request_resource: $request_resource );
 
-        $api_key = UBC_VPFO_FIND_A_SPACE_AIRTABLE_API_KEY;
+		if ( get_transient( $cache_key ) ) {
+			return get_transient( $cache_key );
+		}
 
-        $base_id = match ($this->site_location) {
-            self::LOCATION_VAN  => UBC_VPFO_FIND_A_SPACE_AIRTABLE_BASE_ID_VAN,
-            self::LOCATION_OKAN => UBC_VPFO_FIND_A_SPACE_AIRTABLE_BASE_ID_OKAN,
-        };
+		$response = $this->airtable->getContent( $table, $params )->getResponse();
 
-        return new Airtable(
-            array(
-                'api_key' => $api_key,
-                'base'    => $base_id,
-            )
-        );
-    }
+		// If there's no records then we the slug is likely wrong.
+		if ( ! $response['records'] || empty( $response['records'] ) ) {
+			return null;
+		}
 
-    public function getCacheKey(string $table, array $params, string $resource): string
-    {
-        $key = sprintf('%s_%s_%s_%s', $this->site_location, $table, $resource, hash('xxh32', wp_json_encode($params)));
-        return sprintf('%s_%s', $this->cache_prefix, $key);
-    }
+		set_transient( transient: $cache_key, value: $response['records'], expiration: self::CACHE_TTL );
 
+		return get_transient( $cache_key );
+	}
 
+	/**
+	 * @todo issue #3 magically determine the sites location, likely from the current blogs wp_options.
+	 *   Likely read from the plugin settings.
+	 */
+	public function negotiate_air_table_location(): Airtable {
+		$this->site_location = self::LOCATION_VAN;
+
+		$api_key = UBC_VPFO_FIND_A_SPACE_AIRTABLE_API_KEY;
+
+		$base_id = match ( $this->site_location ) {
+			self::LOCATION_VAN  => UBC_VPFO_FIND_A_SPACE_AIRTABLE_BASE_ID_VAN,
+			self::LOCATION_OKAN => UBC_VPFO_FIND_A_SPACE_AIRTABLE_BASE_ID_OKAN,
+		};
+
+		return new Airtable(
+			array(
+				'api_key' => $api_key,
+				'base'    => $base_id,
+			)
+		);
+	}
+
+	public function get_cache_key( string $table, array $params, string $request_resource ): string {
+		$key = sprintf( '%s_%s_%s_%s', $this->site_location, $table, $request_resource, hash( 'xxh32', wp_json_encode( $params ) ) );
+		return sprintf( '%s_%s', $this->cache_prefix, $key );
+	}
 }
