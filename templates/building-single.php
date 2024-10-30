@@ -3,7 +3,7 @@
 $building        = $args['building'];
 $building_fields = json_decode( wp_json_encode( $building->fields ), true );
 
-$building_classrooms = isset( $args['building_classrooms'] ) && ! empty( $args['building_classrooms'] ) ? $args['building_classrooms'] : (object) array();
+$building_classrooms = isset( $args['building_classrooms'] ) && ! empty( $args['building_classrooms'] ) ? $args['building_classrooms'] : array();
 
 // Get the total number of classrooms before slicing for pagination
 $total_classrooms = count( $building_classrooms );
