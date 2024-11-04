@@ -62,6 +62,14 @@ class Spaces_Page {
 	protected $page_handler;
 
 	/**
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      Spaces_Airtable_Options    $airtable_options
+	 */
+	protected $airtable_options;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * @since    1.0.0
@@ -74,9 +82,15 @@ class Spaces_Page {
 		}
 		$this->plugin_name = 'ubc-vpfo-spaces-page';
 
+		// Always instantiate the options page class.
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-spaces-page-airtable-options.php';
+		$this->airtable_options = new Spaces_Page_Airtable_Options();
+
+		$settings = $this->airtable_options->get_settings();
+
 		// Only load the plugin when the Airtable API key and Base ID are defined.
-		if ( defined( 'UBC_VPFO_SPACES_PAGE_AIRTABLE_API_KEY' ) && defined( 'UBC_VPFO_SPACES_PAGE_AIRTABLE_BASE_ID_VAN' ) ) {
-			$this->load_dependencies();
+		if ( $settings['api_key'] && $settings['base_id_van'] ) {
+			$this->load_dependencies( $settings );
 		}
 	}
 
@@ -86,11 +100,11 @@ class Spaces_Page {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_dependencies() {
+	private function load_dependencies( array $settings ) {
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-spaces-page-handler.php';
 		require_once plugin_dir_path( __DIR__ ) . 'includes/class-airtable-api.php';
 
-		$this->page_handler = new Spaces_Page_Handler();
+		$this->page_handler = new Spaces_Page_Handler( $settings );
 	}
 
 	/**

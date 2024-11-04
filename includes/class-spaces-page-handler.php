@@ -20,10 +20,10 @@ class Spaces_Page_Handler {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
+	public function __construct( array $settings ) {
 		$this->define_hooks();
 
-		$this->airtable_api = new Airtable_Api();
+		$this->airtable_api = new Airtable_Api( $settings );
 	}
 
 	/**

@@ -10,8 +10,6 @@ class Airtable_Api {
 
 	public Airtable $airtable;
 	public string $site_location;
-	private $van_airtable;
-	private $okan_airtable;
 
 	const CACHE_TTL      = 3600;
 	const ROOMS_PER_PAGE = 10;
@@ -21,13 +19,8 @@ class Airtable_Api {
 
 	public $cache_prefix = 'airtable_cache_';
 
-	private static $campus_mapping = array(
-		'vancouver' => 'van_airtable',
-		'okanagan'  => 'okan_airtable',
-	);
-
-	public function __construct() {
-		$this->airtable = $this->negotiate_air_table_location();
+	public function __construct( array $settings ) {
+		$this->airtable = $this->negotiate_air_table_location( $settings );
 	}
 
 	public function get_building_by_slug( string $building_slug ) {
@@ -129,14 +122,14 @@ class Airtable_Api {
 	 * @todo issue #3 magically determine the sites location, likely from the current blogs wp_options.
 	 *   Likely read from the plugin settings.
 	 */
-	public function negotiate_air_table_location(): Airtable {
+	public function negotiate_air_table_location( array $settings ): Airtable {
 		$this->site_location = self::LOCATION_VAN;
 
-		$api_key = UBC_VPFO_FIND_A_SPACE_AIRTABLE_API_KEY;
+		$api_key = $settings['api_key'];
 
 		$base_id = match ( $this->site_location ) {
-			self::LOCATION_VAN  => UBC_VPFO_FIND_A_SPACE_AIRTABLE_BASE_ID_VAN,
-			self::LOCATION_OKAN => UBC_VPFO_FIND_A_SPACE_AIRTABLE_BASE_ID_OKAN,
+			self::LOCATION_VAN  => $settings['base_id_van'],
+			self::LOCATION_OKAN => $settings['base_id_okan'],
 		};
 
 		return new Airtable(
