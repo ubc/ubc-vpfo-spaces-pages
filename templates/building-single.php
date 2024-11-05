@@ -54,14 +54,15 @@ $alert_message = $building_fields['Alert Message'] ?? null;
 
 $building_address = $building_fields['Building Address (override)'] ?? null;
 
-$building_campus_code = $building_fields['Campus Code'][0] ?? null;
-if ( 'UBCV' === $building_campus_code ) {
-	$building_campus = 'Vancouver';
-} elseif ( 'UBCO' === $building_campus_code ) {
-	$building_campus = 'Okanagan';
-} else {
-	$building_campus = null;
-}
+// commented out because client wants campus removed from front-end template; leaving code here in case they change their mind
+// $building_campus_code = $building_fields['Campus Code'][0] ?? null;
+// if ( 'UBCV' === $building_campus_code ) {
+// 	$building_campus = 'Vancouver';
+// } elseif ( 'UBCO' === $building_campus_code ) {
+// 	$building_campus = 'Okanagan';
+// } else {
+// 	$building_campus = null;
+// }
 
 $building_hours_original = $building_fields['Hours'][0] ?? null;
 $building_hours_override = $building_fields['Hours (override)'] ?? null;
@@ -127,13 +128,6 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 							<div class="building-address">
 								<h2 class="text-uppercase"><?php esc_html_e( 'Address', 'ubc-vpfo-spaces-pages' ); ?></h2>
 								<p><?php echo wp_kses_post( $building_address ); ?></p>
-							</div>
-						<?php } ?>
-
-						<?php if ( $building_campus ) { ?>
-							<div class="building-campus">
-								<h2 class="text-uppercase"><?php esc_html_e( 'Campus', 'ubc-vpfo-spaces-pages' ); ?></h2>
-								<p><?php echo wp_kses_post( $building_campus ); ?></p>
 							</div>
 						<?php } ?>
 
