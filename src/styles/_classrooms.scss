@@ -5,6 +5,9 @@
 // Glider.js css
 @import "~glider-js/glider.css";
 
+// Accordion css
+@import "~accordion-js/dist/accordion.css";
+
 .vpfo-spaces-page {
 
 	.classroom-title {
@@ -23,9 +26,9 @@
 
 	.glider, .glider-thumbnails {
 		opacity: 0;
-    	transition: opacity 0.3s ease-in;
+		transition: opacity 0.3s ease-in;
 		height: 0;
-    	overflow: hidden;
+		overflow: hidden;
 	}
 
 	.glider-slide {
@@ -214,48 +217,46 @@
 		border-bottom: 1px solid $utility-light-grey;
 	}
 
-	.collapse {
-		all: unset;
-	}
-
 	.accordion {
-		border: 1px solid $ubc-brand-blue;
-		border-top: none;
-		padding: unset;
 		margin: unset;
 
 		&:not(:first-child) {
 			margin-top: 1rem;
 		}
+	}
 
-		.accordion-button {
-			background: $ubc-brand-blue;
+	.ac {
+		margin: unset;
+		border: 1px solid $ubc-brand-blue;
+		background-color: $ubc-brand-blue;
+
+		.ac-trigger {
+			font: unset;
 			color: $utility-white;
-			font-weight: 600;
-			text-transform: uppercase;
 			font-size: 1rem;
+			font-weight: 600;
 			line-height: 1.5;
+			text-transform: uppercase;
 			padding: 0.5rem 1rem;
-			transition: unset;
-			justify-content: space-between;
 
 			&::after {
-				background: unset;
-				width: unset;
-				height: unset;
 				font-family: $font-fontawesome;
 				content: '\f078';
-				color: $utility-white;
-				font-size: 1rem;
-				margin-left: 1rem;
+				font-weight: 700;
+				right: 1rem;
 			}
 
-			&:hover, &:active, &:focus, &:focus-visible {
+			&:focus-visible {
 				box-shadow: 0 0 0 3px $utility-white, 0 0 0 5px $ubc-blue;
+				outline: none;
 			}
 		}
 
-		.accordion-body {
+		.ac-panel {
+			background: $utility-white;
+		}
+
+		.ac-panel-inner {
 			padding: 1rem;
 
 			.classroom-layout-type, .classroom-furniture, .classroom-accessibility, .classroom-features, .classroom-av {
@@ -291,8 +292,12 @@
 				}
 			}
 		}
-	}
 
+		&.is-active > .ac-header .ac-trigger::after {
+			content: '\f077';
+		}
+	}
+	
 	.classroom-book-space {
 		@include vpfo-box-shadow;
 
