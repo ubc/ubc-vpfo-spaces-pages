@@ -4,6 +4,9 @@ namespace UbcVpfoSpacesPage;
 
 defined( 'ABSPATH' ) || exit;
 
+global $is_classroom_template;
+$is_classroom_template = false;
+
 class Spaces_Page_Handler {
 
 	/**
@@ -146,9 +149,7 @@ class Spaces_Page_Handler {
 
 	public function handle_classroom_template_redirect() {
 
-		// global flag for conditional enqueue of glider js
-		global $is_classroom_template; // Define a global flag
-		$is_classroom_template = true; // Set flag to true for classroom template
+		global $is_classroom_template;
 
 		$classroom_slug = get_query_var( 'classroom_slug' );
 
@@ -165,6 +166,9 @@ class Spaces_Page_Handler {
 		if ( null === $classroom ) {
 			return;
 		}
+
+		// Set the flag to true only for this specific template.
+		$is_classroom_template = true;
 
 		$template_name = 'classroom-single.php';
 		$args          = array(

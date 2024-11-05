@@ -378,15 +378,15 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 					<?php
 					if ( $classroom_layout_type || $classroom_furniture ) {
 						?>
-						<div class="accordion" id="style-layout">
-							<div class="accordion-item">
-								<h2 class="accordion-header">
-									<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#style-layout-collapse" aria-expanded="true" aria-controls="style-layout-collapse">
+						<div class="accordion">
+							<div class="ac">
+								<h2 class="ac-header">
+									<button class="ac-trigger" type="button">
 										<?php esc_html_e( 'Style &amp; Layout', 'ubc-vpfo-spaces-pages' ); ?>
 									</button>
 								</h2>
-								<div id="style-layout-collapse" class="accordion-collapse collapse show" data-bs-parent="#style-layout">
-									<div class="accordion-body">
+								<div class="ac-panel">
+									<div class="ac-panel-inner">
 										<?php
 										if ( $classroom_layout_type ) {
 											?>
@@ -425,15 +425,15 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 
 					if ( ! empty( $classroom_accessibility ) || $classroom_accessibility_content || $classroom_accessibility_cta || ! empty( $classroom_features ) || ! empty( $classroom_presentation_displays ) || ! empty( $classroom_presentation_sources ) || ! empty( $classroom_audio ) || ! empty( $classroom_other_av ) ) {
 						?>
-						<div class="accordion" id="amenities">
-							<div class="accordion-item">
-								<h2 class="accordion-header">
-									<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#amenities-collapse" aria-expanded="true" aria-controls="amenities-collapse">
+						<div class="accordion">
+							<div class="ac">
+								<h2 class="ac-header">
+									<button class="ac-trigger" type="button">
 										<?php esc_html_e( 'Amenities - Accessibility, Features &amp; AV', 'ubc-vpfo-spaces-pages' ); ?>
 									</button>
 								</h2>
-								<div id="amenities-collapse" class="accordion-collapse collapse show" data-bs-parent="#amenities">
-									<div class="accordion-body">
+								<div class="ac-panel">
+									<div class="ac-panel-inner">
 										<?php
 										if ( ! empty( $classroom_accessibility ) || $classroom_accessibility_content || $classroom_accessibility_cta ) {
 											?>

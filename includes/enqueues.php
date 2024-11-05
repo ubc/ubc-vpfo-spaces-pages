@@ -41,8 +41,8 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 		);
 
 		wp_enqueue_script(
-			'bootstrap',
-			plugin_dir_url( __DIR__ ) . 'js/bootstrap.js',
+			'accordion-js',
+			plugin_dir_url( __DIR__ ) . 'js/accordion.js',
 			array(),
 			'1.0',
 			array( 'strategy' => 'defer' )

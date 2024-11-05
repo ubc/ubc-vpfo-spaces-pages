@@ -6,7 +6,7 @@ let url = 'https://ubccms.test';
 mix
 	.disableSuccessNotifications()
 	.js( 'src/js/classrooms-image-gallery-glider.js', 'js/classrooms-image-gallery-glider.js' )
-	.js( 'src/js/bootstrap.js', 'js/bootstrap.js' )
+	.js( 'src/js/accordion.js', 'js/accordion.js' )
 	.sass(
 		'src/style.scss',
 		'style.css',
