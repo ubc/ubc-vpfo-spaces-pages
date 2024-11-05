@@ -47,7 +47,7 @@ $building_name_w_code   = $building_name && $building_code ? $building_name . ' 
 $breadcrumb_home         = get_bloginfo( 'url' );
 $breadcrumb_find_a_space = get_page_by_path( 'find-a-space' ) !== null ? get_permalink( get_page_by_path( 'find-a-space' ) ) : null;
 $breadcrumb              = '<a href="' . $breadcrumb_home . '" class="d-inline-block" title="' . get_bloginfo( 'name' ) . '" rel="bookmark">' . get_bloginfo( 'name' ) . '</a>';
-$breadcrumb             .= $breadcrumb_find_a_space ? '<i class="fas fa-chevron-right mx-4"></i><a href="' . $breadcrumb_find_a_space . '" class="d-inline-block">' . __( 'Find a Space', 'ubc-vpfo-spaces-pages' ) . '</a>' : '';
+$breadcrumb             .= $breadcrumb_find_a_space ? '<i class="fas fa-chevron-right mx-4"></i><a href="' . $breadcrumb_find_a_space . '" class="d-inline-block vpfo-return-to-lsf">' . __( 'Find a Space', 'ubc-vpfo-spaces-pages' ) . '</a>' : '';
 $breadcrumb             .= $building_name_w_code ? '<i class="fas fa-chevron-right mx-4"></i><span class="d-inline-block current-page">' . $building_name_w_code . '</span>' : '';
 
 $alert_message = $building_fields['Alert Message'] ?? null;
@@ -108,7 +108,7 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 					}
 					?>
 				</h1>
-				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary btn-border-thick me-auto me-md-0 ms-md-auto  d-flex align-items-center"><i class="fas fa-chevron-left me-3"></i><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
+				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary btn-border-thick me-auto me-md-0 ms-md-auto d-flex align-items-center vpfo-return-to-lsf"><i class="fas fa-chevron-left me-3"></i><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
 			</div>
 
 			<?php if ( $alert_message ) { ?>

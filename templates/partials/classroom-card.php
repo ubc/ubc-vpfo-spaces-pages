@@ -55,7 +55,7 @@ if ( isset( $classroom_thumbnail['url'] ) ) {
 				<h2 class="mb-0 fw-bold text-uppercase"><?php echo wp_kses_post( $classroom_title ); ?></h2>
 				<div class="classroom-building-name fw-bold text-uppercase mt-2"><?php echo wp_kses_post( $classroom_building_name ); ?></div>
 			</div>
-			<a href="<?php echo esc_url( get_bloginfo( 'url' ) . '/classrooms/' . $classroom_slug ); ?>" class="btn btn-secondary ms-5 text-nowrap"><?php esc_html_e( 'View Space', 'ubc-vpfo-spaces-pages' ); ?></a>
+			<a href="<?php echo esc_url( get_bloginfo( 'url' ) . '/classrooms/' . $classroom_slug ); ?>" class="btn btn-secondary ms-5 text-nowrap vpfo-classroom-link"><?php esc_html_e( 'View Space', 'ubc-vpfo-spaces-pages' ); ?></a>
 		</div>
 
 		<?php

@@ -21,9 +21,9 @@ if ( '-' === $classroom_name ) {
 
 $breadcrumb_home         = get_bloginfo( 'url' );
 $breadcrumb_find_a_space = get_page_by_path( 'find-a-space' ) !== null ? get_permalink( get_page_by_path( 'find-a-space' ) ) : null;
-$breadcrumb_building     = $classroom_building_url ? '<a href="' . $classroom_building_url . '" class="d-inline-block" title="' . $classroom_building_title . '" rel="bookmark">' . $classroom_building_title . '</a>' : null;
+$breadcrumb_building     = $classroom_building_url ? '<a href="' . $classroom_building_url . '" class="d-inline-block vpfo-building-link" title="' . $classroom_building_title . '" rel="bookmark">' . $classroom_building_title . '</a>' : null;
 $breadcrumb              = '<a href="' . $breadcrumb_home . '" class="d-inline-block" title="' . get_bloginfo( 'name' ) . '" rel="bookmark">' . get_bloginfo( 'name' ) . '</a>';
-$breadcrumb             .= $breadcrumb_find_a_space ? '<i class="fas fa-chevron-right mx-4"></i><a href="' . $breadcrumb_find_a_space . '" class="d-inline-block">' . __( 'Find a Space', 'ubc-vpfo-spaces-pages' ) . '</a>' : '';
+$breadcrumb             .= $breadcrumb_find_a_space ? '<i class="fas fa-chevron-right mx-4"></i><a href="' . $breadcrumb_find_a_space . '" class="d-inline-block vpfo-return-to-lsf">' . __( 'Find a Space', 'ubc-vpfo-spaces-pages' ) . '</a>' : '';
 $breadcrumb             .= $breadcrumb_building ? '<i class="fas fa-chevron-right mx-4"></i>' . $breadcrumb_building : '';
 $breadcrumb             .= $classroom_name ? '<i class="fas fa-chevron-right mx-4"></i><span class="d-inline-block current-page">' . $classroom_name . '</span>' : '';
 
@@ -138,7 +138,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 					?>
 					
 				</div>
-				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary btn-border-thick mt-9 mt-md-0 me-auto me-md-0 ms-md-auto d-flex align-items-center"><i class="fas fa-chevron-left me-3"></i><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
+				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary btn-border-thick mt-9 mt-md-0 me-auto me-md-0 ms-md-auto d-flex align-items-center vpfo-return-to-lsf"><i class="fas fa-chevron-left me-3"></i><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
 			</div>
 
 			<?php
