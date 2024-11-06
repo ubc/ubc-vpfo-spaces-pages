@@ -57,11 +57,11 @@ $building_address = $building_fields['Building Address (override)'] ?? null;
 // commented out because client wants campus removed from front-end template; leaving code here in case they change their mind
 // $building_campus_code = $building_fields['Campus Code'][0] ?? null;
 // if ( 'UBCV' === $building_campus_code ) {
-// 	$building_campus = 'Vancouver';
+// $building_campus = 'Vancouver';
 // } elseif ( 'UBCO' === $building_campus_code ) {
-// 	$building_campus = 'Okanagan';
+// $building_campus = 'Okanagan';
 // } else {
-// 	$building_campus = null;
+// $building_campus = null;
 // }
 
 $building_hours_original = $building_fields['Hours'][0] ?? null;
