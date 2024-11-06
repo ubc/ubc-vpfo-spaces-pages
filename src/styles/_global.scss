@@ -97,15 +97,20 @@
 		margin-right: -20px;
 
 		@media (min-width: 980px) {
-			width: calc(100% + 60px);
-			margin-left: -30px;
-			margin-right: -30px;
+			width: calc(100% + (100vw - 940px) + 30px);
+			margin-left: calc((100vw - 940px) / 2 * -1 - 15px);
+			margin-right: unset;
 		}
 
 		@include media-breakpoint-up(xl) {
 			width: calc(100% + (100vw - 1170px) + 30px);
 			margin-left: calc((100vw - 1170px) / 2 * -1 - 15px);
-			margin-right: unset;
+		}
+
+		.pattern-slice-gradient {
+			bottom: 0;
+			left: 0;
+			background: linear-gradient(to bottom, $utility-white 0%, $utility-white 12.5%, transparent 100%);
 		}
 	}
 }

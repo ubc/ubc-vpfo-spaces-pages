@@ -283,7 +283,9 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 		}
 		?>
 
-		<div class="pattern-slice mt-9"></div>
+		<div class="pattern-slice position-relative mt-9">
+			<div class="pattern-slice-gradient position-absolute h-100 w-100"></div>
+		</div>
 		
 	</div>
 </section>
