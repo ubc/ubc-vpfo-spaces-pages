@@ -606,9 +606,9 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 
 		<section class="classroom-book-space mt-9 mt-lg-17">
 			<div class="row">
-				<div class="col-md-6 d-md-flex align-items-md-center">
+				<div class="col-md-6 d-md-flex align-items-md-center pe-lg-5">
 					<div class="book-space-content p-5">
-						<h2 class="mb-4"><?php esc_html_e( 'Book a space', 'ubc-vpfo-spaces-pages' ); ?></h2>
+						<h2 class="mb-4 fw-bold"><?php esc_html_e( 'Book a space', 'ubc-vpfo-spaces-pages' ); ?></h2>
 						<p class="mt-0"><?php esc_html_e( 'To find out how to book this room, visit the Room Booking Request page.', 'ubc-vpfo-spaces-pages' ); ?></p>
 						<a href="<?php echo esc_url( 'https://facultystaff.students.ubc.ca/enrolment-services/scheduling-records-systems-management/scheduling-services/room-booking-requests-general-teaching-space' ); ?>" class="btn btn-primary" target="_blank" title="UBC Room Booking Requests">
 							<span><?php esc_html_e( 'Book Space', 'ubc-vpfo-spaces-pages' ); ?></span>
@@ -620,7 +620,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 				<?php
 				if ( $classroom_building_map ) {
 					?>
-					<div class="col-md-6 ps-md-0">
+					<div class="col-md-6 ps-md-0 ps-lg-5">
 						<div class="classroom-map ratio">
 							<iframe src="<?php echo esc_url( $classroom_building_map ); ?>" title="Wayfinding Map"></iframe>
 						</div>
@@ -637,7 +637,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 			<div class="pattern-slice position-relative mt-9">
 				<div class="pattern-slice-gradient position-absolute h-100 w-100"></div>
 			</div>
-			
+
 		</section>
 
 	</div>
