@@ -84,6 +84,7 @@
 	.classroom-card {
 		@include vpfo-box-shadow;
 		border: 1px solid transparent;
+		transition: border-color 0.2s ease-in-out;
 
 		&:not(:first-child) {
 			margin-top: 1rem;
@@ -95,6 +96,7 @@
 			height: 1rem;
 			top: 0;
 			left: 0;
+			transition: background-color 0.2s ease-in-out;
 
 			@include media-breakpoint-up(md) {
 				height: 100%;
@@ -164,9 +166,11 @@
 
 		&:hover, &:active, &:focus, &:focus-within {
 			border-color: $ubc-brand-blue;
+			transition: border-color 0.2s ease-in-out;
 
 			.accent {
 				background-color: $ubc-brand-blue;
+				transition: background-color 0.2s ease-in-out;
 			}
 		}
 	}

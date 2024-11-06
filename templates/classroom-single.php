@@ -634,7 +634,10 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 		<section class="classroom-footer mt-9">
 			<p><?php echo wp_kses_post( sprintf( 'Find something you don\'t recognize? We\'ve compiled definitions in our <a href="%s" rel="bookmark" title="UBC Learning Spaces glossary">glossary</a>.', 'https://learningspaces.ubc.ca/resources/glossary' ) ); ?></p>
 
-			<div class="pattern-slice mt-5 mt-lg-9"></div>
+			<div class="pattern-slice position-relative mt-9">
+				<div class="pattern-slice-gradient position-absolute h-100 w-100"></div>
+			</div>
+			
 		</section>
 
 	</div>
