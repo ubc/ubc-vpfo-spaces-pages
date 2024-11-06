@@ -3,3 +3,4 @@
 vendor/
 node_modules/
 codescan.txt
+js/.DS_Store

@@ -46,8 +46,8 @@ class Airtable_Api {
 
 		// Query the classrooms based on the building code
 		$params = array(
-			'filterByFormula' => sprintf( "AND( {Building Code} = '%s', NOT( {Is Hidden} ) )", $building_code ),
-		);
+			'filterByFormula' => sprintf( "AND( {Building Code} = '%s', NOT( {Is Hidden} ), NOT( {Is Informal Space} ) )", $building_code ),
+		);		
 
 		$response = $this->get( table: 'Classrooms', params: $params, request_resource: $building_code );
 
