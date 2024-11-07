@@ -124,7 +124,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 					<?php
 					if ( $classroom_building_title ) {
 						?>
-						<div class="building-title text-uppercase fw-bold mt-3"><?php echo wp_kses_post( $classroom_building_title ); ?></div>
+						<a href="<?php echo esc_url( $classroom_building_url ); ?>" class="d-inline-block vpfo-building-link building-title text-uppercase fw-bold mt-3" title="<?php echo wp_kses_post( $classroom_building_title ); ?>" rel="bookmark"><?php echo wp_kses_post( $classroom_building_title ); ?></a>
 						<?php
 					}
 					?>
