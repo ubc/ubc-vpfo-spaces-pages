@@ -37,7 +37,7 @@
 
 	&:focus, &:focus-within {
 		box-shadow: 0 0 0 3px $utility-white, 0 0 0 5px $ubc-blue;
-        outline: none;
+		outline: none;
 	}
 
 	&.disabled, &[disabled] {
@@ -59,7 +59,7 @@
 
 	&:focus, &:focus-within {
 		box-shadow: 0 0 0 3px $utility-white, 0 0 0 6px $ubc-blue;
-        outline: none;
+		outline: none;
 	}
 }
 
