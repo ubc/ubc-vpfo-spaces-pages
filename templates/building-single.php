@@ -218,7 +218,7 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 			?>
 
 			<section class="building-classrooms mt-9">
-				<h2 class="text-uppercase"><?php esc_html_e( 'Classrooms &amp; Spaces', 'ubc-vpfo-spaces-pages' ); ?><?php echo ' — ' . wp_kses_post( $building_name ); ?></h2>
+				<h2 class="text-uppercase"><?php esc_html_e( 'Classrooms', 'ubc-vpfo-spaces-pages' ); ?><?php echo ' — ' . wp_kses_post( $building_name ); ?></h2>
 
 				<div class="classroom-list" id="classroom-list">
 					<?php
