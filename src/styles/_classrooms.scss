@@ -107,10 +107,15 @@
 		color: $utility-white;
 		top: calc(50% - 0.625rem);
 		font-size: 1.25rem;
+		padding: 0.75rem 0.75rem 0.5rem 0.75rem;
 
 		@include media-breakpoint-up(md) {
 			font-size: 2rem;
 			top: calc(50% - 1rem);
+		}
+
+		&:hover, &:focus {
+			color: $learning-spaces-blue-light;
 		}
 
 		&:focus-visible {
@@ -118,13 +123,14 @@
 		}
 
 		&.disabled {
+			color: $utility-white;
 			cursor: not-allowed;
 			opacity: 0.5;
 		}
 	}
 
 	.glider-prev {
-		left: 0.5rem;
+		left: 0;
 
 		@include media-breakpoint-up(md) {
 			left: 1rem;
@@ -132,7 +138,7 @@
 	}
 
 	.glider-next {
-		right: 0.5rem;
+		right: 0;
 
 		@include media-breakpoint-up(md) {
 			right: 1rem;
@@ -261,6 +267,11 @@
 			padding: 1rem;
 
 			.classroom-layout-type, .classroom-furniture, .classroom-accessibility, .classroom-features, .classroom-av {
+				ul li {
+					font-size: 0.875rem;
+					line-height: 1.35rem;
+				}
+
 				&:not(:first-child) {
 					margin-top: 1rem;
 				}
