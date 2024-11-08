@@ -303,6 +303,29 @@
 					}
 				}
 			}
+
+			.classroom-accessibility {
+				.accessibility-cta {
+					a {
+						font-weight: 700;
+						color: $ubc-brand-blue;
+						text-decoration: none;
+
+						&::after {
+							font-family: $font-fontawesome;
+							content: '\f054';
+							display: inline-block;
+							font-size: 0.875rem;
+							margin-left: 0.5rem;
+						}
+
+						&:hover, &:focus {
+							text-decoration: underline;
+							outline: none;
+						}
+					}
+				}
+			}
 		}
 
 		&.is-active > .ac-header .ac-trigger::after {
