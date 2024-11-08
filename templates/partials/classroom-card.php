@@ -10,7 +10,7 @@ $classroom_layout_type   = $classroom['Formatted_Room_Layout_Type'] ?? null;
 $classroom_furniture     = $classroom['Formatted_Furniture'] ?? null;
 
 if ( $classroom_layout_type && $classroom_furniture ) {
-	$classroom_style_layout = $classroom_layout_type . '; ' . $classroom_furniture;
+	$classroom_style_layout = $classroom_furniture . '; ' . $classroom_layout_type;
 } elseif ( $classroom_layout_type ) {
 	$classroom_style_layout = $classroom_layout_type;
 } elseif ( $classroom_furniture ) {
