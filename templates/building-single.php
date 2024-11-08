@@ -69,7 +69,7 @@ $building_hours_override = $building_fields['Hours (override)'] ?? null;
 $building_hours          = $building_hours_override ?? $building_hours_original;
 $building_hours          = $building_hours ? array_map( 'trim', explode( ';', $building_hours ) ) : array();
 
-$building_notes = isset( $building_fields['Building Notes'] ) ? nl2br( $building_fields['Building Notes'] ) : null; // TODO - the data returned by this column needs to be reformatted to include only the notes and nothing about hours
+$building_notes = isset( $building_fields['Building Notes'] ) && ( trim($building_fields['Building Notes'] ) !== "\n" && trim( $building_fields['Building Notes'] ) !== "" ) ? nl2br( $building_fields['Building Notes'] ) : null;
 
 $building_image = $building_fields['Building Image'][0] ?? array();
 
