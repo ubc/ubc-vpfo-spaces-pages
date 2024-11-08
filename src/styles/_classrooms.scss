@@ -133,7 +133,7 @@
 		left: 0;
 
 		@include media-breakpoint-up(md) {
-			left: 1rem;
+			left: 0.5rem;
 		}
 	}
 
@@ -141,7 +141,7 @@
 		right: 0;
 
 		@include media-breakpoint-up(md) {
-			right: 1rem;
+			right: 0.5rem;
 		}
 	}
 
