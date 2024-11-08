@@ -107,7 +107,7 @@
 		color: $utility-white;
 		top: calc(50% - 0.625rem);
 		font-size: 1.25rem;
-		padding: 0.75rem 0.75rem 0.5rem 0.75rem;
+		padding: 1rem;
 
 		@include media-breakpoint-up(md) {
 			font-size: 2rem;
@@ -131,18 +131,10 @@
 
 	.glider-prev {
 		left: 0;
-
-		@include media-breakpoint-up(md) {
-			left: 0.5rem;
-		}
 	}
 
 	.glider-next {
 		right: 0;
-
-		@include media-breakpoint-up(md) {
-			right: 0.5rem;
-		}
 	}
 
 	.glider-dots {
