@@ -16,7 +16,7 @@ window.addEventListener(
 			{
 				slidesToShow: 1,
 				slidesToScroll: 1,
-				draggable: true,
+				draggable: false,
 				dots: document.querySelector( '.glider-dots' ),
 				arrows: {
 					prev: document.querySelector( '.glider-prev' ),
@@ -27,7 +27,6 @@ window.addEventListener(
 						breakpoint: 768,
 						settings: {
 							dots: false,
-							draggable: false,
 						}
 					}
 				]
