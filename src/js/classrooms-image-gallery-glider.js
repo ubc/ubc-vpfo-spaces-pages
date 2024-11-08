@@ -22,12 +22,15 @@ window.addEventListener(
 					prev: document.querySelector( '.glider-prev' ),
 					next: document.querySelector( '.glider-next' )
 				},
-				responsive: [{
-					breakpoint: 768,
-					settings: {
-						dots: false,
+				responsive: [
+					{
+						breakpoint: 768,
+						settings: {
+							dots: false,
+							draggable: false,
+						}
 					}
-				}]
+				]
 			}
 		);
 
