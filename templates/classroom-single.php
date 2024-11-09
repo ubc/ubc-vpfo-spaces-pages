@@ -358,7 +358,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 											?>
 											<div class="btn-wrapper">
 												<a href="<?php echo esc_url( $classroom_ap_helpdesk ); ?>" class="btn btn-secondary d-block">
-													<?php esc_html_e( 'AP Helpdesk', 'ubc-vpfo-spaces-pages' ); ?>
+													<?php esc_html_e( 'AV Helpdesk', 'ubc-vpfo-spaces-pages' ); ?>
 													<i class="fas fa-phone ms-3"></i>
 												</a>
 											</div>
