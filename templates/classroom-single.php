@@ -96,7 +96,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 ?>
 
 <section class="vpfo-spaces-page">
-	<div class="container-lg px-xl-0">
+	<div class="container-lg px-lg-0">
 
 		<section class="classroom-header mt-9">
 			<?php
