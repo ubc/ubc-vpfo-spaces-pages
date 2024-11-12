@@ -38,9 +38,18 @@ $spacers: map-merge(
   )
 );
 
+// adjust breakpoint to match CLF
+$grid-breakpoints: map-merge(
+	$grid-breakpoints,
+	(
+		"lg": 980px,
+	)
+);
+
 $container-max-widths: map-merge(
   $container-max-widths,
   (
+    "lg": 940px,
     "xl": 1170px,
     "xxl": 1170px
   )

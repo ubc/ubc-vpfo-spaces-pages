@@ -88,7 +88,7 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 ?>
 
 <section class="vpfo-spaces-page">
-	<div class="container-lg px-xl-0">
+	<div class="container-lg px-lg-0">
 
 		<section class="building-header mt-9">
 			<?php if ( $breadcrumb && ! empty( $breadcrumb ) ) { ?>
