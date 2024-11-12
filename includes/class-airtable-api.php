@@ -99,6 +99,38 @@ class Airtable_Api {
 		return $building_slug;
 	}
 
+	/**
+	 * Iterate over all keys in the Airtable Response and sanitize the
+	 * values for storage as a WordPress Transient.
+	 *
+	 * @param mixed $data The Airtable response data.
+	 * @return mixed The sanitized data.
+	 */
+	public function sanitize_for_transient( $data ) {
+
+		if ( ! is_array( $data ) ) {
+			return $data;
+		}
+
+		foreach ( $data as $key => &$value ) {
+			if ( is_array( $value ) ) {
+				$value = $this->sanitize_for_transient( $value ); // Recursive call for nested arrays
+			} elseif ( is_string( $value ) ) {
+				if ( filter_var( $value, FILTER_VALIDATE_URL ) ) {
+					$value = esc_url_raw( $value );
+				} elseif ( is_numeric( $value ) ) {
+					$value = intval( $value );
+				} else {
+					$value = sanitize_text_field( $value );
+				}
+			} elseif ( is_int( $value ) || is_float( $value ) ) {
+				$value = intval( $value );
+			}
+		}
+
+		return $data;
+	}
+
 	public function get( string $table, array $params, string $request_resource ): mixed {
 		$cache_key = $this->get_cache_key( table: $table, params: $params, request_resource: $request_resource );
 
@@ -108,12 +140,13 @@ class Airtable_Api {
 
 		$response = $this->airtable->getContent( $table, $params )->getResponse();
 
-		// If there's no records then we the slug is likely wrong.
+		// If there's no records the slug is likely wrong.
 		if ( ! $response['records'] || empty( $response['records'] ) ) {
 			return null;
 		}
 
-		set_transient( transient: $cache_key, value: $response['records'], expiration: self::CACHE_TTL );
+		$sanitized_records = $this->sanitize_for_transient( $response['records'] );
+		set_transient( transient: $cache_key, value: $sanitized_records, expiration: self::CACHE_TTL );
 
 		return get_transient( $cache_key );
 	}
