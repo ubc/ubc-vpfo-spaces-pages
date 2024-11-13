@@ -110,7 +110,7 @@ class Airtable_Api {
 		$response = $this->get( table: 'Buildings', params: $params, request_resource: $classroom_building_code );
 
 		if ( ! $response || empty( $response ) ) {
-			return array();
+			return null;
 		}
 
 		$building      = $response[0];
@@ -130,7 +130,7 @@ class Airtable_Api {
 
 		// Check if the response is valid and contains data
 		if ( ! $response || empty( $response ) ) {
-			return array(); // No buildings found or response is empty
+			return null; // No buildings found or response is empty
 		}
 
 		// Return the list of buildings with Slug and Last Modified data
