@@ -107,9 +107,12 @@ class Spaces_Page {
 		$this->page_handler = new Spaces_Page_Handler( $settings );
 
 		// Hook the virtual page addition to the Yoast sitemap
-		add_action( 'init', function () use ( $settings ) {
-			$this->add_virtual_page_urls_to_yoast_page_sitemap( $settings );
-		});
+		add_action(
+			'init',
+			function () use ( $settings ) {
+				$this->add_virtual_page_urls_to_yoast_page_sitemap( $settings );
+			}
+		);
 	}
 
 	/**
@@ -150,17 +153,23 @@ class Spaces_Page {
 
 				// Add building URLs to the sitemap
 				foreach ( $buildings_array as $building ) {
-					if ( ! isset( $building['fields']['Slug'], $building['fields']['Last Modified'] ) ) continue;
-					$url = esc_url( get_bloginfo( 'url' ) . '/buildings/' . esc_attr( $building['fields']['Slug'] ) );
-					$last_modified = $this->format_last_modified( $building['fields']['Last Modified'] );
+					if ( ! isset( $building['fields']['Slug'], $building['fields']['Last Modified'] ) ) {
+						continue;
+					}
+
+					$url                  = esc_url( get_bloginfo( 'url' ) . '/buildings/' . esc_attr( $building['fields']['Slug'] ) );
+					$last_modified        = $this->format_last_modified( $building['fields']['Last Modified'] );
 					$sitemap_added_items .= "<url><loc>{$url}</loc><lastmod>{$last_modified}</lastmod></url>";
 				}
 
 				// Add classroom URLs to the sitemap
 				foreach ( $classrooms_array as $classroom ) {
-					if ( ! isset( $classroom['fields']['Slug'], $classroom['fields']['Last Modified'] ) ) continue;
-					$url = esc_url( get_bloginfo( 'url' ) . '/classrooms/' . esc_attr( $classroom['fields']['Slug'] ) );
-					$last_modified = $this->format_last_modified( $classroom['fields']['Last Modified'] );
+					if ( ! isset( $classroom['fields']['Slug'], $classroom['fields']['Last Modified'] ) ) {
+						continue;
+					}
+
+					$url                  = esc_url( get_bloginfo( 'url' ) . '/classrooms/' . esc_attr( $classroom['fields']['Slug'] ) );
+					$last_modified        = $this->format_last_modified( $classroom['fields']['Last Modified'] );
 					$sitemap_added_items .= "<url><loc>{$url}</loc><lastmod>{$last_modified}</lastmod></url>";
 				}
 
@@ -181,7 +190,7 @@ class Spaces_Page {
 		try {
 			$date = new \DateTime( $last_modified_raw );
 			return $date->format( 'Y-m-d H:i:s O' );
-		} catch ( \Exception $e ) { 
+		} catch ( \Exception $e ) {
 			return '';
 		}
 	}
