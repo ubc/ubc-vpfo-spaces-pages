@@ -66,6 +66,7 @@ register_activation_hook( __FILE__, 'activate_ubc_vpfo_spaces_page' );
 register_deactivation_hook( __FILE__, 'deactivate_ubc_vpfo_spaces_page' );
 
 require plugin_dir_path( __FILE__ ) . 'includes/class-spaces-page.php';
+require plugin_dir_path( __FILE__ ) . 'includes/hooks.php';
 require plugin_dir_path( __FILE__ ) . 'includes/helpers.php';
 
 /**

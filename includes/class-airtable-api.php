@@ -59,6 +59,26 @@ class Airtable_Api {
 		return $response;
 	}
 
+	public function get_building_slugs_for_yoast() {
+		$params = array(
+			'fields' => array(
+				'Slug',
+				'Last Modified',
+			),
+		);
+
+		// Query the Buildings table for only the specified fields
+		$response = $this->get( table: 'Buildings', params: $params, request_resource: 'building_slugs' );
+
+		// Check if the response is valid and contains data
+		if ( ! $response || empty( $response ) ) {
+			return null; // No buildings found or response is empty
+		}
+
+		// Return the list of buildings with Slug and Last Modified data
+		return $response;
+	}
+
 	public function get_classroom_by_slug( string $classroom_slug ) {
 		$params = array(
 			'filterByFormula' => sprintf( "AND( slug = '%s' )", $classroom_slug ),
@@ -90,13 +110,31 @@ class Airtable_Api {
 		$response = $this->get( table: 'Buildings', params: $params, request_resource: $classroom_building_code );
 
 		if ( ! $response || empty( $response ) ) {
-			return null;
+			return array();
 		}
 
 		$building      = $response[0];
 		$building_slug = $building->fields->{'Slug'};
 
 		return $building_slug;
+	}
+
+	public function get_classroom_slugs_for_yoast() {
+		$params = array(
+			'fields'          => array( 'Slug', 'Last Modified' ),
+			'filterByFormula' => 'NOT( {Is Hidden} )',
+		);
+
+		// Query the Classrooms table for only the specified fields
+		$response = $this->get( table: 'Classrooms', params: $params, request_resource: 'classroom_slugs' );
+
+		// Check if the response is valid and contains data
+		if ( ! $response || empty( $response ) ) {
+			return array(); // No buildings found or response is empty
+		}
+
+		// Return the list of buildings with Slug and Last Modified data
+		return $response;
 	}
 
 	/**
