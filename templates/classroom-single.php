@@ -65,8 +65,6 @@ if ( trim( $classroom_accessibility_content ) === '' ) {
 	$classroom_accessibility_content = null;
 }
 
-$classroom_accessibility_cta = $classroom_fields['Accessibility (CTA)'] ?? null;
-
 $classroom_is_features_source = $classroom_fields['Formatted_IS_Amenities'] ?? null;
 $classroom_is_features_source = str_replace( '"', '', $classroom_is_features_source );
 $classroom_is_features        = $classroom_is_features_source ? explode( ', ', $classroom_is_features_source ) : array();
@@ -423,7 +421,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 						<?php
 					}
 
-					if ( ! empty( $classroom_accessibility ) || $classroom_accessibility_content || $classroom_accessibility_cta || ! empty( $classroom_features ) || ! empty( $classroom_presentation_displays ) || ! empty( $classroom_presentation_sources ) || ! empty( $classroom_audio ) || ! empty( $classroom_other_av ) ) {
+					if ( ! empty( $classroom_accessibility ) || $classroom_accessibility_content || ! empty( $classroom_features ) || ! empty( $classroom_presentation_displays ) || ! empty( $classroom_presentation_sources ) || ! empty( $classroom_audio ) || ! empty( $classroom_other_av ) ) {
 						?>
 						<div class="accordion">
 							<div class="ac">
@@ -434,48 +432,38 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 								</h2>
 								<div class="ac-panel">
 									<div class="ac-panel-inner">
-										<?php
-										if ( ! empty( $classroom_accessibility ) || $classroom_accessibility_content || $classroom_accessibility_cta ) {
-											?>
-											<div class="classroom-accessibility">
-												<h3><?php esc_html_e( 'Accessibility', 'ubc-vpfo-spaces-pages' ); ?></h3>
-												<?php
-												if ( ! empty( $classroom_accessibility ) ) {
-													?>
-													<ul>
-														<?php foreach ( $classroom_accessibility as $accessibility_item ) { ?>
-															<li>
-																<?php
-																echo wp_kses_post( $accessibility_item );
-																?>
-															</li>
-															<?php
-														}
-														?>
-													</ul>
-													<?php
-												}
-
-												if ( $classroom_accessibility_content ) {
-													?>
-													<p><?php echo wp_kses_post( $classroom_accessibility_content ); ?></p>
-													<?php
-												}
-
-												if ( $classroom_accessibility_cta ) {
-													?>
-													<div class="accessibility-cta">
-														<?php
-														echo wp_kses_post( $classroom_accessibility_cta );
-														?>
-													</div>
-													<?php
-												}
-												?>
-											</div>
+										<div class="classroom-accessibility">
+											<h3><?php esc_html_e( 'Accessibility', 'ubc-vpfo-spaces-pages' ); ?></h3>
 											<?php
-										}
+											if ( ! empty( $classroom_accessibility ) ) {
+												?>
+												<ul>
+													<?php foreach ( $classroom_accessibility as $accessibility_item ) { ?>
+														<li>
+															<?php
+															echo wp_kses_post( $accessibility_item );
+															?>
+														</li>
+														<?php
+													}
+													?>
+												</ul>
+												<?php
+											}
 
+											if ( $classroom_accessibility_content ) {
+												?>
+												<p><?php echo wp_kses_post( $classroom_accessibility_content ); ?></p>
+												<?php
+											}
+											?>
+											
+											<p class="accessibility-cta">
+												<a href="https://students.ubc.ca/about-student-services/centre-for-accessibility" target="_blank"><?php esc_html_e( 'Contact the Centre for Accessibility', 'ubc-vpfo-spaces-pages' ); ?></a>
+											</p>
+										</div>
+
+										<?php
 										if ( ! empty( $classroom_features ) ) {
 											?>
 											<div class="classroom-features">
