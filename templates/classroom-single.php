@@ -75,18 +75,42 @@ $classroom_features_source = $classroom_fields['Formatted_Amenities_Other_Room_F
 $classroom_features_source = str_replace( '"', '', $classroom_features_source );
 $classroom_features        = $classroom_features_source ? explode( ', ', $classroom_features_source ) : array();
 $classroom_features        = array_merge( $classroom_features, $classroom_is_features );
+$classroom_features        = array_filter(
+	$classroom_features,
+	function ($item) {
+		return strpos($item, 'Any') === false;
+	}
+);
 
 $classroom_presentation_displays_source = $classroom_fields['Formatted_Amenities_Presentation_Displays'] ?? null;
 $classroom_presentation_displays_source = str_replace( '"', '', $classroom_presentation_displays_source );
 $classroom_presentation_displays        = $classroom_presentation_displays_source ? explode( ', ', $classroom_presentation_displays_source ) : array();
+$classroom_presentation_displays        = array_filter(
+	$classroom_presentation_displays,
+	function ($item) {
+		return strpos($item, 'Any') === false;
+	}
+);
 
 $classroom_presentation_sources_source = $classroom_fields['Formatted_Amenities_Presentation_Sources'] ?? null;
 $classroom_presentation_sources_source = str_replace( '"', '', $classroom_presentation_sources_source );
 $classroom_presentation_sources        = $classroom_presentation_sources_source ? explode( ', ', $classroom_presentation_sources_source ) : array();
+$classroom_presentation_sources        = array_filter(
+	$classroom_presentation_sources,
+	function ($item) {
+		return strpos($item, 'Any') === false;
+	}
+);
 
 $classroom_audio_source = $classroom_fields['Formatted_Amenities_Audio'] ?? null;
 $classroom_audio_source = str_replace( '"', '', $classroom_audio_source );
 $classroom_audio        = $classroom_audio_source ? explode( ', ', $classroom_audio_source ) : array();
+$classroom_audio        = array_filter(
+	$classroom_audio,
+	function ($item) {
+		return strpos($item, 'Any') === false;
+	}
+);
 
 $classroom_other_av_source = $classroom_fields['Formatted_Amenities_Other_AV_Features'] ?? null;
 $classroom_other_av_source = str_replace( '"', '', $classroom_other_av_source );
