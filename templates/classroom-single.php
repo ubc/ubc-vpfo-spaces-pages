@@ -77,8 +77,8 @@ $classroom_features        = $classroom_features_source ? explode( ', ', $classr
 $classroom_features        = array_merge( $classroom_features, $classroom_is_features );
 $classroom_features        = array_filter(
 	$classroom_features,
-	function ($item) {
-		return strpos($item, 'Any') === false;
+	function ( $item ) {
+		return strpos( $item, 'Any' ) === false;
 	}
 );
 
@@ -87,8 +87,8 @@ $classroom_presentation_displays_source = str_replace( '"', '', $classroom_prese
 $classroom_presentation_displays        = $classroom_presentation_displays_source ? explode( ', ', $classroom_presentation_displays_source ) : array();
 $classroom_presentation_displays        = array_filter(
 	$classroom_presentation_displays,
-	function ($item) {
-		return strpos($item, 'Any') === false;
+	function ( $item ) {
+		return strpos( $item, 'Any' ) === false;
 	}
 );
 
@@ -97,8 +97,8 @@ $classroom_presentation_sources_source = str_replace( '"', '', $classroom_presen
 $classroom_presentation_sources        = $classroom_presentation_sources_source ? explode( ', ', $classroom_presentation_sources_source ) : array();
 $classroom_presentation_sources        = array_filter(
 	$classroom_presentation_sources,
-	function ($item) {
-		return strpos($item, 'Any') === false;
+	function ( $item ) {
+		return strpos( $item, 'Any' ) === false;
 	}
 );
 
@@ -107,8 +107,8 @@ $classroom_audio_source = str_replace( '"', '', $classroom_audio_source );
 $classroom_audio        = $classroom_audio_source ? explode( ', ', $classroom_audio_source ) : array();
 $classroom_audio        = array_filter(
 	$classroom_audio,
-	function ($item) {
-		return strpos($item, 'Any') === false;
+	function ( $item ) {
+		return strpos( $item, 'Any' ) === false;
 	}
 );
 
