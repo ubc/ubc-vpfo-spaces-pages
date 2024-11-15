@@ -5,12 +5,14 @@ $classroom_fields = json_decode( wp_json_encode( $classroom->fields ), true );
 
 $classroom_name = $classroom_fields['Name'] ?? null;
 
-$classroom_building_name   = $classroom_fields['Building Name'] ?? null;
-$classroom_building_code   = $classroom_fields['Building Code'] ?? null;
-$classroom_building_title  = $classroom_building_name ?? '';
-$classroom_building_title .= $classroom_building_code ? ' - ' . $classroom_building_code : '';
-$classroom_building_slug   = $args['classroom_building_slug'] ?? null;
-$classroom_building_url    = $classroom_building_slug ? get_bloginfo( 'url' ) . '/buildings/' . $classroom_building_slug : null;
+$classroom_building_name_original = $classroom_fields['Buildings - Building Name'][0] ?? null;
+$classroom_building_name_override = $classroom_fields['Buildings - Building Name (override)'][0] ?? null;
+$classroom_building_name          = $classroom_building_name_override ?? $classroom_building_name_original;
+
+$classroom_building_code  = $classroom_fields['Building Code'] ?? null;
+$classroom_building_title = $classroom_building_name ?? '';
+$classroom_building_slug  = $classroom_fields['Building Slug'][0] ?? null;
+$classroom_building_url   = $classroom_building_slug ? get_bloginfo( 'url' ) . '/buildings/' . $classroom_building_slug : null;
 
 if ( '-' === $classroom_name ) {
 	$classroom_room_number = $classroom_fields['Room Number'] ?? null;
@@ -21,7 +23,7 @@ if ( '-' === $classroom_name ) {
 
 $breadcrumb_home         = get_bloginfo( 'url' );
 $breadcrumb_find_a_space = get_page_by_path( 'find-a-space' ) !== null ? get_permalink( get_page_by_path( 'find-a-space' ) ) : null;
-$breadcrumb_building     = $classroom_building_url ? '<a href="' . $classroom_building_url . '" class="d-inline-block vpfo-building-link" title="' . $classroom_building_title . '" rel="bookmark">' . $classroom_building_title . '</a>' : null;
+$breadcrumb_building     = $classroom_building_url ? '<a href="' . $classroom_building_url . '" class="d-inline-block vpfo-building-link" title="' . $classroom_building_title . '" rel="bookmark">' . $classroom_building_title . ' - ' . $classroom_building_code . '</a>' : null;
 $breadcrumb              = '<a href="' . $breadcrumb_home . '" class="d-inline-block" title="' . get_bloginfo( 'name' ) . '" rel="bookmark">' . get_bloginfo( 'name' ) . '</a>';
 $breadcrumb             .= $breadcrumb_find_a_space ? '<i class="fas fa-chevron-right mx-4"></i><a href="' . $breadcrumb_find_a_space . '" class="d-inline-block vpfo-return-to-lsf">' . __( 'Find a Space', 'ubc-vpfo-spaces-pages' ) . '</a>' : '';
 $breadcrumb             .= $breadcrumb_building ? '<i class="fas fa-chevron-right mx-4"></i>' . $breadcrumb_building : '';
@@ -65,8 +67,6 @@ if ( trim( $classroom_accessibility_content ) === '' ) {
 	$classroom_accessibility_content = null;
 }
 
-$classroom_accessibility_cta = $classroom_fields['Accessibility (CTA)'] ?? null;
-
 $classroom_is_features_source = $classroom_fields['Formatted_IS_Amenities'] ?? null;
 $classroom_is_features_source = str_replace( '"', '', $classroom_is_features_source );
 $classroom_is_features        = $classroom_is_features_source ? explode( ', ', $classroom_is_features_source ) : array();
@@ -75,18 +75,42 @@ $classroom_features_source = $classroom_fields['Formatted_Amenities_Other_Room_F
 $classroom_features_source = str_replace( '"', '', $classroom_features_source );
 $classroom_features        = $classroom_features_source ? explode( ', ', $classroom_features_source ) : array();
 $classroom_features        = array_merge( $classroom_features, $classroom_is_features );
+$classroom_features        = array_filter(
+	$classroom_features,
+	function ( $item ) {
+		return strpos( $item, 'Any' ) === false;
+	}
+);
 
 $classroom_presentation_displays_source = $classroom_fields['Formatted_Amenities_Presentation_Displays'] ?? null;
 $classroom_presentation_displays_source = str_replace( '"', '', $classroom_presentation_displays_source );
 $classroom_presentation_displays        = $classroom_presentation_displays_source ? explode( ', ', $classroom_presentation_displays_source ) : array();
+$classroom_presentation_displays        = array_filter(
+	$classroom_presentation_displays,
+	function ( $item ) {
+		return strpos( $item, 'Any' ) === false;
+	}
+);
 
 $classroom_presentation_sources_source = $classroom_fields['Formatted_Amenities_Presentation_Sources'] ?? null;
 $classroom_presentation_sources_source = str_replace( '"', '', $classroom_presentation_sources_source );
 $classroom_presentation_sources        = $classroom_presentation_sources_source ? explode( ', ', $classroom_presentation_sources_source ) : array();
+$classroom_presentation_sources        = array_filter(
+	$classroom_presentation_sources,
+	function ( $item ) {
+		return strpos( $item, 'Any' ) === false;
+	}
+);
 
 $classroom_audio_source = $classroom_fields['Formatted_Amenities_Audio'] ?? null;
 $classroom_audio_source = str_replace( '"', '', $classroom_audio_source );
 $classroom_audio        = $classroom_audio_source ? explode( ', ', $classroom_audio_source ) : array();
+$classroom_audio        = array_filter(
+	$classroom_audio,
+	function ( $item ) {
+		return strpos( $item, 'Any' ) === false;
+	}
+);
 
 $classroom_other_av_source = $classroom_fields['Formatted_Amenities_Other_AV_Features'] ?? null;
 $classroom_other_av_source = str_replace( '"', '', $classroom_other_av_source );
@@ -423,7 +447,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 						<?php
 					}
 
-					if ( ! empty( $classroom_accessibility ) || $classroom_accessibility_content || $classroom_accessibility_cta || ! empty( $classroom_features ) || ! empty( $classroom_presentation_displays ) || ! empty( $classroom_presentation_sources ) || ! empty( $classroom_audio ) || ! empty( $classroom_other_av ) ) {
+					if ( ! empty( $classroom_accessibility ) || $classroom_accessibility_content || ! empty( $classroom_features ) || ! empty( $classroom_presentation_displays ) || ! empty( $classroom_presentation_sources ) || ! empty( $classroom_audio ) || ! empty( $classroom_other_av ) ) {
 						?>
 						<div class="accordion">
 							<div class="ac">
@@ -434,48 +458,38 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 								</h2>
 								<div class="ac-panel">
 									<div class="ac-panel-inner">
-										<?php
-										if ( ! empty( $classroom_accessibility ) || $classroom_accessibility_content || $classroom_accessibility_cta ) {
-											?>
-											<div class="classroom-accessibility">
-												<h3><?php esc_html_e( 'Accessibility', 'ubc-vpfo-spaces-pages' ); ?></h3>
-												<?php
-												if ( ! empty( $classroom_accessibility ) ) {
-													?>
-													<ul>
-														<?php foreach ( $classroom_accessibility as $accessibility_item ) { ?>
-															<li>
-																<?php
-																echo wp_kses_post( $accessibility_item );
-																?>
-															</li>
-															<?php
-														}
-														?>
-													</ul>
-													<?php
-												}
-
-												if ( $classroom_accessibility_content ) {
-													?>
-													<p><?php echo wp_kses_post( $classroom_accessibility_content ); ?></p>
-													<?php
-												}
-
-												if ( $classroom_accessibility_cta ) {
-													?>
-													<div class="accessibility-cta">
-														<?php
-														echo wp_kses_post( $classroom_accessibility_cta );
-														?>
-													</div>
-													<?php
-												}
-												?>
-											</div>
+										<div class="classroom-accessibility">
+											<h3><?php esc_html_e( 'Accessibility', 'ubc-vpfo-spaces-pages' ); ?></h3>
 											<?php
-										}
+											if ( ! empty( $classroom_accessibility ) ) {
+												?>
+												<ul>
+													<?php foreach ( $classroom_accessibility as $accessibility_item ) { ?>
+														<li>
+															<?php
+															echo wp_kses_post( $accessibility_item );
+															?>
+														</li>
+														<?php
+													}
+													?>
+												</ul>
+												<?php
+											}
 
+											if ( $classroom_accessibility_content ) {
+												?>
+												<p><?php echo wp_kses_post( $classroom_accessibility_content ); ?></p>
+												<?php
+											}
+											?>
+											
+											<p class="accessibility-cta">
+												<a href="https://students.ubc.ca/about-student-services/centre-for-accessibility" target="_blank"><?php esc_html_e( 'Contact the Centre for Accessibility', 'ubc-vpfo-spaces-pages' ); ?></a>
+											</p>
+										</div>
+
+										<?php
 										if ( ! empty( $classroom_features ) ) {
 											?>
 											<div class="classroom-features">
