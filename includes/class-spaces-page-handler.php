@@ -159,9 +159,6 @@ class Spaces_Page_Handler {
 
 		$classroom = $this->airtable_api->get_classroom_by_slug( $classroom_slug );
 
-		$classroom_building_code = isset( $classroom->fields->{'Building Code'} ) ? $classroom->fields->{'Building Code'} : '';
-		$classroom_building_slug = $this->airtable_api->get_classroom_building_slug( $classroom_building_code );
-
 		// If the lookup had no results, allow WordPress to 404.
 		if ( null === $classroom ) {
 			return;
@@ -173,7 +170,6 @@ class Spaces_Page_Handler {
 		$template_name = 'classroom-single.php';
 		$args          = array(
 			'classroom'               => $classroom,
-			'classroom_building_slug' => $classroom_building_slug,
 		);
 
 		if ( ! locate_template( sprintf( 'spaces-page/%s', $template_name ), true, true, $args ) ) {

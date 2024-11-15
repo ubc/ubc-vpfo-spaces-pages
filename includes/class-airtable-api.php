@@ -96,29 +96,6 @@ class Airtable_Api {
 		return $classroom;
 	}
 
-	public function get_classroom_building_slug( string $classroom_building_code ) {
-		// Check if the building code is provided
-		if ( ! $classroom_building_code ) {
-			return ''; // No building code provided
-		}
-
-		$params = array(
-			'filterByFormula' => sprintf( "AND( {Code} = '%s' )", $classroom_building_code ),
-			'maxRecords'      => 1,
-		);
-
-		$response = $this->get( table: 'Buildings', params: $params, request_resource: $classroom_building_code );
-
-		if ( ! $response || empty( $response ) ) {
-			return null;
-		}
-
-		$building      = $response[0];
-		$building_slug = $building->fields->{'Slug'};
-
-		return $building_slug;
-	}
-
 	public function get_classroom_slugs_for_yoast() {
 		$params = array(
 			'fields'          => array( 'Slug', 'Last Modified' ),

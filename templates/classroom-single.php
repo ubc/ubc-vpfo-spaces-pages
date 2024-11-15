@@ -5,10 +5,13 @@ $classroom_fields = json_decode( wp_json_encode( $classroom->fields ), true );
 
 $classroom_name = $classroom_fields['Name'] ?? null;
 
-$classroom_building_name   = $classroom_fields['Building Name'] ?? null;
+$classroom_building_name_original   = $classroom_fields['Buildings - Building Name'][0] ?? null;
+$classroom_building_name_override   = $classroom_fields['Buildings - Building Name (override)'][0] ?? null;
+$classroom_building_name            = $classroom_building_name_override ?? $classroom_building_name_original;
+
 $classroom_building_code   = $classroom_fields['Building Code'] ?? null;
 $classroom_building_title  = $classroom_building_name ?? '';
-$classroom_building_slug   = $args['classroom_building_slug'] ?? null;
+$classroom_building_slug   = $classroom_fields['Building Slug'][0] ?? null;
 $classroom_building_url    = $classroom_building_slug ? get_bloginfo( 'url' ) . '/buildings/' . $classroom_building_slug : null;
 
 if ( '-' === $classroom_name ) {
