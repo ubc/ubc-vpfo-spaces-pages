@@ -4,10 +4,14 @@ $classroom = $args['classroom'] ?? array();
 $classroom_building_code = $classroom['Building Code'] ?? null;
 $classroom_room_number   = $classroom['Room Number'] ?? null;
 $classroom_title         = $classroom_building_code . ' ' . $classroom_room_number;
-$classroom_building_name = $classroom['Building Name'] ?? null;
-$classroom_capacity      = $classroom['Capacity'] ?? null;
-$classroom_layout_type   = $classroom['Formatted_Room_Layout_Type'] ?? null;
-$classroom_furniture     = $classroom['Formatted_Furniture'] ?? null;
+
+$classroom_building_name_original = $classroom['Buildings - Building Name'][0] ?? null;
+$classroom_building_name_override = $classroom['Buildings - Building Name (override)'][0] ?? null;
+$classroom_building_name          = $classroom_building_name_override ?? $classroom_building_name_original;
+
+$classroom_capacity    = $classroom['Capacity'] ?? null;
+$classroom_layout_type = $classroom['Formatted_Room_Layout_Type'] ?? null;
+$classroom_furniture   = $classroom['Formatted_Furniture'] ?? null;
 
 if ( $classroom_layout_type && $classroom_furniture ) {
 	$classroom_style_layout = $classroom_furniture . '; ' . $classroom_layout_type;
