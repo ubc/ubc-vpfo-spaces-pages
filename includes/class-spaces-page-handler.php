@@ -169,7 +169,7 @@ class Spaces_Page_Handler {
 
 		$template_name = 'classroom-single.php';
 		$args          = array(
-			'classroom'               => $classroom,
+			'classroom' => $classroom,
 		);
 
 		if ( ! locate_template( sprintf( 'spaces-page/%s', $template_name ), true, true, $args ) ) {
