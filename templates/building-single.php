@@ -51,6 +51,9 @@ $breadcrumb             .= $breadcrumb_find_a_space ? '<i class="fas fa-chevron-
 $breadcrumb             .= $building_name_w_code ? '<i class="fas fa-chevron-right mx-4"></i><span class="d-inline-block current-page">' . $building_name_w_code . '</span>' : '';
 
 $alert_message = $building_fields['Alert Message'] ?? null;
+if ( trim( $alert_message ) === '' ) {
+	$alert_message = null;
+}
 
 $building_address = $building_fields['Building Address (override)'] ?? null;
 

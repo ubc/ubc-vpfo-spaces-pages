@@ -34,6 +34,10 @@ $classroom_workday_room_code_override = $classroom_fields['Workday Room Code (ov
 $classroom_workday_room_code          = $classroom_workday_room_code_override ?? $classroom_workday_room_code_original;
 
 $classroom_alert_message = $classroom_fields['Alert Message'] ?? null;
+if ( trim( $classroom_alert_message ) === '' ) {
+	$classroom_alert_message = null;
+}
+
 $classroom_image_gallery = $classroom_fields['Image Gallery'] ?? array();
 $classroom_layout_image  = $classroom_fields['Classroom Layout'][0] ?? array();
 
