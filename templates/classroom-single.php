@@ -29,6 +29,7 @@ $breadcrumb             .= $breadcrumb_find_a_space ? '<i class="fas fa-chevron-
 $breadcrumb             .= $breadcrumb_building ? '<i class="fas fa-chevron-right mx-4"></i>' . $breadcrumb_building : '';
 $breadcrumb             .= $classroom_name ? '<i class="fas fa-chevron-right mx-4"></i><span class="d-inline-block current-page">' . $classroom_name . '</span>' : '';
 
+$classroom_is_informal                = $classroom_fields['Is Informal Space'] ?? false;
 $classroom_workday_room_code_original = $classroom_fields['Workday Room Code'] ?? null;
 $classroom_workday_room_code_override = $classroom_fields['Workday Room Code (override)'] ?? null;
 $classroom_workday_room_code          = $classroom_workday_room_code_override ?? $classroom_workday_room_code_original;
@@ -158,7 +159,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 					?>
 
 					<?php
-					if ( $classroom_workday_room_code ) {
+					if ( $classroom_workday_room_code && ! $classroom_is_informal ) {
 						?>
 						<div class="workday-room-code text-uppercase mt-3"><?php echo wp_kses_post( $classroom_workday_room_code ); ?></div>
 						<?php
