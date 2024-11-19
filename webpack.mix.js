@@ -7,6 +7,7 @@ mix
 	.disableSuccessNotifications()
 	.js( 'src/js/classrooms-image-gallery-glider.js', 'js/classrooms-image-gallery-glider.js' )
 	.js( 'src/js/accordion.js', 'js/accordion.js' )
+	.js( 'src/js/layout-modal.js', 'js/layout-modal.js' )
 	.sass(
 		'src/style.scss',
 		'style.css',

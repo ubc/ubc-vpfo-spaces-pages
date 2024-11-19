@@ -313,8 +313,19 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8';
 
 							if ( $classroom_layout_element ) {
 								?>
-								<div class="classroom-layout">
+								<div class="classroom-layout d-none d-lg-block">
+									<a href="#classroom-layout-modal" data-overlay-trigger>
+										<?php echo wp_kses_post( $classroom_layout_element ); ?>
+									</a>
+								</div>
+								<div class="classroom-layout d-lg-none">
 									<?php echo wp_kses_post( $classroom_layout_element ); ?>
+								</div>
+								<div class="d-none">
+									<!-- Each overlay needs an id -->
+									<div id="classroom-layout-modal">
+										<?php echo wp_kses_post( $classroom_layout_element ); ?>
+									</div>
 								</div>
 								<?php
 							}
