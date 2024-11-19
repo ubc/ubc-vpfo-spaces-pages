@@ -96,6 +96,42 @@ class Airtable_Api {
 		return $classroom;
 	}
 
+	public function get_resources() {
+		$params['fields'] = array(
+			'File Name',
+			'Attachment',
+			'Attachment',
+			'Category',
+		);
+
+		$resources = $this->get( table: 'All Resources', params: $params, request_resource: 'resources' );
+
+		return $resources;
+	}
+
+	public function get_classroom_building_slug( string $classroom_building_code ) {
+		// Check if the building code is provided
+		if ( ! $classroom_building_code ) {
+			return ''; // No building code provided
+		}
+
+		$params = array(
+			'filterByFormula' => sprintf( "AND( {Code} = '%s' )", $classroom_building_code ),
+			'maxRecords'      => 1,
+		);
+
+		$response = $this->get( table: 'Buildings', params: $params, request_resource: $classroom_building_code );
+
+		if ( ! $response || empty( $response ) ) {
+			return null;
+		}
+
+		$building      = $response[0];
+		$building_slug = $building->fields->{'Slug'};
+
+		return $building_slug;
+	}
+
 	public function get_classroom_slugs_for_yoast() {
 		$params = array(
 			'fields'          => array( 'Slug', 'Last Modified' ),
@@ -154,6 +190,21 @@ class Airtable_Api {
 		}
 
 		$response = $this->airtable->getContent( $table, $params )->getResponse();
+
+		if ( isset( $response['error'] ) ) {
+			throw new \Exception(
+				'Invalid Airtable response ' .
+				wp_json_encode(
+					array(
+						'formula'  => $params['filterByFormula'] ?? null,
+						'error'    => $response['error'],
+						'params'   => $params,
+						'response' => $response,
+						'table'    => $table,
+					)
+				)
+			);
+		}
 
 		// If there's no records the slug is likely wrong.
 		if ( ! $response['records'] || empty( $response['records'] ) ) {

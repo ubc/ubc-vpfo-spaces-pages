@@ -147,6 +147,28 @@ class Spaces_Page_Handler {
 		}
 	}
 
+	private function add_av_resource_to_classroom( $classroom ) {
+		// Fetch resources from Airtable, often from a transient cache.
+		$resources = $this->airtable_api->get_resources();
+
+		if ( $classroom->fields && isset( $classroom->fields->{'Shared AV Guide'} ) && ! empty( $classroom->fields->{'Shared AV Guide'} ) ) {
+			$resource_id = sanitize_text_field( $classroom->fields->{'Shared AV Guide'}[0] );
+
+			foreach ( $resources as $r ) {
+				if ( $r->id === $resource_id ) {
+					$attachment = $r->fields->Attachment[0]->url ?? null;
+
+					if ( $attachment ) {
+						$classroom->fields->{'Shared AV Guide'} = $attachment;
+						break;
+					}
+				}
+			}
+		}
+
+		return $classroom;
+	}
+
 	public function handle_classroom_template_redirect() {
 
 		global $is_classroom_template;
@@ -159,6 +181,12 @@ class Spaces_Page_Handler {
 
 		$classroom = $this->airtable_api->get_classroom_by_slug( $classroom_slug );
 
+		// Append AV resources to the classroom object
+		$classroom = $this->add_av_resource_to_classroom( $classroom );
+
+		$classroom_building_code = isset( $classroom->fields->{'Building Code'} ) ? $classroom->fields->{'Building Code'} : '';
+		$classroom_building_slug = $this->airtable_api->get_classroom_building_slug( $classroom_building_code );
+
 		// If the lookup had no results, allow WordPress to 404.
 		if ( null === $classroom ) {
 			return;
@@ -169,7 +197,8 @@ class Spaces_Page_Handler {
 
 		$template_name = 'classroom-single.php';
 		$args          = array(
-			'classroom' => $classroom,
+			'classroom'               => $classroom,
+			'classroom_building_slug' => $classroom_building_slug,
 		);
 
 		if ( ! locate_template( sprintf( 'spaces-page/%s', $template_name ), true, true, $args ) ) {

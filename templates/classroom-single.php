@@ -54,7 +54,7 @@ if ( trim( $classroom_overview ) === '' ) {
 	$classroom_overview = null;
 }
 
-$classroom_shared_av_guide = $classroom_fields['Shared AV Guide'][0]['url'] ?? null;
+$classroom_shared_av_guide = $classroom_fields['Shared AV Guide'] ?? null;
 $classroom_360_view        = $classroom_fields['360 View'] ?? null;
 $classroom_av_guide        = $classroom_fields['AV Guide'][0]['url'] ?? null;
 $classroom_outlets_layout  = $classroom_fields['Electrical Outlets Layout'][0]['url'] ?? null;
