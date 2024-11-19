@@ -54,9 +54,12 @@ if ( trim( $classroom_overview ) === '' ) {
 	$classroom_overview = null;
 }
 
-$classroom_360_view    = $classroom_fields['360 View'] ?? null;
-$classroom_av_guide    = $classroom_fields['AV Guide'][0]['url'] ?? null;
-$classroom_ap_helpdesk = '#'; // TODO - get real data
+$classroom_shared_av_guide = $classroom_fields['Shared AV Guide'][0]['url'] ?? null;
+$classroom_360_view        = $classroom_fields['360 View'] ?? null;
+$classroom_av_guide        = $classroom_fields['AV Guide'][0]['url'] ?? null;
+$classroom_outlets_layout  = $classroom_fields['Electrical Outlets Layout'][0]['url'] ?? null;
+$classroom_av_helpdesk     = 'tel:6048227956';
+
 $classroom_layout_type = $classroom_fields['Formatted_Room_Layout_Type'] ?? null;
 
 $classroom_furniture_source = $classroom_fields['Formatted_Furniture'] ?? null;
@@ -67,7 +70,7 @@ $classroom_accessibility_source = $classroom_fields['Formatted_Accessibility'] ?
 $classroom_accessibility_source = str_replace( '"', '', $classroom_accessibility_source );
 $classroom_accessibility        = $classroom_accessibility_source ? explode( ', ', $classroom_accessibility_source ) : array();
 
-$classroom_accessibility_content = $classroom_fields['Accessibility Content'] ?? null;
+$classroom_accessibility_content = $classroom_fields['Accessibility Notes'] ?? null;
 if ( trim( $classroom_accessibility_content ) === '' ) {
 	$classroom_accessibility_content = null;
 }
@@ -354,7 +357,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 								<?php
 							}
 
-							if ( $classroom_360_view || $classroom_av_guide || $classroom_ap_helpdesk ) {
+							if ( $classroom_360_view || $classroom_shared_av_guide || $classroom_av_guide || $classroom_outlets_layout || $classroom_av_helpdesk ) {
 								?>
 								<div class="classroom-resources">
 									<h2 class="text-uppercase"><?php esc_html_e( 'Resources', 'ubc-vpfo-spaces-pages' ); ?></h2>
@@ -375,7 +378,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 										if ( $classroom_av_guide ) {
 											?>
 											<div class="btn-wrapper">
-												<a href="<?php echo esc_url( $classroom_av_guide ); ?>" class="btn btn-secondary d-block" download>
+												<a href="<?php echo esc_url( $classroom_av_guide ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external">
 													<?php esc_html_e( 'AV Guide', 'ubc-vpfo-spaces-pages' ); ?>
 													<i class="far fa-file-pdf ms-3"></i>
 												</a>
@@ -383,10 +386,32 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 											<?php
 										}
 
-										if ( $classroom_ap_helpdesk ) {
+										if ( $classroom_shared_av_guide ) {
 											?>
 											<div class="btn-wrapper">
-												<a href="<?php echo esc_url( $classroom_ap_helpdesk ); ?>" class="btn btn-secondary d-block">
+												<a href="<?php echo esc_url( $classroom_shared_av_guide ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external">
+													<?php esc_html_e( 'Shared AV Guide', 'ubc-vpfo-spaces-pages' ); ?>
+													<i class="far fa-file-pdf ms-3"></i>
+												</a>
+											</div>
+											<?php
+										}
+
+										if ( $classroom_outlets_layout ) {
+											?>
+											<div class="btn-wrapper">
+												<a href="<?php echo esc_url( $classroom_outlets_layout ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external">
+													<?php esc_html_e( 'Electrical Outlets Layout', 'ubc-vpfo-spaces-pages' ); ?>
+													<i class="fas fa-plug ms-3"></i>
+												</a>
+											</div>
+											<?php
+										}
+
+										if ( $classroom_av_helpdesk ) {
+											?>
+											<div class="btn-wrapper">
+												<a href="<?php echo esc_url( $classroom_av_helpdesk ); ?>" class="btn btn-secondary d-block">
 													<?php esc_html_e( 'AV Helpdesk', 'ubc-vpfo-spaces-pages' ); ?>
 													<i class="fas fa-phone ms-3"></i>
 												</a>
