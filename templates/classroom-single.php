@@ -369,7 +369,7 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8';
 								<?php
 							}
 
-							if ( $classroom_360_view || $classroom_shared_av_guide || $classroom_av_guide || $classroom_outlets_layout || $classroom_av_helpdesk ) {
+							if ( ( $classroom_360_view || $classroom_shared_av_guide || $classroom_av_guide || $classroom_outlets_layout || $classroom_av_helpdesk ) && ! $classroom_is_informal ) {
 								?>
 								<div class="classroom-resources">
 									<h2 class="text-uppercase"><?php esc_html_e( 'Resources', 'ubc-vpfo-spaces-pages' ); ?></h2>
