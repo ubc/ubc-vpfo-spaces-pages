@@ -4,7 +4,6 @@ $classroom        = $args['classroom'];
 $classroom_fields = json_decode( wp_json_encode( $classroom->fields ), true );
 
 $classroom_name = $classroom_fields['Name'] ?? null;
-$classroom_name_informal = $classroom_fields['Name Test'] ?? null;
 
 $classroom_building_name_original = $classroom_fields['Buildings - Building Name'][0] ?? null;
 $classroom_building_name_override = $classroom_fields['Buildings - Building Name (override)'][0] ?? null;
@@ -24,7 +23,6 @@ $breadcrumb             .= $breadcrumb_building ? '<i class="fas fa-chevron-righ
 $breadcrumb             .= $classroom_name ? '<i class="fas fa-chevron-right mx-4"></i><span class="d-inline-block current-page">' . $classroom_name . '</span>' : '';
 
 $classroom_is_informal  = $classroom_fields['Is Informal Space'] ?? false;
-$classroom_name_display = $classroom_is_informal ? $classroom_name_informal : $classroom_name;
 
 $classroom_workday_room_code_original = $classroom_fields['Workday Room Code'] ?? null;
 $classroom_workday_room_code_override = $classroom_fields['Workday Room Code (override)'] ?? null;
@@ -142,8 +140,8 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8';
 				<div class="classroom-title">
 					<h1 class="text-uppercase fw-bold mb-0">
 						<?php
-						if ( $classroom_name_display ) {
-							echo wp_kses_post( $classroom_name_display );
+						if ( $classroom_name ) {
+							echo wp_kses_post( $classroom_name );
 						} else {
 							esc_html_e( 'Learning Spaces', 'ubc-vpfo-spaces-pages' );
 						}
