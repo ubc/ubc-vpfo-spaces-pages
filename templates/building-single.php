@@ -74,8 +74,9 @@ $building_hours          = $building_hours ? array_map( 'trim', explode( ';', $b
 
 $building_notes = isset( $building_fields['Building Notes'] ) && ( trim( $building_fields['Building Notes'] ) !== '\n' && trim( $building_fields['Building Notes'] ) !== '' ) ? nl2br( $building_fields['Building Notes'] ) : null;
 
-$building_image = $building_fields['Building Image'][0] ?? array();
+$building_floor_plan = $building_fields['Floor Plans'][0]['url'] ?? null;
 
+$building_image        = $building_fields['Building Image'][0] ?? array();
 $building_image_url    = $building_image['url'] ?? null;
 $building_image_width  = $building_image['width'] ?? null;
 $building_image_height = $building_image['height'] ?? null;
@@ -159,12 +160,18 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 								<i class="fa-solid fa-users ms-2"></i>
 							</div>
 
-							<div class="building-floor-plan">
-								<a href="#" class="d-flex align-items-center">
-									<p class="mb-0"><?php esc_html_e( 'Floor Plan', 'ubc-vpfo-spaces-pages' ); ?></p>
-									<i class="fa-regular fa-file-pdf ms-2"></i>
-								</a>
-							</div>
+							<?php
+							if ( $building_floor_plan ) {
+								?>
+								<div class="building-floor-plan">
+									<a href="<?php echo esc_url( $building_floor_plan ); ?>" class="d-flex align-items-center" target="_blank">
+										<p class="mb-0"><?php esc_html_e( 'Floor Plan', 'ubc-vpfo-spaces-pages' ); ?></p>
+										<i class="fa-regular fa-file-pdf ms-2"></i>
+									</a>
+								</div>
+								<?php
+							}
+							?>
 
 							<div class="building-blue-phones">
 								<a href="#" class="d-flex align-items-center">
