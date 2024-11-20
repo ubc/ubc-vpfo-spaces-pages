@@ -63,6 +63,8 @@
 		a {
 			color: $ubc-blue;
 			text-decoration: none;
+			flex-basis: fit-content;
+
 
 			&:hover, &:focus, &:active {
 				outline: none;
