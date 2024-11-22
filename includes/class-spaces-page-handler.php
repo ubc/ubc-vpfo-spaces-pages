@@ -67,6 +67,7 @@ class Spaces_Page_Handler {
 	public function handle_building_template_redirect() {
 
 		$building_slug = get_query_var( 'building_slug' );
+		$all_classroom = rest_sanitize_boolean( $_REQUEST['all_classroom'] );
 
 		if ( ! $building_slug ) {
 			return;
@@ -86,6 +87,7 @@ class Spaces_Page_Handler {
 		$args          = array(
 			'building'            => $building,
 			'building_classrooms' => $building_classrooms,
+			'all_classroom'       => $all_classroom,
 		);
 
 		if ( ! locate_template( sprintf( 'spaces-page/%s', $template_name ), true, true, $args ) ) {

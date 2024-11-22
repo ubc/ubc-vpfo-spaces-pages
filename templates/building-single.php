@@ -11,6 +11,10 @@ $total_classrooms = count( $building_classrooms );
 // Define the number of items per page
 $classrooms_per_page = 12;
 
+if ( isset( $args['all_classroom'] ) && $args['all_classroom'] ) {
+	$classrooms_per_page = 100;
+}
+
 // Calculate the total number of pages and cast to integer
 $max_pages = (int) ceil( $total_classrooms / $classrooms_per_page );
 
@@ -224,7 +228,7 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 		<?php
 		if ( ! empty( $building_classrooms ) ) {
 			// Get the sorted and paginated classrooms - see includes/helpers.php
-			$paginated_classrooms = get_sorted_and_paginated_classrooms( $building_classrooms, $classrooms_page );
+			$paginated_classrooms = get_sorted_and_paginated_classrooms( $building_classrooms, $classrooms_page, $classrooms_per_page );
 			?>
 
 			<section class="building-classrooms mt-9">
@@ -238,7 +242,7 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 					?>
 				</div>
 
-				<?php if ( count( $building_classrooms ) >= 12 ) { ?>
+				<?php if ( count( $building_classrooms ) >= $classrooms_per_page ) { ?>
 
 					<div class="classroom-list-nav d-flex mt-9">
 						<!-- Prev Page Link -->
