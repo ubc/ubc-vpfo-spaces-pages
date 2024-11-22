@@ -331,6 +331,10 @@
 	.classroom-book-space {
 		@include vpfo-box-shadow;
 
+		&.no-shadow {
+			box-shadow: unset;
+		}
+
 		&:after {
 			content: '';
 			display: block;
@@ -345,6 +349,10 @@
 
 		p {
 			font-size: 1rem;
+		}
+
+		.button-container {
+			gap: 1rem;
 		}
 	}
 

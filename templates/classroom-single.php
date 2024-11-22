@@ -119,7 +119,7 @@ $classroom_other_av_source = str_replace( '"', '', $classroom_other_av_source );
 $classroom_other_av        = $classroom_other_av_source ? explode( ', ', $classroom_other_av_source ) : array();
 
 $classroom_building_map  = $classroom_building_code ? 'https://maps.ubc.ca/?code=' . $classroom_building_code : null;
-$classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8';
+$classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-lg-5';
 ?>
 
 <section class="vpfo-spaces-page">
@@ -654,7 +654,7 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8';
 			</div>
 		</section>
 
-		<section class="classroom-book-space mt-9 mt-lg-17">
+		<section class="classroom-book-space mt-9 mt-lg-17<?php if ( $classroom_is_informal ) { echo esc_html( ' no-shadow' ); } ?>">
 			<div class="row">
 				<?php
 				if ( ! $classroom_is_informal ) {
@@ -663,18 +663,35 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8';
 						<div class="book-space-content p-5">
 							<h2 class="mb-4 fw-bold"><?php esc_html_e( 'Book a space', 'ubc-vpfo-spaces-pages' ); ?></h2>
 							<p class="mt-0"><?php esc_html_e( 'To find out how to book this room, visit the Room Booking Request page.', 'ubc-vpfo-spaces-pages' ); ?></p>
-							<a href="<?php echo esc_url( 'https://facultystaff.students.ubc.ca/enrolment-services/scheduling-records-systems-management/scheduling-services/room-booking-requests-general-teaching-space' ); ?>" class="btn btn-primary" target="_blank" title="UBC Room Booking Requests">
-								<span><?php esc_html_e( 'Book Space', 'ubc-vpfo-spaces-pages' ); ?></span>
-								<i class="fas fa-arrow-up-right-from-square ms-3"></i>
-							</a>
+							<div class="d-flex flex-wrap align-items-center button-container">
+								<a href="<?php echo esc_url( 'https://facultystaff.students.ubc.ca/enrolment-services/scheduling-records-systems-management/scheduling-services/room-booking-requests-general-teaching-space' ); ?>" class="btn btn-primary" target="_blank" title="UBC Room Booking Requests">
+									<span><?php esc_html_e( 'Book Space', 'ubc-vpfo-spaces-pages' ); ?></span>
+									<i class="fas fa-arrow-up-right-from-square ms-3"></i>
+								</a>
+
+								<a href="<?php echo esc_url( $classroom_building_map ); ?>" class="btn btn-secondary" target="_blank" title="Wayfinding at UBC Map for <?php echo esc_html( $classroom_building_name ); ?>">
+									<span><?php esc_html_e( 'Open Map', 'ubc-vpfo-spaces-pages' ); ?></span>
+									<i class="fas fa-location-dot ms-3"></i>
+								</a>
+							</div>
 						</div>
 					</div>
 					<?php
 				}
 
 				if ( $classroom_building_map ) {
+					if ( $classroom_is_informal ) {
+						?>
+						<div class="col-lg-12 classroom-map-button mb-5">
+							<a href="<?php echo esc_url( $classroom_building_map ); ?>" class="btn btn-secondary d-inline-block" target="_blank" title="Wayfinding at UBC Map for <?php echo esc_html( $classroom_building_name ); ?>">
+								<span><?php esc_html_e( 'Open Map', 'ubc-vpfo-spaces-pages' ); ?></span>
+								<i class="fas fa-location-dot ms-3"></i>
+							</a>
+						</div>
+						<?php
+					}
 					?>
-					<div class="<?php echo esc_html( $classroom_map_col_class ); ?> ps-lg-5">
+					<div class="<?php echo esc_html( $classroom_map_col_class ); ?>">
 						<div class="classroom-map ratio">
 							<iframe src="<?php echo esc_url( $classroom_building_map ); ?>" title="Wayfinding Map"></iframe>
 						</div>
