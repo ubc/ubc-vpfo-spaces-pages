@@ -683,7 +683,7 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 					if ( $classroom_is_informal ) {
 						?>
 						<div class="col-lg-12 classroom-map-button mb-5">
-							<a href="<?php echo esc_url( $classroom_building_map ); ?>" class="btn btn-secondary" target="_blank" title="Wayfinding at UBC Map for <?php echo esc_html( $classroom_building_name ); ?>">
+							<a href="<?php echo esc_url( $classroom_building_map ); ?>" class="btn btn-secondary d-inline-block" target="_blank" title="Wayfinding at UBC Map for <?php echo esc_html( $classroom_building_name ); ?>">
 								<span><?php esc_html_e( 'Open Map', 'ubc-vpfo-spaces-pages' ); ?></span>
 								<i class="fas fa-location-dot ms-3"></i>
 							</a>
