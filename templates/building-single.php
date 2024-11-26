@@ -11,6 +11,10 @@ $total_classrooms = count( $building_classrooms );
 // Define the number of items per page
 $classrooms_per_page = 12;
 
+if ( isset( $args['all_classroom'] ) && $args['all_classroom'] ) {
+	$classrooms_per_page = 100;
+}
+
 // Calculate the total number of pages and cast to integer
 $max_pages = (int) ceil( $total_classrooms / $classrooms_per_page );
 
@@ -51,6 +55,9 @@ $breadcrumb             .= $breadcrumb_find_a_space ? '<i class="fas fa-chevron-
 $breadcrumb             .= $building_name_w_code ? '<i class="fas fa-chevron-right mx-4"></i><span class="d-inline-block current-page">' . $building_name_w_code . '</span>' : '';
 
 $alert_message = $building_fields['Alert Message'] ?? null;
+if ( trim( $alert_message ) === '' ) {
+	$alert_message = null;
+}
 
 $building_address = $building_fields['Building Address (override)'] ?? null;
 
@@ -71,8 +78,9 @@ $building_hours          = $building_hours ? array_map( 'trim', explode( ';', $b
 
 $building_notes = isset( $building_fields['Building Notes'] ) && ( trim( $building_fields['Building Notes'] ) !== '\n' && trim( $building_fields['Building Notes'] ) !== '' ) ? nl2br( $building_fields['Building Notes'] ) : null;
 
-$building_image = $building_fields['Building Image'][0] ?? array();
+$building_floor_plan = $building_fields['Floor Plans'][0]['url'] ?? null;
 
+$building_image        = $building_fields['Building Image'][0] ?? array();
 $building_image_url    = $building_image['url'] ?? null;
 $building_image_width  = $building_image['width'] ?? null;
 $building_image_height = $building_image['height'] ?? null;
@@ -156,12 +164,18 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 								<i class="fa-solid fa-users ms-2"></i>
 							</div>
 
-							<div class="building-floor-plan">
-								<a href="#" class="d-flex align-items-center">
-									<p class="mb-0"><?php esc_html_e( 'Floor Plan', 'ubc-vpfo-spaces-pages' ); ?></p>
-									<i class="fa-regular fa-file-pdf ms-2"></i>
-								</a>
-							</div>
+							<?php
+							if ( $building_floor_plan ) {
+								?>
+								<div class="building-floor-plan">
+									<a href="<?php echo esc_url( $building_floor_plan ); ?>" class="d-flex align-items-center" target="_blank">
+										<p class="mb-0"><?php esc_html_e( 'Floor Plan', 'ubc-vpfo-spaces-pages' ); ?></p>
+										<i class="fa-regular fa-file-pdf ms-2"></i>
+									</a>
+								</div>
+								<?php
+							}
+							?>
 
 							<div class="building-blue-phones">
 								<a href="#" class="d-flex align-items-center">
@@ -214,7 +228,7 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 		<?php
 		if ( ! empty( $building_classrooms ) ) {
 			// Get the sorted and paginated classrooms - see includes/helpers.php
-			$paginated_classrooms = get_sorted_and_paginated_classrooms( $building_classrooms, $classrooms_page );
+			$paginated_classrooms = get_sorted_and_paginated_classrooms( $building_classrooms, $classrooms_page, $classrooms_per_page );
 			?>
 
 			<section class="building-classrooms mt-9">
@@ -228,7 +242,7 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 					?>
 				</div>
 
-				<?php if ( count( $building_classrooms ) >= 12 ) { ?>
+				<?php if ( count( $building_classrooms ) >= $classrooms_per_page ) { ?>
 
 					<div class="classroom-list-nav d-flex mt-9">
 						<!-- Prev Page Link -->

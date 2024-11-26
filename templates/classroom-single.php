@@ -14,13 +14,6 @@ $classroom_building_title = $classroom_building_name ?? '';
 $classroom_building_slug  = $classroom_fields['Building Slug'][0] ?? null;
 $classroom_building_url   = $classroom_building_slug ? get_bloginfo( 'url' ) . '/buildings/' . $classroom_building_slug : null;
 
-if ( '-' === $classroom_name ) {
-	$classroom_room_number = $classroom_fields['Room Number'] ?? null;
-	$classroom_name        = '';
-	$classroom_name       .= $classroom_building_code ? $classroom_building_code : '';
-	$classroom_name       .= $classroom_room_number ? ' - ' . $classroom_room_number : '';
-}
-
 $breadcrumb_home         = get_bloginfo( 'url' );
 $breadcrumb_find_a_space = get_page_by_path( 'find-a-space' ) !== null ? get_permalink( get_page_by_path( 'find-a-space' ) ) : null;
 $breadcrumb_building     = $classroom_building_url ? '<a href="' . $classroom_building_url . '" class="d-inline-block vpfo-building-link" title="' . $classroom_building_title . '" rel="bookmark">' . $classroom_building_title . ' - ' . $classroom_building_code . '</a>' : null;
@@ -29,11 +22,17 @@ $breadcrumb             .= $breadcrumb_find_a_space ? '<i class="fas fa-chevron-
 $breadcrumb             .= $breadcrumb_building ? '<i class="fas fa-chevron-right mx-4"></i>' . $breadcrumb_building : '';
 $breadcrumb             .= $classroom_name ? '<i class="fas fa-chevron-right mx-4"></i><span class="d-inline-block current-page">' . $classroom_name . '</span>' : '';
 
+$classroom_is_informal  = $classroom_fields['Is Informal Space'] ?? false;
+
 $classroom_workday_room_code_original = $classroom_fields['Workday Room Code'] ?? null;
 $classroom_workday_room_code_override = $classroom_fields['Workday Room Code (override)'] ?? null;
 $classroom_workday_room_code          = $classroom_workday_room_code_override ?? $classroom_workday_room_code_original;
 
 $classroom_alert_message = $classroom_fields['Alert Message'] ?? null;
+if ( trim( $classroom_alert_message ) === '' ) {
+	$classroom_alert_message = null;
+}
+
 $classroom_image_gallery = $classroom_fields['Image Gallery'] ?? array();
 $classroom_layout_image  = $classroom_fields['Classroom Layout'][0] ?? array();
 
@@ -49,9 +48,12 @@ if ( trim( $classroom_overview ) === '' ) {
 	$classroom_overview = null;
 }
 
-$classroom_360_view    = $classroom_fields['360 View'] ?? null;
-$classroom_av_guide    = $classroom_fields['AV Guide'][0]['url'] ?? null;
-$classroom_ap_helpdesk = '#'; // TODO - get real data
+$classroom_shared_av_guide = $classroom_fields['Shared AV Guide'] ?? null;
+$classroom_360_view        = $classroom_fields['360 View'] ?? null;
+$classroom_av_guide        = $classroom_fields['AV Guide'][0]['url'] ?? null;
+$classroom_outlets_layout  = $classroom_fields['Electrical Outlets Layout'][0]['url'] ?? null;
+$classroom_av_helpdesk     = 'tel:6048227956';
+
 $classroom_layout_type = $classroom_fields['Formatted_Room_Layout_Type'] ?? null;
 
 $classroom_furniture_source = $classroom_fields['Formatted_Furniture'] ?? null;
@@ -62,7 +64,7 @@ $classroom_accessibility_source = $classroom_fields['Formatted_Accessibility'] ?
 $classroom_accessibility_source = str_replace( '"', '', $classroom_accessibility_source );
 $classroom_accessibility        = $classroom_accessibility_source ? explode( ', ', $classroom_accessibility_source ) : array();
 
-$classroom_accessibility_content = $classroom_fields['Accessibility Content'] ?? null;
+$classroom_accessibility_content = $classroom_fields['Accessibility Notes'] ?? null;
 if ( trim( $classroom_accessibility_content ) === '' ) {
 	$classroom_accessibility_content = null;
 }
@@ -116,7 +118,8 @@ $classroom_other_av_source = $classroom_fields['Formatted_Amenities_Other_AV_Fea
 $classroom_other_av_source = str_replace( '"', '', $classroom_other_av_source );
 $classroom_other_av        = $classroom_other_av_source ? explode( ', ', $classroom_other_av_source ) : array();
 
-$classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=' . $classroom_building_code : null;
+$classroom_building_map  = $classroom_building_code ? 'https://maps.ubc.ca/?code=' . $classroom_building_code : null;
+$classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-lg-5';
 ?>
 
 <section class="vpfo-spaces-page">
@@ -154,7 +157,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 					?>
 
 					<?php
-					if ( $classroom_workday_room_code ) {
+					if ( $classroom_workday_room_code && ! $classroom_is_informal ) {
 						?>
 						<div class="workday-room-code text-uppercase mt-3"><?php echo wp_kses_post( $classroom_workday_room_code ); ?></div>
 						<?php
@@ -304,8 +307,19 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 
 							if ( $classroom_layout_element ) {
 								?>
-								<div class="classroom-layout">
+								<div class="classroom-layout d-none d-lg-block">
+									<a href="#classroom-layout-modal" data-overlay-trigger>
+										<?php echo wp_kses_post( $classroom_layout_element ); ?>
+									</a>
+								</div>
+								<div class="classroom-layout d-lg-none">
 									<?php echo wp_kses_post( $classroom_layout_element ); ?>
+								</div>
+								<div class="d-none">
+									<!-- Each overlay needs an id -->
+									<div id="classroom-layout-modal">
+										<?php echo wp_kses_post( $classroom_layout_element ); ?>
+									</div>
 								</div>
 								<?php
 							}
@@ -349,7 +363,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 								<?php
 							}
 
-							if ( $classroom_360_view || $classroom_av_guide || $classroom_ap_helpdesk ) {
+							if ( ( $classroom_360_view || $classroom_shared_av_guide || $classroom_av_guide || $classroom_outlets_layout || $classroom_av_helpdesk ) && ! $classroom_is_informal ) {
 								?>
 								<div class="classroom-resources">
 									<h2 class="text-uppercase"><?php esc_html_e( 'Resources', 'ubc-vpfo-spaces-pages' ); ?></h2>
@@ -370,7 +384,7 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 										if ( $classroom_av_guide ) {
 											?>
 											<div class="btn-wrapper">
-												<a href="<?php echo esc_url( $classroom_av_guide ); ?>" class="btn btn-secondary d-block" download>
+												<a href="<?php echo esc_url( $classroom_av_guide ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external">
 													<?php esc_html_e( 'AV Guide', 'ubc-vpfo-spaces-pages' ); ?>
 													<i class="far fa-file-pdf ms-3"></i>
 												</a>
@@ -378,10 +392,32 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 											<?php
 										}
 
-										if ( $classroom_ap_helpdesk ) {
+										if ( $classroom_shared_av_guide ) {
 											?>
 											<div class="btn-wrapper">
-												<a href="<?php echo esc_url( $classroom_ap_helpdesk ); ?>" class="btn btn-secondary d-block">
+												<a href="<?php echo esc_url( $classroom_shared_av_guide ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external">
+													<?php esc_html_e( 'Shared AV Guide', 'ubc-vpfo-spaces-pages' ); ?>
+													<i class="far fa-file-pdf ms-3"></i>
+												</a>
+											</div>
+											<?php
+										}
+
+										if ( $classroom_outlets_layout ) {
+											?>
+											<div class="btn-wrapper">
+												<a href="<?php echo esc_url( $classroom_outlets_layout ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external">
+													<?php esc_html_e( 'Electrical Outlets Layout', 'ubc-vpfo-spaces-pages' ); ?>
+													<i class="fas fa-plug ms-3"></i>
+												</a>
+											</div>
+											<?php
+										}
+
+										if ( $classroom_av_helpdesk ) {
+											?>
+											<div class="btn-wrapper">
+												<a href="<?php echo esc_url( $classroom_av_helpdesk ); ?>" class="btn btn-secondary d-block">
 													<?php esc_html_e( 'AV Helpdesk', 'ubc-vpfo-spaces-pages' ); ?>
 													<i class="fas fa-phone ms-3"></i>
 												</a>
@@ -618,23 +654,44 @@ $classroom_building_map = $classroom_building_code ? 'https://maps.ubc.ca/?code=
 			</div>
 		</section>
 
-		<section class="classroom-book-space mt-9 mt-lg-17">
+		<section class="classroom-book-space mt-9 mt-lg-17<?php if ( $classroom_is_informal ) { echo esc_html( ' no-shadow' ); } ?>">
 			<div class="row">
-				<div class="col-lg-4 d-lg-flex align-items-lg-center pe-lg-5">
-					<div class="book-space-content p-5">
-						<h2 class="mb-4 fw-bold"><?php esc_html_e( 'Book a space', 'ubc-vpfo-spaces-pages' ); ?></h2>
-						<p class="mt-0"><?php esc_html_e( 'To find out how to book this room, visit the Room Booking Request page.', 'ubc-vpfo-spaces-pages' ); ?></p>
-						<a href="<?php echo esc_url( 'https://facultystaff.students.ubc.ca/enrolment-services/scheduling-records-systems-management/scheduling-services/room-booking-requests-general-teaching-space' ); ?>" class="btn btn-primary" target="_blank" title="UBC Room Booking Requests">
-							<span><?php esc_html_e( 'Book Space', 'ubc-vpfo-spaces-pages' ); ?></span>
-							<i class="fas fa-arrow-up-right-from-square ms-3"></i>
-						</a>
-					</div>
-				</div>
-
 				<?php
-				if ( $classroom_building_map ) {
+				if ( ! $classroom_is_informal ) {
 					?>
-					<div class="col-lg-8 ps-lg-5">
+					<div class="col-lg-4 d-lg-flex align-items-lg-center pe-lg-5">
+						<div class="book-space-content p-5">
+							<h2 class="mb-4 fw-bold"><?php esc_html_e( 'Book a space', 'ubc-vpfo-spaces-pages' ); ?></h2>
+							<p class="mt-0"><?php esc_html_e( 'To find out how to book this room, visit the Room Booking Request page.', 'ubc-vpfo-spaces-pages' ); ?></p>
+							<div class="d-flex flex-wrap align-items-center button-container">
+								<a href="<?php echo esc_url( 'https://facultystaff.students.ubc.ca/enrolment-services/scheduling-records-systems-management/scheduling-services/room-booking-requests-general-teaching-space' ); ?>" class="btn btn-primary" target="_blank" title="UBC Room Booking Requests">
+									<span><?php esc_html_e( 'Book Space', 'ubc-vpfo-spaces-pages' ); ?></span>
+									<i class="fas fa-arrow-up-right-from-square ms-3"></i>
+								</a>
+
+								<a href="<?php echo esc_url( $classroom_building_map ); ?>" class="btn btn-secondary" target="_blank" title="Wayfinding at UBC Map for <?php echo esc_html( $classroom_building_name ); ?>">
+									<span><?php esc_html_e( 'Open Map', 'ubc-vpfo-spaces-pages' ); ?></span>
+									<i class="fas fa-location-dot ms-3"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+					<?php
+				}
+
+				if ( $classroom_building_map ) {
+					if ( $classroom_is_informal ) {
+						?>
+						<div class="col-lg-12 classroom-map-button mb-5">
+							<a href="<?php echo esc_url( $classroom_building_map ); ?>" class="btn btn-secondary d-inline-block" target="_blank" title="Wayfinding at UBC Map for <?php echo esc_html( $classroom_building_name ); ?>">
+								<span><?php esc_html_e( 'Open Map', 'ubc-vpfo-spaces-pages' ); ?></span>
+								<i class="fas fa-location-dot ms-3"></i>
+							</a>
+						</div>
+						<?php
+					}
+					?>
+					<div class="<?php echo esc_html( $classroom_map_col_class ); ?>">
 						<div class="classroom-map ratio">
 							<iframe src="<?php echo esc_url( $classroom_building_map ); ?>" title="Wayfinding Map"></iframe>
 						</div>
