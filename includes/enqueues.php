@@ -28,7 +28,7 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 		'6.6.0'
 	);
 
-	// conditionally load the glider JS if it's a classroom
+	// conditionally load classroom-specific JS if it's a classroom
 	global $is_classroom_template;
 
 	if ( isset( $is_classroom_template ) && $is_classroom_template ) {
@@ -43,6 +43,14 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 		wp_enqueue_script(
 			'accordion-js',
 			plugin_dir_url( __DIR__ ) . 'js/accordion.js',
+			array(),
+			'1.0',
+			array( 'strategy' => 'defer' )
+		);
+
+		wp_enqueue_script(
+			'modal-js',
+			plugin_dir_url( __DIR__ ) . 'js/layout-modal.js',
 			array(),
 			'1.0',
 			array( 'strategy' => 'defer' )

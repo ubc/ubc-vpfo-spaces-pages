@@ -19,6 +19,7 @@
         "sass-loader": "^12.6.0"
     },
     "dependencies": {
+        "@koga73/overlay": "^3.0.3",
         "@popperjs/core": "^2.11.8",
         "accordion-js": "^3.3.4",
         "glider-js": "^1.7.9"
