@@ -11,7 +11,7 @@ class Airtable_Api {
 	public Airtable $airtable;
 	public string $site_location;
 
-	const CACHE_TTL      = 3600;
+	const CACHE_TTL      = HOUR_IN_SECONDS * 12; // 12 hours
 	const ROOMS_PER_PAGE = 10;
 
 	const LOCATION_VAN  = 'van_airtable';
