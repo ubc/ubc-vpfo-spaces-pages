@@ -59,7 +59,9 @@ if ( trim( $alert_message ) === '' ) {
 	$alert_message = null;
 }
 
-$building_address = $building_fields['Building Address (override)'] ?? null;
+$building_address_original = $building_fields['Formatted Building Address'][0] ?? null;
+$building_address_override = $building_fields['Building Address (override)'] ?? null;
+$building_address          = $building_address_override ?? $building_address_original;
 
 // commented out because client wants campus removed from front-end template; leaving code here in case they change their mind
 // $building_campus_code = $building_fields['Campus Code'][0] ?? null;
