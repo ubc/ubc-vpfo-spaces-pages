@@ -204,6 +204,18 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 								</div>
 							</div>
 						</div>
+
+						<?php if ( $building_map ) { ?>
+							<div class="building-wayfinding">
+								<h2 class="text-uppercase"><?php esc_html_e( 'Wayfinding', 'ubc-vpfo-spaces-pages' ); ?></h2>
+								<div class="building-map-link">
+									<a href="<?php echo esc_url( $building_map ); ?>" class="btn btn-secondary d-block" target="_blank">
+										<?php esc_html_e( 'Open Full Screen Map', 'ubc-vpfo-spaces-pages' ); ?>
+										<i class="fa-solid fa-map-location-dot"></i>
+									</a>
+								</div>
+							</div>
+						<?php } ?>
 					</div>
 				</div>
 
