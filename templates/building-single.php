@@ -183,7 +183,7 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 								?>
 
 								<div class="btn-wrapper">
-									<a href="#" class="btn btn-secondary d-block" target="_blank">
+									<a href="<?php echo esc_url( 'https://security.ubc.ca/blue-phones-map' ); ?>" class="btn btn-secondary d-block" target="_blank">
 										<?php esc_html_e( 'Blue Phones Map', 'ubc-vpfo-spaces-pages' ); ?>
 										<i class="fa-solid fa-phone ms-3"></i>
 									</a>
