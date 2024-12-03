@@ -14,6 +14,10 @@ $classroom_building_title = $classroom_building_name ?? '';
 $classroom_building_slug  = $classroom_fields['Building Slug'][0] ?? null;
 $classroom_building_url   = $classroom_building_slug ? get_bloginfo( 'url' ) . '/buildings/' . $classroom_building_slug : null;
 
+// For use in the Copy to Clipboard button.
+$classroom_slug = $classroom_fields['Slug'] ?? null;
+$classroom_url  = $classroom_slug ? get_bloginfo( 'url' ) . '/classrooms/' . $classroom_slug : null;
+
 $breadcrumb_home         = get_bloginfo( 'url' );
 $breadcrumb_find_a_space = get_page_by_path( 'find-a-space' ) !== null ? get_permalink( get_page_by_path( 'find-a-space' ) ) : null;
 $breadcrumb_building     = $classroom_building_url ? '<a href="' . $classroom_building_url . '" class="d-inline-block vpfo-building-link" title="' . $classroom_building_title . '" rel="bookmark">' . $classroom_building_title . ' - ' . $classroom_building_code . '</a>' : null;
@@ -160,6 +164,19 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 					if ( $classroom_workday_room_code && ! $classroom_is_informal ) {
 						?>
 						<div class="workday-room-code text-uppercase mt-3"><?php echo wp_kses_post( $classroom_workday_room_code ); ?></div>
+						<?php
+					}
+					?>
+
+					<?php
+					if ( $classroom_url ) {
+						?>
+						<div class="clippy text-uppercase mt-3" data-clipboard-text="<?php echo esc_url( $classroom_url ); ?>">
+							<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M9.28613 1.78405C8.71426 1.21217 7.78613 1.21217 7.21426 1.78405L2.90176 6.09654C1.91504 7.08326 1.91504 8.6817 2.90176 9.66842C3.88848 10.6551 5.48691 10.6551 6.47363 9.66842L10.0361 6.10592C10.2916 5.85045 10.7088 5.85045 10.9643 6.10592C11.2197 6.36139 11.2197 6.77858 10.9643 7.03404L7.40176 10.5965C5.90176 12.0965 3.47363 12.0965 1.97363 10.5965C0.473633 9.09654 0.473633 6.66842 1.97363 5.16842L6.28613 0.85592C7.37129 -0.229236 9.1291 -0.229236 10.2143 0.85592C11.2994 1.94108 11.2994 3.69889 10.2143 4.78405L6.08926 8.90904C5.41895 9.57936 4.33145 9.57936 3.66113 8.90904C2.99082 8.23873 2.99082 7.15123 3.66113 6.48092L7.03613 3.10592C7.2916 2.85045 7.70879 2.85045 7.96426 3.10592C8.21973 3.36139 8.21973 3.77858 7.96426 4.03405L4.58926 7.40904C4.43223 7.56608 4.43223 7.82389 4.58926 7.98092C4.74629 8.13795 5.0041 8.13795 5.16113 7.98092L9.28613 3.85592C9.85801 3.28405 9.85801 2.35592 9.28613 1.78405Z" fill="#0055B7"/>
+							</svg>
+							Copy permalink
+						</div>
 						<?php
 					}
 					?>
