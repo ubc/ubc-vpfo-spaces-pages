@@ -396,7 +396,7 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 											?>
 											<div class="btn-wrapper">
 												<a href="<?php echo esc_url( $classroom_shared_av_guide ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external">
-													<?php esc_html_e( 'Shared AV Guide', 'ubc-vpfo-spaces-pages' ); ?>
+													<?php esc_html_e( 'AV Guide', 'ubc-vpfo-spaces-pages' ); ?>
 													<i class="far fa-file-pdf ms-3"></i>
 												</a>
 											</div>
