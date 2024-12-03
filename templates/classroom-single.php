@@ -442,22 +442,12 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 							<div class="ac">
 								<h2 class="ac-header">
 									<button class="ac-trigger" type="button">
-										<?php esc_html_e( 'Style &amp; Layout', 'ubc-vpfo-spaces-pages' ); ?>
+										<?php esc_html_e( 'Style - Furniture &amp; Layout', 'ubc-vpfo-spaces-pages' ); ?>
 									</button>
 								</h2>
 								<div class="ac-panel">
 									<div class="ac-panel-inner">
 										<?php
-										if ( $classroom_layout_type ) {
-											?>
-											<div class="classroom-layout-type">
-												<h3><?php esc_html_e( 'Classroom Layout', 'ubc-vpfo-spaces-pages' ); ?></h3>
-												<ul>
-													<li><?php echo wp_kses_post( $classroom_layout_type ); ?></li>
-												</ul>
-											</div>
-											<?php
-										}
 
 										if ( ! empty( $classroom_furniture ) ) {
 											?>
@@ -471,6 +461,17 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 														<?php
 													}
 													?>
+												</ul>
+											</div>
+											<?php
+										}
+
+										if ( $classroom_layout_type ) {
+											?>
+											<div class="classroom-layout-type">
+												<h3><?php esc_html_e( 'Classroom Layout', 'ubc-vpfo-spaces-pages' ); ?></h3>
+												<ul>
+													<li><?php echo wp_kses_post( $classroom_layout_type ); ?></li>
 												</ul>
 											</div>
 											<?php

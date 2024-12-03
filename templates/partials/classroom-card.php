@@ -78,7 +78,7 @@ if ( isset( $classroom_thumbnail['url'] ) ) {
 				if ( $classroom_style_layout ) {
 					?>
 					<dl class="ms-9">
-						<dt><?php esc_html_e( 'Style &amp; Layout', 'ubc-vpfo-spaces-pages' ); ?></dt>
+						<dt><?php esc_html_e( 'Style - Furniture &amp; Layout', 'ubc-vpfo-spaces-pages' ); ?></dt>
 						<dd><?php echo wp_kses_post( $classroom_style_layout ); ?></dd>
 					</dl>
 					<?php
