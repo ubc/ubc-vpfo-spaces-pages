@@ -59,7 +59,9 @@ if ( trim( $alert_message ) === '' ) {
 	$alert_message = null;
 }
 
-$building_address = $building_fields['Building Address (override)'] ?? null;
+$building_address_original = $building_fields['Formatted Building Address'][0] ?? null;
+$building_address_override = $building_fields['Building Address (override)'] ?? null;
+$building_address          = $building_address_override ?? $building_address_original;
 
 // commented out because client wants campus removed from front-end template; leaving code here in case they change their mind
 // $building_campus_code = $building_fields['Campus Code'][0] ?? null;
@@ -158,46 +160,62 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 						<?php // TODO - figure out real dynamic data and labelling for this whole section ?>
 						<div class="building-resources">
 							<h2 class="text-uppercase"><?php esc_html_e( 'Resources', 'ubc-vpfo-spaces-pages' ); ?></h2>
-							
-							<div class="d-flex align-items-center building-amenities">
-								<p class="mb-0"><?php esc_html_e( 'Inclusive Washrooms', 'ubc-vpfo-spaces-pages' ); ?></p>
-								<i class="fa-solid fa-users ms-2"></i>
-							</div>
 
-							<?php
-							if ( $building_floor_plan ) {
-								?>
-								<div class="building-floor-plan">
-									<a href="<?php echo esc_url( $building_floor_plan ); ?>" class="d-flex align-items-center" target="_blank">
-										<p class="mb-0"><?php esc_html_e( 'Floor Plan', 'ubc-vpfo-spaces-pages' ); ?></p>
-										<i class="fa-regular fa-file-pdf ms-2"></i>
+							<div class="building-resources-links d-flex flex-column flex-sm-row flex-lg-column flex-xl-row flex-sm-wrap w-100">
+								<div class="btn-wrapper">
+									<a href="<?php echo esc_url( 'https://facilities.ubc.ca/inclusive-washrooms' ); ?>" class="btn btn-secondary d-block" target="_blank">
+										<?php esc_html_e( 'Inclusive Washrooms', 'ubc-vpfo-spaces-pages' ); ?>
+										<i class="fa-solid fa-users ms-3"></i>
 									</a>
 								</div>
+
 								<?php
-							}
-							?>
+								if ( $building_floor_plan ) {
+									?>
+									<div class="btn-wrapper">
+										<a href="<?php echo esc_url( $building_floor_plan ); ?>" class="btn btn-secondary d-block" target="_blank">
+											<?php esc_html_e( 'Floor Plan', 'ubc-vpfo-spaces-pages' ); ?>
+											<i class="fa-regular fa-file-pdf ms-3"></i>
+										</a>
+									</div>
+									<?php
+								}
+								?>
 
-							<div class="building-blue-phones">
-								<a href="#" class="d-flex align-items-center">
-									<p class="mb-0"><?php esc_html_e( 'Blue Phones Map', 'ubc-vpfo-spaces-pages' ); ?></p>
-									<i class="fa-solid fa-location-dot ms-2"></i>
-								</a>
-							</div>
+								<div class="btn-wrapper">
+									<a href="<?php echo esc_url( 'https://security.ubc.ca/blue-phones-map' ); ?>" class="btn btn-secondary d-block" target="_blank">
+										<?php esc_html_e( 'Blue Phones Map', 'ubc-vpfo-spaces-pages' ); ?>
+										<i class="fa-solid fa-phone ms-3"></i>
+									</a>
+								</div>
 
-							<div class="building-accessibility-shuttle-map">
-								<a href="#" class="d-flex align-items-center">
-									<p class="mb-0"><?php esc_html_e( 'Accessibility Shuttle Map', 'ubc-vpfo-spaces-pages' ); ?></p>
-									<i class="fa-solid fa-location-dot ms-2"></i>
-								</a>
-							</div>
+								<div class="btn-wrapper">
+									<a href="<?php echo esc_url( 'https://students.ubc.ca/about-student-services/centre-for-accessibility/ubc-accessibility-shuttle' ); ?>" class="btn btn-secondary d-block"  target="_blank">
+										<?php esc_html_e( 'Accessibility Shuttle Map', 'ubc-vpfo-spaces-pages' ); ?>
+										<i class="fa-solid fa-van-shuttle ms-3"></i>
+									</a>
+								</div>
 
-							<div class="building-aed-map">
-								<a href="#" class="d-flex align-items-center">
-									<p class="mb-0"><?php esc_html_e( 'AED Shuttle Map', 'ubc-vpfo-spaces-pages' ); ?></p>
-									<i class="fa-solid fa-location-dot ms-2"></i>
-								</a>
+								<div class="btn-wrapper">
+									<a href="<?php echo esc_url( 'https://security.ubc.ca/aed-naloxone-map' ); ?>" class="btn btn-secondary d-block"  target="_blank">
+										<?php esc_html_e( 'AED &amp; Naloxone Map', 'ubc-vpfo-spaces-pages' ); ?>
+										<i class="fa-solid fa-heart-pulse ms-3"></i>
+									</a>
+								</div>
 							</div>
 						</div>
+
+						<?php if ( $building_map ) { ?>
+							<div class="building-wayfinding">
+								<h2 class="text-uppercase"><?php esc_html_e( 'Wayfinding', 'ubc-vpfo-spaces-pages' ); ?></h2>
+								<div class="building-map-link">
+									<a href="<?php echo esc_url( $building_map ); ?>" class="btn btn-secondary d-block" target="_blank">
+										<?php esc_html_e( 'Open Full Screen Map', 'ubc-vpfo-spaces-pages' ); ?>
+										<i class="fa-solid fa-map-location-dot"></i>
+									</a>
+								</div>
+							</div>
+						<?php } ?>
 					</div>
 				</div>
 
