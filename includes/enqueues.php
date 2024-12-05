@@ -30,6 +30,7 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 
 	// conditionally load classroom-specific JS if it's a classroom
 	global $is_classroom_template;
+	global $is_building_template;
 
 	if ( isset( $is_classroom_template ) && $is_classroom_template ) {
 		wp_enqueue_script(
@@ -56,6 +57,10 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 			array( 'strategy' => 'defer' )
 		);
 
+	}
+
+	if ( ( isset( $is_building_template ) && $is_building_template )
+		|| ( isset( $is_classroom_template ) && $is_classroom_template ) ) {
 		wp_enqueue_script(
 			'vpfo-clipboard-js',
 			plugin_dir_url( __DIR__ ) . 'js/clipboard.js',

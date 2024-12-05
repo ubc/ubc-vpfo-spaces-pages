@@ -7,6 +7,9 @@ defined( 'ABSPATH' ) || exit;
 global $is_classroom_template;
 $is_classroom_template = false;
 
+global $is_building_template;
+$is_building_template = false;
+
 class Spaces_Page_Handler {
 
 	/**
@@ -66,8 +69,10 @@ class Spaces_Page_Handler {
 
 	public function handle_building_template_redirect() {
 
+		global $is_building_template;
+
 		$building_slug = get_query_var( 'building_slug' );
-		$all_classroom = rest_sanitize_boolean( $_REQUEST['all_classroom'] );
+		$all_classroom = rest_sanitize_boolean( $_REQUEST['all_classroom'] ?? false );
 
 		if ( ! $building_slug ) {
 			return;
@@ -82,6 +87,8 @@ class Spaces_Page_Handler {
 		if ( null === $building ) {
 			return;
 		}
+
+		$is_building_template = true;
 
 		$template_name = 'building-single.php';
 		$args          = array(

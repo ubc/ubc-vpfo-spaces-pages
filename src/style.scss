@@ -1,3 +1,7 @@
+// Tippy css. Needs to be scoped outisde of .vpfo-spaces-page
+@import 'tippy.js/dist/tippy.css';
+@import 'tippy.js/themes/light.css';
+
 .vpfo-spaces-page {
 	// Bootstrap base config
 	@import "~bootstrap/scss/functions";
