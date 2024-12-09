@@ -171,6 +171,27 @@ class Airtable_Api {
 		return $response;
 	}
 
+	public function get_classroom_options_links() {
+		$params = array(
+			'filterByFormula' => '{Group} = "Classroom Link"',
+			'fields'          => array(
+				'Key',
+				'Value',
+			),
+		);
+
+		// Query the Options table for only the specified fields
+		$response = $this->get( table: 'Options', params: $params, request_resource: 'classroom_options_links' );
+
+		// Check if the response is valid and contains data
+		if ( ! $response || empty( $response ) ) {
+			return null; // No links found or response is empty
+		}
+
+		// Return the list of links
+		return $response;
+	}
+
 	/**
 	 * Iterate over all keys in the Airtable Response and sanitize the
 	 * values for storage as a WordPress Transient.
