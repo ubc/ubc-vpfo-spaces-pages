@@ -88,15 +88,15 @@ class Airtable_Api {
 			),
 		);
 
-		// Query the Buildings table for only the specified fields
+		// Query the Options table for only the specified fields
 		$response = $this->get( table: 'Options', params: $params, request_resource: 'building_options_links' );
 
 		// Check if the response is valid and contains data
 		if ( ! $response || empty( $response ) ) {
-			return null; // No buildings found or response is empty
+			return null; // No links found or response is empty
 		}
 
-		// Return the list of buildings with Slug and Last Modified data
+		// Return the list of links
 		return $response;
 	}
 
