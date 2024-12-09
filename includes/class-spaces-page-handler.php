@@ -82,6 +82,12 @@ class Spaces_Page_Handler {
 
 		$building_code       = isset( $building->fields->{'Code'} ) ? $building->fields->{'Code'} : null;
 		$building_classrooms = $building_code ? $this->airtable_api->get_classrooms_for_building( $building_code ) : (object) array();
+		
+		$building_options_links_raw = $this->airtable_api->get_building_options_links();
+		$building_options_links = array();
+		foreach ( $building_options_links_raw as $building_options_link ) {
+			$building_options_links[ $building_options_link->fields->{'Key'} ] = $building_options_link->fields->{'Value'};
+		}
 
 		// If the lookup had no results, allow WordPress to 404.
 		if ( null === $building ) {
@@ -92,9 +98,10 @@ class Spaces_Page_Handler {
 
 		$template_name = 'building-single.php';
 		$args          = array(
-			'building'            => $building,
-			'building_classrooms' => $building_classrooms,
-			'all_classroom'       => $all_classroom,
+			'building'               => $building,
+			'building_classrooms'    => $building_classrooms,
+			'all_classroom'          => $all_classroom,
+			'building_options_links' => $building_options_links,
 		);
 
 		if ( ! locate_template( sprintf( 'spaces-page/%s', $template_name ), true, true, $args ) ) {
