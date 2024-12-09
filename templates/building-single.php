@@ -99,7 +99,7 @@ $building_image_string .= isset( $building_image_url ) ? '>' : '';
 
 $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Link'] : null;
 
-$building_options_links = $args['building_options_links'] ?? array();
+$building_options_links                     = $args['building_options_links'] ?? array();
 $building_options_inclusive_washrooms       = $building_options_links['LINK_INCLUSIVE_WASHROOMS'] ?? null;
 $building_options_accessibility_shuttle_map = $building_options_links['LINK_ACCESSIBILITY_SHUTTLE_MAP'] ?? null;
 $building_options_blue_phones_map           = $building_options_links['LINK_BLUE_PHONES_MAP'] ?? null;

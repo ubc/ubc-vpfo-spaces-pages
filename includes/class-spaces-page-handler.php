@@ -82,9 +82,9 @@ class Spaces_Page_Handler {
 
 		$building_code       = isset( $building->fields->{'Code'} ) ? $building->fields->{'Code'} : null;
 		$building_classrooms = $building_code ? $this->airtable_api->get_classrooms_for_building( $building_code ) : (object) array();
-		
+
 		$building_options_links_raw = $this->airtable_api->get_building_options_links();
-		$building_options_links = array();
+		$building_options_links     = array();
 		foreach ( $building_options_links_raw as $building_options_link ) {
 			$building_options_links[ $building_options_link->fields->{'Key'} ] = $building_options_link->fields->{'Value'};
 		}
