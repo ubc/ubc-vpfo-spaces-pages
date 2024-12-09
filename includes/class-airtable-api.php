@@ -81,7 +81,7 @@ class Airtable_Api {
 
 	public function get_building_options_links() {
 		$params = array(
-			'filterByFormula' => '{Group} = "Link"',
+			'filterByFormula' => '{Group} = "Building Link"',
 			'fields'          => array(
 				'Key',
 				'Value',
