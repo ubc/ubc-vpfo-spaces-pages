@@ -307,7 +307,7 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 		<section class="classroom-details mt-13 mt-md-9">
 
 			<div class="row">
-				<div class="col-lg-6 order-2 order-lg-1 pe-lg-5">
+				<div class="col-lg-6 pe-lg-5">
 					<div class="classroom-info mt-9 mt-lg-0">
 						<?php
 						if ( ! empty( $classroom_layout_image ) ) {
@@ -451,7 +451,7 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 					</div>
 				</div>
 
-				<div class="col-lg-6 order-1 order-lg-2 ps-lg-5">
+				<div class="col-lg-6 ps-lg-5">
 					<?php
 					if ( $classroom_layout_type || $classroom_furniture ) {
 						?>
