@@ -56,7 +56,6 @@ $classroom_shared_av_guide = $classroom_fields['Shared AV Guide'] ?? null;
 $classroom_360_view        = $classroom_fields['360 View'] ?? null;
 $classroom_av_guide        = $classroom_fields['AV Guide'][0]['url'] ?? null;
 $classroom_outlets_layout  = $classroom_fields['Electrical Outlets Layout'][0]['url'] ?? null;
-$classroom_av_helpdesk     = 'tel:6048227956';
 
 $classroom_layout_type = $classroom_fields['Formatted_Room_Layout_Type'] ?? null;
 
@@ -124,6 +123,11 @@ $classroom_other_av        = $classroom_other_av_source ? explode( ', ', $classr
 
 $classroom_building_map  = $classroom_building_code ? 'https://maps.ubc.ca/?code=' . $classroom_building_code : null;
 $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-lg-5';
+
+$classroom_options_links                = $args['classroom_options_links'] ?? array();
+$classroom_options_centre_accessibility = $classroom_options_links['LINK_CENTRE_FOR_ACCESSIBILITY'] ?? null;
+$classroom_options_glossary             = $classroom_options_links['LINK_GLOSSARY'] ?? null;
+$classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_AV_HELPDESK_PHONE'] ) ? 'tel:' . $classroom_options_links['LINK_AV_HELPDESK_PHONE'] : null;
 ?>
 
 <section class="vpfo-spaces-page">
@@ -182,7 +186,7 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 					?>
 					
 				</div>
-				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary btn-border-thick mt-9 mt-md-0 me-auto me-md-0 ms-md-auto d-flex align-items-center vpfo-return-to-lsf"><i class="fas fa-chevron-left me-3"></i><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
+				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary btn-border-thick mt-9 mt-md-0 me-auto me-md-0 ms-md-auto d-flex align-items-center align-self-md-end vpfo-return-to-lsf"><i class="fas fa-chevron-left me-3"></i><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
 			</div>
 
 			<?php
@@ -380,7 +384,7 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 								<?php
 							}
 
-							if ( ( $classroom_360_view || $classroom_shared_av_guide || $classroom_av_guide || $classroom_outlets_layout || $classroom_av_helpdesk ) && ! $classroom_is_informal ) {
+							if ( ( $classroom_360_view || $classroom_shared_av_guide || $classroom_av_guide || $classroom_outlets_layout || $classroom_options_av_helpdesk ) && ! $classroom_is_informal ) {
 								?>
 								<div class="classroom-resources">
 									<h2 class="text-uppercase"><?php esc_html_e( 'Resources', 'ubc-vpfo-spaces-pages' ); ?></h2>
@@ -431,10 +435,10 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 											<?php
 										}
 
-										if ( $classroom_av_helpdesk ) {
+										if ( $classroom_options_av_helpdesk ) {
 											?>
 											<div class="btn-wrapper">
-												<a href="<?php echo esc_url( $classroom_av_helpdesk ); ?>" class="btn btn-secondary d-block">
+												<a href="<?php echo esc_url( $classroom_options_av_helpdesk ); ?>" class="btn btn-secondary d-block">
 													<?php esc_html_e( 'AV Helpdesk', 'ubc-vpfo-spaces-pages' ); ?>
 													<i class="fas fa-phone ms-3"></i>
 												</a>
@@ -536,11 +540,15 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 												<p><?php echo wp_kses_post( $classroom_accessibility_content ); ?></p>
 												<?php
 											}
+
+											if ( $classroom_options_centre_accessibility ) {
+												?>
+												<p class="accessibility-cta">
+													<a href="<?php echo esc_url( $classroom_options_centre_accessibility ); ?>" target="_blank"><?php esc_html_e( 'Contact the Centre for Accessibility', 'ubc-vpfo-spaces-pages' ); ?></a>
+												</p>
+												<?php
+											}
 											?>
-											
-											<p class="accessibility-cta">
-												<a href="https://students.ubc.ca/about-student-services/centre-for-accessibility" target="_blank"><?php esc_html_e( 'Contact the Centre for Accessibility', 'ubc-vpfo-spaces-pages' ); ?></a>
-											</p>
 										</div>
 
 										<?php
@@ -727,7 +735,15 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 		</section>
 
 		<section class="classroom-footer mt-9">
-			<p><?php echo wp_kses_post( sprintf( 'Find something you don\'t recognize? We\'ve compiled definitions in our <a href="%s" rel="bookmark" title="UBC Learning Spaces glossary">glossary</a>.', 'https://learningspaces.ubc.ca/resources/glossary' ) ); ?></p>
+			<?php
+			if ( $classroom_options_glossary ) {
+				?>
+				<p>
+					<?php echo wp_kses_post( sprintf( 'Find something you don\'t recognize? We\'ve compiled definitions in our <a href="%s" rel="bookmark" title="UBC Learning Spaces glossary">glossary</a>.', $classroom_options_glossary ) ); ?>
+				</p>
+				<?php
+			}
+			?>
 
 			<div class="pattern-slice position-relative mt-9">
 				<div class="pattern-slice-gradient position-absolute h-100 w-100"></div>

@@ -81,7 +81,7 @@ class Airtable_Api {
 
 	public function get_building_options_links() {
 		$params = array(
-			'filterByFormula' => '{Group} = "Link"',
+			'filterByFormula' => '{Group} = "Building Link"',
 			'fields'          => array(
 				'Key',
 				'Value',
@@ -168,6 +168,27 @@ class Airtable_Api {
 		}
 
 		// Return the list of buildings with Slug and Last Modified data
+		return $response;
+	}
+
+	public function get_classroom_options_links() {
+		$params = array(
+			'filterByFormula' => '{Group} = "Classroom Link"',
+			'fields'          => array(
+				'Key',
+				'Value',
+			),
+		);
+
+		// Query the Options table for only the specified fields
+		$response = $this->get( table: 'Options', params: $params, request_resource: 'classroom_options_links' );
+
+		// Check if the response is valid and contains data
+		if ( ! $response || empty( $response ) ) {
+			return null; // No links found or response is empty
+		}
+
+		// Return the list of links
 		return $response;
 	}
 
