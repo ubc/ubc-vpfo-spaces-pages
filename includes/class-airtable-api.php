@@ -24,8 +24,14 @@ class Airtable_Api {
 	}
 
 	public function get_building_by_slug( string $building_slug ) {
+		$formula_parts = array(
+			sprintf( "{Slug} = '%s'", $building_slug ),
+			"{Building Published} = 'Yes'",
+		);
+		$formula       = 'AND(' . implode( ', ', $formula_parts ) . ')';
+
 		$params = array(
-			'filterByFormula' => sprintf( "AND( slug = '%s' )", $building_slug ),
+			'filterByFormula' => $formula,
 			'maxRecords'      => 1,
 		);
 
@@ -60,11 +66,17 @@ class Airtable_Api {
 	}
 
 	public function get_building_slugs_for_yoast() {
+		$formula_parts = array(
+			"{Building Published} = 'Yes'",
+		);
+		$formula       = 'AND(' . implode( ', ', $formula_parts ) . ')';
+
 		$params = array(
-			'fields' => array(
+			'fields'          => array(
 				'Slug',
 				'Last Modified',
 			),
+			'filterByFormula' => $formula,
 		);
 
 		// Query the Buildings table for only the specified fields
