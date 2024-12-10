@@ -48,6 +48,9 @@ $building_name          = $building_name_override ?? $building_name_original;
 $building_code          = $building_fields['Building Code'][0] ?? null;
 $building_name_w_code   = $building_name && $building_code ? $building_name . ' - ' . $building_code : $building_name;
 
+$building_slug = $building_fields['Slug'] ?? null;
+$building_url  = $building_slug ? get_bloginfo( 'url' ) . '/buildings/' . $building_slug : null;
+
 $breadcrumb_home         = get_bloginfo( 'url' );
 $breadcrumb_find_a_space = get_page_by_path( 'find-a-space' ) !== null ? get_permalink( get_page_by_path( 'find-a-space' ) ) : null;
 $breadcrumb              = '<a href="' . $breadcrumb_home . '" class="d-inline-block" title="' . get_bloginfo( 'name' ) . '" rel="bookmark">' . get_bloginfo( 'name' ) . '</a>';
@@ -95,6 +98,12 @@ $building_image_string .= isset( $building_image_alt ) ? ' alt="' . $building_im
 $building_image_string .= isset( $building_image_url ) ? '>' : '';
 
 $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Link'] : null;
+
+$building_options_links                     = $args['building_options_links'] ?? array();
+$building_options_inclusive_washrooms       = $building_options_links['LINK_INCLUSIVE_WASHROOMS'] ?? null;
+$building_options_accessibility_shuttle_map = $building_options_links['LINK_ACCESSIBILITY_SHUTTLE_MAP'] ?? null;
+$building_options_blue_phones_map           = $building_options_links['LINK_BLUE_PHONES_MAP'] ?? null;
+$building_options_aed_naloxone_map          = $building_options_links['LINK_AED_NALOXONE_MAP'] ?? null;
 ?>
 
 <section class="vpfo-spaces-page">
@@ -108,18 +117,34 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 			<?php } ?>
 
 			<div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center mb-13">
-				<h1 class="text-uppercase fw-bold mb-9 mb-md-0">
+				<div class="d-flex flex-column flex-wrap mb-9 mb-md-0">
+					<h1 class="text-uppercase fw-bold mb-0">
+						<?php
+						if ( $building_name_w_code ) {
+							echo wp_kses_post( $building_name_w_code );
+						} elseif ( $building_name ) {
+							echo wp_kses_post( $building_name );
+						} else {
+							esc_html_e( 'Learning Spaces', 'ubc-vpfo-spaces-pages' );
+						}
+						?>
+
+					</h1>
+
 					<?php
-					if ( $building_name_w_code ) {
-						echo wp_kses_post( $building_name_w_code );
-					} elseif ( $building_name ) {
-						echo wp_kses_post( $building_name );
-					} else {
-						esc_html_e( 'Learning Spaces', 'ubc-vpfo-spaces-pages' );
+					if ( $building_url ) {
+						?>
+						<div class="clippy text-uppercase mt-3" data-clipboard-text="<?php echo esc_url( $building_url ); ?>">
+							<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M9.28613 1.78405C8.71426 1.21217 7.78613 1.21217 7.21426 1.78405L2.90176 6.09654C1.91504 7.08326 1.91504 8.6817 2.90176 9.66842C3.88848 10.6551 5.48691 10.6551 6.47363 9.66842L10.0361 6.10592C10.2916 5.85045 10.7088 5.85045 10.9643 6.10592C11.2197 6.36139 11.2197 6.77858 10.9643 7.03404L7.40176 10.5965C5.90176 12.0965 3.47363 12.0965 1.97363 10.5965C0.473633 9.09654 0.473633 6.66842 1.97363 5.16842L6.28613 0.85592C7.37129 -0.229236 9.1291 -0.229236 10.2143 0.85592C11.2994 1.94108 11.2994 3.69889 10.2143 4.78405L6.08926 8.90904C5.41895 9.57936 4.33145 9.57936 3.66113 8.90904C2.99082 8.23873 2.99082 7.15123 3.66113 6.48092L7.03613 3.10592C7.2916 2.85045 7.70879 2.85045 7.96426 3.10592C8.21973 3.36139 8.21973 3.77858 7.96426 4.03405L4.58926 7.40904C4.43223 7.56608 4.43223 7.82389 4.58926 7.98092C4.74629 8.13795 5.0041 8.13795 5.16113 7.98092L9.28613 3.85592C9.85801 3.28405 9.85801 2.35592 9.28613 1.78405Z" fill="#0055B7"/>
+							</svg>
+							Copy permalink
+						</div>
+						<?php
 					}
 					?>
-				</h1>
-				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary btn-border-thick me-auto me-md-0 ms-md-auto d-flex align-items-center vpfo-return-to-lsf"><i class="fas fa-chevron-left me-3"></i><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
+				</div>
+				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary btn-border-thick me-auto me-md-0 ms-md-auto d-flex align-items-center align-self-md-end vpfo-return-to-lsf"><i class="fas fa-chevron-left me-3"></i><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
 			</div>
 
 			<?php if ( $alert_message ) { ?>
@@ -162,14 +187,18 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 							<h2 class="text-uppercase"><?php esc_html_e( 'Resources', 'ubc-vpfo-spaces-pages' ); ?></h2>
 
 							<div class="building-resources-links d-flex flex-column flex-sm-row flex-lg-column flex-xl-row flex-sm-wrap w-100">
-								<div class="btn-wrapper">
-									<a href="<?php echo esc_url( 'https://facilities.ubc.ca/inclusive-washrooms' ); ?>" class="btn btn-secondary d-block" target="_blank">
-										<?php esc_html_e( 'Inclusive Washrooms', 'ubc-vpfo-spaces-pages' ); ?>
-										<i class="fa-solid fa-users ms-3"></i>
-									</a>
-								</div>
-
 								<?php
+								if ( $building_options_inclusive_washrooms ) {
+									?>
+									<div class="btn-wrapper">
+										<a href="<?php echo esc_url( $building_options_inclusive_washrooms ); ?>" class="btn btn-secondary d-block" target="_blank">
+											<?php esc_html_e( 'Inclusive Washrooms', 'ubc-vpfo-spaces-pages' ); ?>
+											<i class="fa-solid fa-users ms-3"></i>
+										</a>
+									</div>
+									<?php
+								}
+
 								if ( $building_floor_plan ) {
 									?>
 									<div class="btn-wrapper">
@@ -180,28 +209,40 @@ $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Li
 									</div>
 									<?php
 								}
+
+								if ( $building_options_blue_phones_map ) {
+									?>
+									<div class="btn-wrapper">
+										<a href="<?php echo esc_url( $building_options_blue_phones_map ); ?>" class="btn btn-secondary d-block" target="_blank">
+											<?php esc_html_e( 'Blue Phones Map', 'ubc-vpfo-spaces-pages' ); ?>
+											<i class="fa-solid fa-phone ms-3"></i>
+										</a>
+									</div>
+									<?php
+								}
+
+								if ( $building_options_accessibility_shuttle_map ) {
+									?>
+									<div class="btn-wrapper">
+										<a href="<?php echo esc_url( $building_options_accessibility_shuttle_map ); ?>" class="btn btn-secondary d-block"  target="_blank">
+											<?php esc_html_e( 'Accessibility Shuttle Map', 'ubc-vpfo-spaces-pages' ); ?>
+											<i class="fa-solid fa-van-shuttle ms-3"></i>
+										</a>
+									</div>
+									<?php
+								}
+
+								if ( $building_options_aed_naloxone_map ) {
+									?>
+									<div class="btn-wrapper">
+										<a href="<?php echo esc_url( $building_options_aed_naloxone_map ); ?>" class="btn btn-secondary d-block"  target="_blank">
+											<?php esc_html_e( 'AED &amp; Naloxone Map', 'ubc-vpfo-spaces-pages' ); ?>
+											<i class="fa-solid fa-heart-pulse ms-3"></i>
+										</a>
+									</div>
+									<?php
+								}
 								?>
-
-								<div class="btn-wrapper">
-									<a href="<?php echo esc_url( 'https://security.ubc.ca/blue-phones-map' ); ?>" class="btn btn-secondary d-block" target="_blank">
-										<?php esc_html_e( 'Blue Phones Map', 'ubc-vpfo-spaces-pages' ); ?>
-										<i class="fa-solid fa-phone ms-3"></i>
-									</a>
-								</div>
-
-								<div class="btn-wrapper">
-									<a href="<?php echo esc_url( 'https://students.ubc.ca/about-student-services/centre-for-accessibility/ubc-accessibility-shuttle' ); ?>" class="btn btn-secondary d-block"  target="_blank">
-										<?php esc_html_e( 'Accessibility Shuttle Map', 'ubc-vpfo-spaces-pages' ); ?>
-										<i class="fa-solid fa-van-shuttle ms-3"></i>
-									</a>
-								</div>
-
-								<div class="btn-wrapper">
-									<a href="<?php echo esc_url( 'https://security.ubc.ca/aed-naloxone-map' ); ?>" class="btn btn-secondary d-block"  target="_blank">
-										<?php esc_html_e( 'AED &amp; Naloxone Map', 'ubc-vpfo-spaces-pages' ); ?>
-										<i class="fa-solid fa-heart-pulse ms-3"></i>
-									</a>
-								</div>
 							</div>
 						</div>
 
