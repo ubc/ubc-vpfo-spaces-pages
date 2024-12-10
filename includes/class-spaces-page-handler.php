@@ -7,6 +7,9 @@ defined( 'ABSPATH' ) || exit;
 global $is_classroom_template;
 $is_classroom_template = false;
 
+global $is_building_template;
+$is_building_template = false;
+
 class Spaces_Page_Handler {
 
 	/**
@@ -66,8 +69,10 @@ class Spaces_Page_Handler {
 
 	public function handle_building_template_redirect() {
 
+		global $is_building_template;
+
 		$building_slug = get_query_var( 'building_slug' );
-		$all_classroom = rest_sanitize_boolean( $_REQUEST['all_classroom'] );
+		$all_classroom = rest_sanitize_boolean( $_REQUEST['all_classroom'] ?? false );
 
 		if ( ! $building_slug ) {
 			return;
@@ -78,16 +83,25 @@ class Spaces_Page_Handler {
 		$building_code       = isset( $building->fields->{'Code'} ) ? $building->fields->{'Code'} : null;
 		$building_classrooms = $building_code ? $this->airtable_api->get_classrooms_for_building( $building_code ) : (object) array();
 
+		$building_options_links_raw = $this->airtable_api->get_building_options_links();
+		$building_options_links     = array();
+		foreach ( $building_options_links_raw as $building_options_link ) {
+			$building_options_links[ $building_options_link->fields->{'Key'} ] = $building_options_link->fields->{'Value'};
+		}
+
 		// If the lookup had no results, allow WordPress to 404.
 		if ( null === $building ) {
 			return;
 		}
 
+		$is_building_template = true;
+
 		$template_name = 'building-single.php';
 		$args          = array(
-			'building'            => $building,
-			'building_classrooms' => $building_classrooms,
-			'all_classroom'       => $all_classroom,
+			'building'               => $building,
+			'building_classrooms'    => $building_classrooms,
+			'all_classroom'          => $all_classroom,
+			'building_options_links' => $building_options_links,
 		);
 
 		if ( ! locate_template( sprintf( 'spaces-page/%s', $template_name ), true, true, $args ) ) {
@@ -189,6 +203,12 @@ class Spaces_Page_Handler {
 		$classroom_building_code = isset( $classroom->fields->{'Building Code'} ) ? $classroom->fields->{'Building Code'} : '';
 		$classroom_building_slug = $this->airtable_api->get_classroom_building_slug( $classroom_building_code );
 
+		$classroom_options_links_raw = $this->airtable_api->get_classroom_options_links();
+		$classroom_options_links     = array();
+		foreach ( $classroom_options_links_raw as $classroom_options_link ) {
+			$classroom_options_links[ $classroom_options_link->fields->{'Key'} ] = $classroom_options_link->fields->{'Value'};
+		}
+
 		// If the lookup had no results, allow WordPress to 404.
 		if ( null === $classroom ) {
 			return;
@@ -201,6 +221,7 @@ class Spaces_Page_Handler {
 		$args          = array(
 			'classroom'               => $classroom,
 			'classroom_building_slug' => $classroom_building_slug,
+			'classroom_options_links' => $classroom_options_links,
 		);
 
 		if ( ! locate_template( sprintf( 'spaces-page/%s', $template_name ), true, true, $args ) ) {

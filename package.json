@@ -22,6 +22,8 @@
         "@koga73/overlay": "^3.0.3",
         "@popperjs/core": "^2.11.8",
         "accordion-js": "^3.3.4",
-        "glider-js": "^1.7.9"
+        "clipboard": "^2.0.11",
+        "glider-js": "^1.7.9",
+        "tippy.js": "^6.3.7"
     }
 }

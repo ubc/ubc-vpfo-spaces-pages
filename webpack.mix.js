@@ -8,6 +8,7 @@ mix
 	.js( 'src/js/classrooms-image-gallery-glider.js', 'js/classrooms-image-gallery-glider.js' )
 	.js( 'src/js/accordion.js', 'js/accordion.js' )
 	.js( 'src/js/layout-modal.js', 'js/layout-modal.js' )
+  .js( 'src/js/clipboard.js', 'js/clipboard.js' )
 	.sass(
 		'src/style.scss',
 		'style.css',
