@@ -215,12 +215,11 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 						$image_full_url      = $image_full['url'] ?? null;
 						$image_full_width    = $image_full['width'] ?? null;
 						$image_full_height   = $image_full['height'] ?? null;
-						$image_full_alt      = $classroom_name . ' - Image Gallery 1';
 						$image_full_element  = '';
 						$image_full_element .= $image_full_url ? '<img src="' . $image_full_url . '"' : '';
 						$image_full_element .= $image_full_width ? ' width="' . $image_full_width . '"' : '';
 						$image_full_element .= $image_full_height ? ' height="' . $image_full_height . '"' : '';
-						$image_full_element .= $image_full_alt ? ' alt="' . $image_full_alt . '"' : '';
+						$image_full_element .= ' alt=""'; // Mark this image as decorational, as we do not have accurate alt text.
 						$image_full_element .= $image_full_url ? '>' : '';
 
 						if ( $image_full_element ) {
@@ -242,12 +241,11 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 								$image_full_url      = $image_full['url'] ?? null;
 								$image_full_width    = $image_full['width'] ?? null;
 								$image_full_height   = $image_full['height'] ?? null;
-								$image_full_alt      = $classroom_name . ' - Image Gallery ' . $image_full_counter;
 								$image_full_element  = '';
 								$image_full_element .= $image_full_url ? '<img src="' . $image_full_url . '"' : '';
 								$image_full_element .= $image_full_width ? ' width="' . $image_full_width . '"' : '';
 								$image_full_element .= $image_full_height ? ' height="' . $image_full_height . '"' : '';
-								$image_full_element .= $image_full_alt ? ' alt="' . $image_full_alt . '"' : '';
+								$image_full_element .= ' alt=""'; // Mark this image as decorational, as we do not have accurate alt text.
 								$image_full_element .= $image_full_url ? '>' : '';
 
 								if ( $image_full_element ) {
@@ -318,12 +316,11 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 							$classroom_layout_url      = $classroom_layout_image['url'] ?? null;
 							$classroom_layout_width    = $classroom_layout_image['width'] ?? null;
 							$classroom_layout_height   = $classroom_layout_image['height'] ?? null;
-							$classroom_layout_alt      = $classroom_name . ' - Layout Image';
 							$classroom_layout_element  = '';
 							$classroom_layout_element .= $classroom_layout_url ? '<img src="' . $classroom_layout_url . '"' : '';
 							$classroom_layout_element .= $classroom_layout_width ? ' width="' . $classroom_layout_width . '"' : '';
 							$classroom_layout_element .= $classroom_layout_height ? ' height="' . $classroom_layout_height . '"' : '';
-							$classroom_layout_element .= $classroom_layout_alt ? ' alt="' . $classroom_layout_alt . '"' : '';
+							$classroom_layout_element .= ' alt="Classroom layout"';
 							$classroom_layout_element .= $classroom_layout_url ? '>' : '';
 
 							if ( $classroom_layout_element ) {
