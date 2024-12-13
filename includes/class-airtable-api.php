@@ -51,7 +51,7 @@ class Airtable_Api {
 		}
 
 		$formula_parts = array(
-			sprintf( "AND( {Building Code} = '%s'", $building_code ),
+			sprintf( "{Building Code} = '%s'", $building_code ),
 			"{Published} = 'Yes'",
 			'NOT( {Is Hidden} )',
 			'NOT( {Is Informal Space} )',
