@@ -26,7 +26,7 @@ class Airtable_Api {
 	public function get_building_by_slug( string $building_slug ) {
 		$formula_parts = array(
 			sprintf( "{Slug} = '%s'", $building_slug ),
-			"{Building Published} = 'Yes'",
+			"{Published} = 'Yes'",
 		);
 		$formula       = 'AND(' . implode( ', ', $formula_parts ) . ')';
 
@@ -50,9 +50,17 @@ class Airtable_Api {
 			return null; // No building code provided
 		}
 
+		$formula_parts = array(
+			sprintf( "AND( {Building Code} = '%s'", $building_code ),
+			"{Published} = 'Yes'",
+			'NOT( {Is Hidden} )',
+			'NOT( {Is Informal Space} )',
+		);
+		$formula       = 'AND(' . implode( ', ', $formula_parts ) . ')';
+
 		// Query the classrooms based on the building code
 		$params = array(
-			'filterByFormula' => sprintf( "AND( {Building Code} = '%s', NOT( {Is Hidden} ), NOT( {Is Informal Space} ) )", $building_code ),
+			'filterByFormula' => $formula,
 		);
 
 		$response = $this->get( table: 'Classrooms', params: $params, request_resource: $building_code );
@@ -67,7 +75,7 @@ class Airtable_Api {
 
 	public function get_building_slugs_for_yoast() {
 		$formula_parts = array(
-			"{Building Published} = 'Yes'",
+			"{Published} = 'Yes'",
 		);
 		$formula       = 'AND(' . implode( ', ', $formula_parts ) . ')';
 
@@ -113,8 +121,14 @@ class Airtable_Api {
 	}
 
 	public function get_classroom_by_slug( string $classroom_slug ) {
+		$formula_parts = array(
+			sprintf( "{Slug} = '%s'", $classroom_slug ),
+			"{Published} = 'Yes'",
+		);
+		$formula       = 'AND(' . implode( ', ', $formula_parts ) . ')';
+
 		$params = array(
-			'filterByFormula' => sprintf( "AND( slug = '%s' )", $classroom_slug ),
+			'filterByFormula' => $formula,
 			'maxRecords'      => 1,
 		);
 
@@ -148,8 +162,14 @@ class Airtable_Api {
 			return ''; // No building code provided
 		}
 
+		$formula_parts = array(
+			sprintf( "AND( {Code} = '%s' )", $classroom_building_code ),
+			"{Published} = 'Yes'",
+		);
+		$formula       = 'AND(' . implode( ', ', $formula_parts ) . ')';
+
 		$params = array(
-			'filterByFormula' => sprintf( "AND( {Code} = '%s' )", $classroom_building_code ),
+			'filterByFormula' => $formula,
 			'maxRecords'      => 1,
 		);
 
@@ -166,9 +186,15 @@ class Airtable_Api {
 	}
 
 	public function get_classroom_slugs_for_yoast() {
+		$formula_parts = array(
+			'NOT( {Is Hidden} )',
+			"{Published} = 'Yes'",
+		);
+		$formula       = 'AND(' . implode( ', ', $formula_parts ) . ')';
+
 		$params = array(
 			'fields'          => array( 'Slug', 'Last Modified' ),
-			'filterByFormula' => 'NOT( {Is Hidden} )',
+			'filterByFormula' => $formula,
 		);
 
 		// Query the Classrooms table for only the specified fields
