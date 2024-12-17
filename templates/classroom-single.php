@@ -14,6 +14,10 @@ $classroom_building_title = $classroom_building_name ?? '';
 $classroom_building_slug  = $classroom_fields['Building Slug'][0] ?? null;
 $classroom_building_url   = $classroom_building_slug ? get_bloginfo( 'url' ) . '/buildings/' . $classroom_building_slug : null;
 
+// For use in the Copy to Clipboard button.
+$classroom_slug = $classroom_fields['Slug'] ?? null;
+$classroom_url  = $classroom_slug ? get_bloginfo( 'url' ) . '/classrooms/' . $classroom_slug : null;
+
 $breadcrumb_home         = get_bloginfo( 'url' );
 $breadcrumb_find_a_space = get_page_by_path( 'find-a-space' ) !== null ? get_permalink( get_page_by_path( 'find-a-space' ) ) : null;
 $breadcrumb_building     = $classroom_building_url ? '<a href="' . $classroom_building_url . '" class="d-inline-block vpfo-building-link" title="' . $classroom_building_title . '" rel="bookmark">' . $classroom_building_title . ' - ' . $classroom_building_code . '</a>' : null;
@@ -22,7 +26,7 @@ $breadcrumb             .= $breadcrumb_find_a_space ? '<i class="fas fa-chevron-
 $breadcrumb             .= $breadcrumb_building ? '<i class="fas fa-chevron-right mx-4"></i>' . $breadcrumb_building : '';
 $breadcrumb             .= $classroom_name ? '<i class="fas fa-chevron-right mx-4"></i><span class="d-inline-block current-page">' . $classroom_name . '</span>' : '';
 
-$classroom_is_informal  = $classroom_fields['Is Informal Space'] ?? false;
+$classroom_is_informal = $classroom_fields['Is Informal Space'] ?? false;
 
 $classroom_workday_room_code_original = $classroom_fields['Workday Room Code'] ?? null;
 $classroom_workday_room_code_override = $classroom_fields['Workday Room Code (override)'] ?? null;
@@ -52,7 +56,6 @@ $classroom_shared_av_guide = $classroom_fields['Shared AV Guide'] ?? null;
 $classroom_360_view        = $classroom_fields['360 View'] ?? null;
 $classroom_av_guide        = $classroom_fields['AV Guide'][0]['url'] ?? null;
 $classroom_outlets_layout  = $classroom_fields['Electrical Outlets Layout'][0]['url'] ?? null;
-$classroom_av_helpdesk     = 'tel:6048227956';
 
 $classroom_layout_type = $classroom_fields['Formatted_Room_Layout_Type'] ?? null;
 
@@ -120,6 +123,11 @@ $classroom_other_av        = $classroom_other_av_source ? explode( ', ', $classr
 
 $classroom_building_map  = $classroom_building_code ? 'https://maps.ubc.ca/?code=' . $classroom_building_code : null;
 $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-lg-5';
+
+$classroom_options_links                = $args['classroom_options_links'] ?? array();
+$classroom_options_centre_accessibility = $classroom_options_links['LINK_CENTRE_FOR_ACCESSIBILITY'] ?? null;
+$classroom_options_glossary             = $classroom_options_links['LINK_GLOSSARY'] ?? null;
+$classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_AV_HELPDESK_PHONE'] ) ? 'tel:' . $classroom_options_links['LINK_AV_HELPDESK_PHONE'] : null;
 ?>
 
 <section class="vpfo-spaces-page">
@@ -163,9 +171,22 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 						<?php
 					}
 					?>
+
+					<?php
+					if ( $classroom_url ) {
+						?>
+						<div class="clippy text-uppercase mt-3" data-clipboard-text="<?php echo esc_url( $classroom_url ); ?>">
+							<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M9.28613 1.78405C8.71426 1.21217 7.78613 1.21217 7.21426 1.78405L2.90176 6.09654C1.91504 7.08326 1.91504 8.6817 2.90176 9.66842C3.88848 10.6551 5.48691 10.6551 6.47363 9.66842L10.0361 6.10592C10.2916 5.85045 10.7088 5.85045 10.9643 6.10592C11.2197 6.36139 11.2197 6.77858 10.9643 7.03404L7.40176 10.5965C5.90176 12.0965 3.47363 12.0965 1.97363 10.5965C0.473633 9.09654 0.473633 6.66842 1.97363 5.16842L6.28613 0.85592C7.37129 -0.229236 9.1291 -0.229236 10.2143 0.85592C11.2994 1.94108 11.2994 3.69889 10.2143 4.78405L6.08926 8.90904C5.41895 9.57936 4.33145 9.57936 3.66113 8.90904C2.99082 8.23873 2.99082 7.15123 3.66113 6.48092L7.03613 3.10592C7.2916 2.85045 7.70879 2.85045 7.96426 3.10592C8.21973 3.36139 8.21973 3.77858 7.96426 4.03405L4.58926 7.40904C4.43223 7.56608 4.43223 7.82389 4.58926 7.98092C4.74629 8.13795 5.0041 8.13795 5.16113 7.98092L9.28613 3.85592C9.85801 3.28405 9.85801 2.35592 9.28613 1.78405Z" fill="#0055B7"/>
+							</svg>
+							Copy permalink
+						</div>
+						<?php
+					}
+					?>
 					
 				</div>
-				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary btn-border-thick mt-9 mt-md-0 me-auto me-md-0 ms-md-auto d-flex align-items-center vpfo-return-to-lsf"><i class="fas fa-chevron-left me-3"></i><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
+				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary btn-border-thick mt-9 mt-md-0 me-auto me-md-0 ms-md-auto d-flex align-items-center align-self-md-end vpfo-return-to-lsf"><i class="fas fa-chevron-left me-3"></i><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
 			</div>
 
 			<?php
@@ -194,12 +215,11 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 						$image_full_url      = $image_full['url'] ?? null;
 						$image_full_width    = $image_full['width'] ?? null;
 						$image_full_height   = $image_full['height'] ?? null;
-						$image_full_alt      = $classroom_name . ' - Image Gallery 1';
 						$image_full_element  = '';
 						$image_full_element .= $image_full_url ? '<img src="' . $image_full_url . '"' : '';
 						$image_full_element .= $image_full_width ? ' width="' . $image_full_width . '"' : '';
 						$image_full_element .= $image_full_height ? ' height="' . $image_full_height . '"' : '';
-						$image_full_element .= $image_full_alt ? ' alt="' . $image_full_alt . '"' : '';
+						$image_full_element .= ' alt=""'; // Mark this image as decorational, as we do not have accurate alt text.
 						$image_full_element .= $image_full_url ? '>' : '';
 
 						if ( $image_full_element ) {
@@ -221,12 +241,11 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 								$image_full_url      = $image_full['url'] ?? null;
 								$image_full_width    = $image_full['width'] ?? null;
 								$image_full_height   = $image_full['height'] ?? null;
-								$image_full_alt      = $classroom_name . ' - Image Gallery ' . $image_full_counter;
 								$image_full_element  = '';
 								$image_full_element .= $image_full_url ? '<img src="' . $image_full_url . '"' : '';
 								$image_full_element .= $image_full_width ? ' width="' . $image_full_width . '"' : '';
 								$image_full_element .= $image_full_height ? ' height="' . $image_full_height . '"' : '';
-								$image_full_element .= $image_full_alt ? ' alt="' . $image_full_alt . '"' : '';
+								$image_full_element .= ' alt=""'; // Mark this image as decorational, as we do not have accurate alt text.
 								$image_full_element .= $image_full_url ? '>' : '';
 
 								if ( $image_full_element ) {
@@ -290,19 +309,18 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 		<section class="classroom-details mt-13 mt-md-9">
 
 			<div class="row">
-				<div class="col-lg-6 order-2 order-lg-1 pe-lg-5">
+				<div class="col-lg-6 pe-lg-5">
 					<div class="classroom-info mt-9 mt-lg-0">
 						<?php
 						if ( ! empty( $classroom_layout_image ) ) {
 							$classroom_layout_url      = $classroom_layout_image['url'] ?? null;
 							$classroom_layout_width    = $classroom_layout_image['width'] ?? null;
 							$classroom_layout_height   = $classroom_layout_image['height'] ?? null;
-							$classroom_layout_alt      = $classroom_name . ' - Layout Image';
 							$classroom_layout_element  = '';
 							$classroom_layout_element .= $classroom_layout_url ? '<img src="' . $classroom_layout_url . '"' : '';
 							$classroom_layout_element .= $classroom_layout_width ? ' width="' . $classroom_layout_width . '"' : '';
 							$classroom_layout_element .= $classroom_layout_height ? ' height="' . $classroom_layout_height . '"' : '';
-							$classroom_layout_element .= $classroom_layout_alt ? ' alt="' . $classroom_layout_alt . '"' : '';
+							$classroom_layout_element .= ' alt="Classroom layout"';
 							$classroom_layout_element .= $classroom_layout_url ? '>' : '';
 
 							if ( $classroom_layout_element ) {
@@ -363,7 +381,7 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 								<?php
 							}
 
-							if ( ( $classroom_360_view || $classroom_shared_av_guide || $classroom_av_guide || $classroom_outlets_layout || $classroom_av_helpdesk ) && ! $classroom_is_informal ) {
+							if ( ( $classroom_360_view || $classroom_shared_av_guide || $classroom_av_guide || $classroom_outlets_layout || $classroom_options_av_helpdesk ) && ! $classroom_is_informal ) {
 								?>
 								<div class="classroom-resources">
 									<h2 class="text-uppercase"><?php esc_html_e( 'Resources', 'ubc-vpfo-spaces-pages' ); ?></h2>
@@ -384,7 +402,7 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 										if ( $classroom_av_guide ) {
 											?>
 											<div class="btn-wrapper">
-												<a href="<?php echo esc_url( $classroom_av_guide ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external">
+												<a href="<?php echo esc_url( $classroom_av_guide ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external" aria-label="A-V Guide">
 													<?php esc_html_e( 'AV Guide', 'ubc-vpfo-spaces-pages' ); ?>
 													<i class="far fa-file-pdf ms-3"></i>
 												</a>
@@ -395,8 +413,8 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 										if ( $classroom_shared_av_guide ) {
 											?>
 											<div class="btn-wrapper">
-												<a href="<?php echo esc_url( $classroom_shared_av_guide ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external">
-													<?php esc_html_e( 'Shared AV Guide', 'ubc-vpfo-spaces-pages' ); ?>
+												<a href="<?php echo esc_url( $classroom_shared_av_guide ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external" aria-label="A-V Guide">
+													<?php esc_html_e( 'AV Guide', 'ubc-vpfo-spaces-pages' ); ?>
 													<i class="far fa-file-pdf ms-3"></i>
 												</a>
 											</div>
@@ -414,10 +432,10 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 											<?php
 										}
 
-										if ( $classroom_av_helpdesk ) {
+										if ( $classroom_options_av_helpdesk ) {
 											?>
 											<div class="btn-wrapper">
-												<a href="<?php echo esc_url( $classroom_av_helpdesk ); ?>" class="btn btn-secondary d-block">
+												<a href="<?php echo esc_url( $classroom_options_av_helpdesk ); ?>" class="btn btn-secondary d-block" aria-label="A-V Helpdesk">
 													<?php esc_html_e( 'AV Helpdesk', 'ubc-vpfo-spaces-pages' ); ?>
 													<i class="fas fa-phone ms-3"></i>
 												</a>
@@ -434,43 +452,44 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 					</div>
 				</div>
 
-				<div class="col-lg-6 order-1 order-lg-2 ps-lg-5">
+				<div class="col-lg-6 ps-lg-5">
 					<?php
 					if ( $classroom_layout_type || $classroom_furniture ) {
 						?>
 						<div class="accordion">
 							<div class="ac">
 								<h2 class="ac-header">
-									<button class="ac-trigger" type="button">
-										<?php esc_html_e( 'Style &amp; Layout', 'ubc-vpfo-spaces-pages' ); ?>
+									<button class="ac-trigger" type="button" aria-label="Style - Furniture and Layout">
+										<?php esc_html_e( 'Style - Furniture &amp; Layout', 'ubc-vpfo-spaces-pages' ); ?>
 									</button>
 								</h2>
 								<div class="ac-panel">
 									<div class="ac-panel-inner">
 										<?php
-										if ( $classroom_layout_type ) {
-											?>
-											<div class="classroom-layout-type">
-												<h3><?php esc_html_e( 'Classroom Layout', 'ubc-vpfo-spaces-pages' ); ?></h3>
-												<ul>
-													<li><?php echo wp_kses_post( $classroom_layout_type ); ?></li>
-												</ul>
-											</div>
-											<?php
-										}
 
 										if ( ! empty( $classroom_furniture ) ) {
 											?>
 											<div class="classroom-furniture">
 												<h3><?php esc_html_e( 'Furniture', 'ubc-vpfo-spaces-pages' ); ?></h3>
-												<ul>
+												<ul role="list">
 													<?php
 													foreach ( $classroom_furniture as $furniture_item ) {
 														?>
-														<li><?php echo wp_kses_post( $furniture_item ); ?></li>
+														<li role="listitem"><?php echo wp_kses_post( $furniture_item ); ?></li>
 														<?php
 													}
 													?>
+												</ul>
+											</div>
+											<?php
+										}
+
+										if ( $classroom_layout_type ) {
+											?>
+											<div class="classroom-layout-type">
+												<h3><?php esc_html_e( 'Classroom Layout', 'ubc-vpfo-spaces-pages' ); ?></h3>
+												<ul role="list">
+													<li role="listitem"><?php echo wp_kses_post( $classroom_layout_type ); ?></li>
 												</ul>
 											</div>
 											<?php
@@ -488,7 +507,7 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 						<div class="accordion">
 							<div class="ac">
 								<h2 class="ac-header">
-									<button class="ac-trigger" type="button">
+									<button class="ac-trigger" type="button" aria-label="Amenities - Accessibility, Features and A-V">
 										<?php esc_html_e( 'Amenities - Accessibility, Features &amp; AV', 'ubc-vpfo-spaces-pages' ); ?>
 									</button>
 								</h2>
@@ -499,9 +518,9 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 											<?php
 											if ( ! empty( $classroom_accessibility ) ) {
 												?>
-												<ul>
+												<ul role="list">
 													<?php foreach ( $classroom_accessibility as $accessibility_item ) { ?>
-														<li>
+														<li role="listitem">
 															<?php
 															echo wp_kses_post( $accessibility_item );
 															?>
@@ -518,11 +537,15 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 												<p><?php echo wp_kses_post( $classroom_accessibility_content ); ?></p>
 												<?php
 											}
+
+											if ( $classroom_options_centre_accessibility ) {
+												?>
+												<p class="accessibility-cta">
+													<a href="<?php echo esc_url( $classroom_options_centre_accessibility ); ?>" target="_blank"><?php esc_html_e( 'Contact the Centre for Accessibility', 'ubc-vpfo-spaces-pages' ); ?></a>
+												</p>
+												<?php
+											}
 											?>
-											
-											<p class="accessibility-cta">
-												<a href="https://students.ubc.ca/about-student-services/centre-for-accessibility" target="_blank"><?php esc_html_e( 'Contact the Centre for Accessibility', 'ubc-vpfo-spaces-pages' ); ?></a>
-											</p>
 										</div>
 
 										<?php
@@ -530,11 +553,11 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 											?>
 											<div class="classroom-features">
 												<h3><?php esc_html_e( 'Features', 'ubc-vpfo-spaces-pages' ); ?></h3>
-												<ul>
+												<ul role="list">
 													<?php
 													foreach ( $classroom_features as $feature_item ) {
 														?>
-														<li>
+														<li role="listitem">
 															<?php
 															echo wp_kses_post( $feature_item );
 															?>
@@ -558,11 +581,11 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 														?>
 														<div class="classroom-presentation-displays">
 															<h4 class="text-uppercase"><?php esc_html_e( 'Presentation Displays', 'ubc-vpfo-spaces-pages' ); ?></h4>
-															<ul>
+															<ul role="list">
 																<?php
 																foreach ( $classroom_presentation_displays as $presentation_display_item ) {
 																	?>
-																	<li>
+																	<li role="listitem">
 																		<?php
 																		echo wp_kses_post( $presentation_display_item );
 																		?>
@@ -579,11 +602,11 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 														?>
 														<div class="classroom-presentation-sources">
 															<h4 class="text-uppercase"><?php esc_html_e( 'Presentation Sources', 'ubc-vpfo-spaces-pages' ); ?></h4>
-															<ul>
+															<ul role="list">
 																<?php
 																foreach ( $classroom_presentation_sources as $presentation_source_item ) {
 																	?>
-																	<li>
+																	<li role="listitem">
 																		<?php
 																		echo wp_kses_post( $presentation_source_item );
 																		?>
@@ -600,11 +623,11 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 														?>
 														<div class="classroom-audio">
 															<h4 class="text-uppercase"><?php esc_html_e( 'Audio', 'ubc-vpfo-spaces-pages' ); ?></h4>
-															<ul>
+															<ul role="list">
 																<?php
 																foreach ( $classroom_audio as $audio_item ) {
 																	?>
-																	<li>
+																	<li role="listitem">
 																		<?php
 																		echo wp_kses_post( $audio_item );
 																		?>
@@ -621,11 +644,11 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 														?>
 														<div class="classroom-other-av">
 															<h4 class="text-uppercase"><?php esc_html_e( 'Other AV Features', 'ubc-vpfo-spaces-pages' ); ?></h4>
-															<ul>
+															<ul role="list">
 																<?php
 																foreach ( $classroom_other_av as $other_av_item ) {
 																	?>
-																	<li>
+																	<li role="listitem">
 																		<?php
 																		echo wp_kses_post( $other_av_item );
 																		?>
@@ -654,7 +677,13 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 			</div>
 		</section>
 
-		<section class="classroom-book-space mt-9 mt-lg-17<?php if ( $classroom_is_informal ) { echo esc_html( ' no-shadow' ); } ?>">
+		<section class="classroom-book-space mt-9 mt-lg-17
+		<?php
+		if ( $classroom_is_informal ) {
+			echo esc_html( ' no-shadow' );
+		}
+		?>
+		">
 			<div class="row">
 				<?php
 				if ( ! $classroom_is_informal ) {
@@ -703,7 +732,15 @@ $classroom_map_col_class = $classroom_is_informal ? 'col-lg-12' : 'col-lg-8  ps-
 		</section>
 
 		<section class="classroom-footer mt-9">
-			<p><?php echo wp_kses_post( sprintf( 'Find something you don\'t recognize? We\'ve compiled definitions in our <a href="%s" rel="bookmark" title="UBC Learning Spaces glossary">glossary</a>.', 'https://learningspaces.ubc.ca/resources/glossary' ) ); ?></p>
+			<?php
+			if ( $classroom_options_glossary ) {
+				?>
+				<p>
+					<?php echo wp_kses_post( sprintf( 'Find something you don\'t recognize? We\'ve compiled definitions in our <a href="%s" rel="bookmark" title="UBC Learning Spaces glossary">glossary</a>.', $classroom_options_glossary ) ); ?>
+				</p>
+				<?php
+			}
+			?>
 
 			<div class="pattern-slice position-relative mt-9">
 				<div class="pattern-slice-gradient position-absolute h-100 w-100"></div>

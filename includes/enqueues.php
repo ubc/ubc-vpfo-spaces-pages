@@ -30,10 +30,11 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 
 	// conditionally load classroom-specific JS if it's a classroom
 	global $is_classroom_template;
+	global $is_building_template;
 
 	if ( isset( $is_classroom_template ) && $is_classroom_template ) {
 		wp_enqueue_script(
-			'classrooms-image-gallery-glider',
+			'vpfo-classrooms-image-gallery-glider',
 			plugin_dir_url( __DIR__ ) . 'js/classrooms-image-gallery-glider.js',
 			array(),
 			'1.0',
@@ -41,7 +42,7 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 		);
 
 		wp_enqueue_script(
-			'accordion-js',
+			'vpfo-accordion-js',
 			plugin_dir_url( __DIR__ ) . 'js/accordion.js',
 			array(),
 			'1.0',
@@ -49,8 +50,20 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 		);
 
 		wp_enqueue_script(
-			'modal-js',
+			'vpfo-modal-js',
 			plugin_dir_url( __DIR__ ) . 'js/layout-modal.js',
+			array(),
+			'1.0',
+			array( 'strategy' => 'defer' )
+		);
+
+	}
+
+	if ( ( isset( $is_building_template ) && $is_building_template )
+		|| ( isset( $is_classroom_template ) && $is_classroom_template ) ) {
+		wp_enqueue_script(
+			'vpfo-clipboard-js',
+			plugin_dir_url( __DIR__ ) . 'js/clipboard.js',
 			array(),
 			'1.0',
 			array( 'strategy' => 'defer' )
