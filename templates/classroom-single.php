@@ -215,12 +215,11 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 						$image_full_url      = $image_full['url'] ?? null;
 						$image_full_width    = $image_full['width'] ?? null;
 						$image_full_height   = $image_full['height'] ?? null;
-						$image_full_alt      = $classroom_name . ' - Image Gallery 1';
 						$image_full_element  = '';
 						$image_full_element .= $image_full_url ? '<img src="' . $image_full_url . '"' : '';
 						$image_full_element .= $image_full_width ? ' width="' . $image_full_width . '"' : '';
 						$image_full_element .= $image_full_height ? ' height="' . $image_full_height . '"' : '';
-						$image_full_element .= $image_full_alt ? ' alt="' . $image_full_alt . '"' : '';
+						$image_full_element .= ' alt=""'; // Mark this image as decorational, as we do not have accurate alt text.
 						$image_full_element .= $image_full_url ? '>' : '';
 
 						if ( $image_full_element ) {
@@ -242,12 +241,11 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 								$image_full_url      = $image_full['url'] ?? null;
 								$image_full_width    = $image_full['width'] ?? null;
 								$image_full_height   = $image_full['height'] ?? null;
-								$image_full_alt      = $classroom_name . ' - Image Gallery ' . $image_full_counter;
 								$image_full_element  = '';
 								$image_full_element .= $image_full_url ? '<img src="' . $image_full_url . '"' : '';
 								$image_full_element .= $image_full_width ? ' width="' . $image_full_width . '"' : '';
 								$image_full_element .= $image_full_height ? ' height="' . $image_full_height . '"' : '';
-								$image_full_element .= $image_full_alt ? ' alt="' . $image_full_alt . '"' : '';
+								$image_full_element .= ' alt=""'; // Mark this image as decorational, as we do not have accurate alt text.
 								$image_full_element .= $image_full_url ? '>' : '';
 
 								if ( $image_full_element ) {
@@ -318,12 +316,11 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 							$classroom_layout_url      = $classroom_layout_image['url'] ?? null;
 							$classroom_layout_width    = $classroom_layout_image['width'] ?? null;
 							$classroom_layout_height   = $classroom_layout_image['height'] ?? null;
-							$classroom_layout_alt      = $classroom_name . ' - Layout Image';
 							$classroom_layout_element  = '';
 							$classroom_layout_element .= $classroom_layout_url ? '<img src="' . $classroom_layout_url . '"' : '';
 							$classroom_layout_element .= $classroom_layout_width ? ' width="' . $classroom_layout_width . '"' : '';
 							$classroom_layout_element .= $classroom_layout_height ? ' height="' . $classroom_layout_height . '"' : '';
-							$classroom_layout_element .= $classroom_layout_alt ? ' alt="' . $classroom_layout_alt . '"' : '';
+							$classroom_layout_element .= ' alt="Classroom layout"';
 							$classroom_layout_element .= $classroom_layout_url ? '>' : '';
 
 							if ( $classroom_layout_element ) {
@@ -405,7 +402,7 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 										if ( $classroom_av_guide ) {
 											?>
 											<div class="btn-wrapper">
-												<a href="<?php echo esc_url( $classroom_av_guide ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external">
+												<a href="<?php echo esc_url( $classroom_av_guide ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external" aria-label="A-V Guide">
 													<?php esc_html_e( 'AV Guide', 'ubc-vpfo-spaces-pages' ); ?>
 													<i class="far fa-file-pdf ms-3"></i>
 												</a>
@@ -416,7 +413,7 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 										if ( $classroom_shared_av_guide ) {
 											?>
 											<div class="btn-wrapper">
-												<a href="<?php echo esc_url( $classroom_shared_av_guide ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external">
+												<a href="<?php echo esc_url( $classroom_shared_av_guide ); ?>" class="btn btn-secondary d-block" target="_blank" rel="external" aria-label="A-V Guide">
 													<?php esc_html_e( 'AV Guide', 'ubc-vpfo-spaces-pages' ); ?>
 													<i class="far fa-file-pdf ms-3"></i>
 												</a>
@@ -438,7 +435,7 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 										if ( $classroom_options_av_helpdesk ) {
 											?>
 											<div class="btn-wrapper">
-												<a href="<?php echo esc_url( $classroom_options_av_helpdesk ); ?>" class="btn btn-secondary d-block">
+												<a href="<?php echo esc_url( $classroom_options_av_helpdesk ); ?>" class="btn btn-secondary d-block" aria-label="A-V Helpdesk">
 													<?php esc_html_e( 'AV Helpdesk', 'ubc-vpfo-spaces-pages' ); ?>
 													<i class="fas fa-phone ms-3"></i>
 												</a>
@@ -462,7 +459,7 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 						<div class="accordion">
 							<div class="ac">
 								<h2 class="ac-header">
-									<button class="ac-trigger" type="button">
+									<button class="ac-trigger" type="button" aria-label="Style - Furniture and Layout">
 										<?php esc_html_e( 'Style - Furniture &amp; Layout', 'ubc-vpfo-spaces-pages' ); ?>
 									</button>
 								</h2>
@@ -474,11 +471,11 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 											?>
 											<div class="classroom-furniture">
 												<h3><?php esc_html_e( 'Furniture', 'ubc-vpfo-spaces-pages' ); ?></h3>
-												<ul>
+												<ul role="list">
 													<?php
 													foreach ( $classroom_furniture as $furniture_item ) {
 														?>
-														<li><?php echo wp_kses_post( $furniture_item ); ?></li>
+														<li role="listitem"><?php echo wp_kses_post( $furniture_item ); ?></li>
 														<?php
 													}
 													?>
@@ -491,8 +488,8 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 											?>
 											<div class="classroom-layout-type">
 												<h3><?php esc_html_e( 'Classroom Layout', 'ubc-vpfo-spaces-pages' ); ?></h3>
-												<ul>
-													<li><?php echo wp_kses_post( $classroom_layout_type ); ?></li>
+												<ul role="list">
+													<li role="listitem"><?php echo wp_kses_post( $classroom_layout_type ); ?></li>
 												</ul>
 											</div>
 											<?php
@@ -510,7 +507,7 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 						<div class="accordion">
 							<div class="ac">
 								<h2 class="ac-header">
-									<button class="ac-trigger" type="button">
+									<button class="ac-trigger" type="button" aria-label="Amenities - Accessibility, Features and A-V">
 										<?php esc_html_e( 'Amenities - Accessibility, Features &amp; AV', 'ubc-vpfo-spaces-pages' ); ?>
 									</button>
 								</h2>
@@ -521,9 +518,9 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 											<?php
 											if ( ! empty( $classroom_accessibility ) ) {
 												?>
-												<ul>
+												<ul role="list">
 													<?php foreach ( $classroom_accessibility as $accessibility_item ) { ?>
-														<li>
+														<li role="listitem">
 															<?php
 															echo wp_kses_post( $accessibility_item );
 															?>
@@ -556,11 +553,11 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 											?>
 											<div class="classroom-features">
 												<h3><?php esc_html_e( 'Features', 'ubc-vpfo-spaces-pages' ); ?></h3>
-												<ul>
+												<ul role="list">
 													<?php
 													foreach ( $classroom_features as $feature_item ) {
 														?>
-														<li>
+														<li role="listitem">
 															<?php
 															echo wp_kses_post( $feature_item );
 															?>
@@ -584,11 +581,11 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 														?>
 														<div class="classroom-presentation-displays">
 															<h4 class="text-uppercase"><?php esc_html_e( 'Presentation Displays', 'ubc-vpfo-spaces-pages' ); ?></h4>
-															<ul>
+															<ul role="list">
 																<?php
 																foreach ( $classroom_presentation_displays as $presentation_display_item ) {
 																	?>
-																	<li>
+																	<li role="listitem">
 																		<?php
 																		echo wp_kses_post( $presentation_display_item );
 																		?>
@@ -605,11 +602,11 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 														?>
 														<div class="classroom-presentation-sources">
 															<h4 class="text-uppercase"><?php esc_html_e( 'Presentation Sources', 'ubc-vpfo-spaces-pages' ); ?></h4>
-															<ul>
+															<ul role="list">
 																<?php
 																foreach ( $classroom_presentation_sources as $presentation_source_item ) {
 																	?>
-																	<li>
+																	<li role="listitem">
 																		<?php
 																		echo wp_kses_post( $presentation_source_item );
 																		?>
@@ -626,11 +623,11 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 														?>
 														<div class="classroom-audio">
 															<h4 class="text-uppercase"><?php esc_html_e( 'Audio', 'ubc-vpfo-spaces-pages' ); ?></h4>
-															<ul>
+															<ul role="list">
 																<?php
 																foreach ( $classroom_audio as $audio_item ) {
 																	?>
-																	<li>
+																	<li role="listitem">
 																		<?php
 																		echo wp_kses_post( $audio_item );
 																		?>
@@ -647,11 +644,11 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 														?>
 														<div class="classroom-other-av">
 															<h4 class="text-uppercase"><?php esc_html_e( 'Other AV Features', 'ubc-vpfo-spaces-pages' ); ?></h4>
-															<ul>
+															<ul role="list">
 																<?php
 																foreach ( $classroom_other_av as $other_av_item ) {
 																	?>
-																	<li>
+																	<li role="listitem">
 																		<?php
 																		echo wp_kses_post( $other_av_item );
 																		?>
