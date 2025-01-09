@@ -71,12 +71,14 @@ class Spaces_Page_Handler {
 
 		global $is_building_template;
 
-		$building_slug = get_query_var( 'building_slug' );
+		$building_slug = sanitize_text_field( get_query_var( 'building_slug' ) );
 		$all_classroom = rest_sanitize_boolean( $_REQUEST['all_classroom'] ?? false );
 
 		if ( ! $building_slug ) {
 			return;
 		}
+
+		$building_slug = strtolower( $building_slug );
 
 		$building = $this->airtable_api->get_building_by_slug( $building_slug );
 
@@ -189,11 +191,13 @@ class Spaces_Page_Handler {
 
 		global $is_classroom_template;
 
-		$classroom_slug = get_query_var( 'classroom_slug' );
+		$classroom_slug = sanitize_text_field( get_query_var( 'classroom_slug' ) );
 
 		if ( ! $classroom_slug ) {
 			return;
 		}
+
+		$classroom_slug = strtolower( $classroom_slug );
 
 		$classroom = $this->airtable_api->get_classroom_by_slug( $classroom_slug );
 
