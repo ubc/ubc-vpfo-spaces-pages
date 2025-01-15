@@ -15,14 +15,14 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 		'ubc-vpfo-spaces-pages-style',
 		plugin_dir_url( __DIR__ ) . 'style.css',
 		array(), // Dependencies
-		'1.0.0'
+		UBC_VPFO_SPACES_PAGE_VERSION
 	);
 
 	wp_enqueue_style(
 		'font-whitney',
 		plugin_dir_url( __DIR__ ) . 'fonts/whitney/font-whitney.css',
 		array(), // Dependencies
-		'1.0.0'
+		UBC_VPFO_SPACES_PAGE_VERSION
 	);
 
 	wp_enqueue_style(
@@ -41,7 +41,7 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 			'vpfo-classrooms-image-gallery-glider',
 			plugin_dir_url( __DIR__ ) . 'js/classrooms-image-gallery-glider.js',
 			array(),
-			'1.0',
+			UBC_VPFO_SPACES_PAGE_VERSION,
 			array( 'strategy' => 'defer' )
 		);
 
@@ -49,7 +49,7 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 			'vpfo-accordion-js',
 			plugin_dir_url( __DIR__ ) . 'js/accordion.js',
 			array(),
-			'1.0',
+			UBC_VPFO_SPACES_PAGE_VERSION,
 			array( 'strategy' => 'defer' )
 		);
 
@@ -57,7 +57,7 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 			'vpfo-modal-js',
 			plugin_dir_url( __DIR__ ) . 'js/layout-modal.js',
 			array(),
-			'1.0',
+			UBC_VPFO_SPACES_PAGE_VERSION,
 			array( 'strategy' => 'defer' )
 		);
 
@@ -69,7 +69,7 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 			'vpfo-clipboard-js',
 			plugin_dir_url( __DIR__ ) . 'js/clipboard.js',
 			array(),
-			'1.0',
+			https://learningspaces.ubc-cms.paperleaftest.com/classrooms/buch-b315/
 			array( 'strategy' => 'defer' )
 		);
 
@@ -78,7 +78,7 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 			'vpfo-glossary-tooltip-js',
 			plugin_dir_url( __DIR__ ) . 'js/glossary-tooltip.js',
 			array(),
-			'1.0',
+			UBC_VPFO_SPACES_PAGE_VERSION,
 			array( 'strategy' => 'defer' )
 		);
 
