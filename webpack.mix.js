@@ -26,4 +26,5 @@ mix
 	)
 	.setPublicPath( '/' )
 	.browserSync( url )
-	.copy( 'src/images/svg', 'images/svg' );
+	.copy( 'src/images/svg', 'images/svg' )
+  .version();
