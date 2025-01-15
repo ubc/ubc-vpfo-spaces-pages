@@ -1,4 +1,8 @@
 <?php
+
+use UbcVpfoSpacesPage\Airtable_Api;
+use UbcVpfoSpacesPage\Spaces_Page_Airtable_Options;
+
 /**
  * Enqueue styles and scripts for the plugin.
  *
@@ -67,6 +71,21 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 			array(),
 			'1.0',
 			array( 'strategy' => 'defer' )
+		);
+
+		$settings = ( new Spaces_Page_Airtable_Options() )->get_settings();
+		wp_enqueue_script(
+			'vpfo-glossary-tooltip-js',
+			plugin_dir_url( __DIR__ ) . 'js/glossary-tooltip.js',
+			array(),
+			'1.0',
+			array( 'strategy' => 'defer' )
+		);
+
+		wp_localize_script(
+			'vpfo-glossary-tooltip-js',
+			'vpfo_glossary_terms',
+			( new Airtable_Api( $settings ) )->get_glossary()
 		);
 	}
 }

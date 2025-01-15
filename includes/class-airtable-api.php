@@ -156,6 +156,17 @@ class Airtable_Api {
 		return $resources;
 	}
 
+	public function get_glossary() {
+		$params['fields'] = array(
+			'Term',
+			'Definition',
+		);
+
+		$resources = $this->get( table: 'Glossary', params: $params, request_resource: 'glossary' );
+
+		return $resources;
+	}
+
 	public function get_classroom_building_slug( string $classroom_building_code ) {
 		// Check if the building code is provided
 		if ( ! $classroom_building_code ) {

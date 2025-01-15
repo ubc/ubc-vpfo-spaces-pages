@@ -9,6 +9,7 @@ mix
 	.js( 'src/js/accordion.js', 'js/accordion.js' )
 	.js( 'src/js/layout-modal.js', 'js/layout-modal.js' )
   .js( 'src/js/clipboard.js', 'js/clipboard.js' )
+  .js( 'src/js/glossary-tooltip.js', 'js/glossary-tooltip.js' )
 	.sass(
 		'src/style.scss',
 		'style.css',
