@@ -119,6 +119,7 @@ class Spaces_Page_Handler {
 		}
 
 		$building_slug = get_query_var( 'building_slug' );
+		$building_slug = strtolower( $building_slug );
 
 		if ( ! $building_slug ) {
 			return $title; // Not a building page, return the default title
@@ -241,6 +242,7 @@ class Spaces_Page_Handler {
 		}
 
 		$classroom_slug = get_query_var( 'classroom_slug' );
+		$classroom_slug = strtolower( $classroom_slug );
 
 		if ( ! $classroom_slug ) {
 			return $title; // Not a classroom page, return the default title
