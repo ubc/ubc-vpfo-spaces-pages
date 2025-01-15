@@ -69,7 +69,7 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 			'vpfo-clipboard-js',
 			plugin_dir_url( __DIR__ ) . 'js/clipboard.js',
 			array(),
-			https://learningspaces.ubc-cms.paperleaftest.com/classrooms/buch-b315/
+			UBC_VPFO_SPACES_PAGE_VERSION,
 			array( 'strategy' => 'defer' )
 		);
 
