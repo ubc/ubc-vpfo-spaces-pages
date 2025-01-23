@@ -50,7 +50,7 @@ window.addEventListener('load', function () {
               content: glossaryData[term],
               theme: 'light',
               interactive: true, // Tooltip remains interactive
-              trigger: 'mouseenter focus', // Triggers on hover and focus
+              trigger: 'click focus', // Triggers on click and focus
               onShow(instance) {
                 infoIndicator.setAttribute('aria-expanded', 'true'); // Update state for screen readers
               },
