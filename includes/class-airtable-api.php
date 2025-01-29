@@ -167,7 +167,7 @@ class Airtable_Api {
 		return $resources;
 	}
 
-	public function get_classroom_building_slug( string $classroom_building_code ) {
+	public function get_classroom_building( string $classroom_building_code ) {
 		// Check if the building code is provided
 		if ( ! $classroom_building_code ) {
 			return ''; // No building code provided
@@ -193,7 +193,7 @@ class Airtable_Api {
 		$building      = $response[0];
 		$building_slug = $building->fields->{'Slug'};
 
-		return $building_slug;
+		return $building;
 	}
 
 	public function get_classroom_slugs_for_yoast() {
