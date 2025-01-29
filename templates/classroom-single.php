@@ -32,9 +32,9 @@ $classroom_workday_room_code_original = $classroom_fields['Workday Room Code'] ?
 $classroom_workday_room_code_override = $classroom_fields['Workday Room Code (override)'] ?? null;
 $classroom_workday_room_code          = $classroom_workday_room_code_override ?? $classroom_workday_room_code_original;
 
-$parent_building_alet_message = $classroom_fields['Building Alert Message'] ?? null;
-if ( trim( $parent_building_alet_message ) === '' ) {
-	$parent_building_alet_message = null;
+$parent_building_alert_message = $classroom_fields['Building Alert Message'] ?? null;
+if ( trim( $parent_building_alert_message ) === '' ) {
+	$parent_building_alert_message = null;
 }
 
 $classroom_alert_message = $classroom_fields['Alert Message'] ?? null;
@@ -194,14 +194,14 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 				<a href="<?php echo wp_kses_post( $breadcrumb_find_a_space ); ?>" class="btn btn-secondary btn-border-thick mt-9 mt-md-0 me-auto me-md-0 ms-md-auto d-flex align-items-center align-self-md-end vpfo-return-to-lsf"><i class="fas fa-chevron-left me-3"></i><?php esc_html_e( 'Return to Find a Space', 'ubc-vpfo-spaces-pages' ); ?></a>
 			</div>
 
-			<?php if ( $parent_building_alet_message || $classroom_alert_message ) : ?>
+			<?php if ( $parent_building_alert_message || $classroom_alert_message ) : ?>
 				<div class="mb-13 mb-md-9">
 					<?php
-					if ( $parent_building_alet_message ) {
+					if ( $parent_building_alert_message ) {
 						?>
 						<div class="alert-message d-flex flex-column flex-sm-row align-items-md-top p-5 my-4">
 							<i class="fa-solid fa-circle-info pt-1"></i>
-							<span><?php echo wp_kses_post( $parent_building_alet_message ); ?></span>
+							<span><?php echo wp_kses_post( $parent_building_alert_message ); ?></span>
 						</div>
 						<?php
 					}
