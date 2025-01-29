@@ -2,6 +2,8 @@
 
 namespace UbcVpfoSpacesPage;
 
+use Parsedown;
+
 defined( 'ABSPATH' ) || exit;
 
 global $is_classroom_template;
@@ -221,6 +223,8 @@ class Spaces_Page_Handler {
 
 		// Set the flag to true only for this specific template.
 		$is_classroom_template = true;
+
+		$classroom->fields->{'Space Overview'} = ( new Parsedown() )->text( $classroom->fields->{'Space Overview'} );
 
 		$template_name = 'classroom-single.php';
 		$args          = array(
