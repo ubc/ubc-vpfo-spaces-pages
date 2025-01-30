@@ -227,6 +227,7 @@ class Spaces_Page_Handler {
 		$is_classroom_template = true;
 
 		$classroom->fields->{'Space Overview'}         = ( new Parsedown() )->text( $classroom->fields->{'Space Overview'} );
+		$classroom->fields->{'Accessibility Notes'}    = ( new Parsedown() )->text( $classroom->fields->{'Accessibility Notes'} );
 		$classroom->fields->{'Alert Message'}          = ( new Parsedown() )->text( $classroom->fields->{'Alert Message'} );
 		$classroom->fields->{'Building Alert Message'} = ( new Parsedown() )->text( $building_alert_message );
 
