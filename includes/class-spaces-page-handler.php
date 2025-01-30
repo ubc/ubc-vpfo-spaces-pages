@@ -2,6 +2,8 @@
 
 namespace UbcVpfoSpacesPage;
 
+use Parsedown;
+
 defined( 'ABSPATH' ) || exit;
 
 global $is_classroom_template;
@@ -119,6 +121,7 @@ class Spaces_Page_Handler {
 		}
 
 		$building_slug = get_query_var( 'building_slug' );
+		$building_slug = strtolower( $building_slug );
 
 		if ( ! $building_slug ) {
 			return $title; // Not a building page, return the default title
@@ -205,7 +208,9 @@ class Spaces_Page_Handler {
 		$classroom = $this->add_av_resource_to_classroom( $classroom );
 
 		$classroom_building_code = isset( $classroom->fields->{'Building Code'} ) ? $classroom->fields->{'Building Code'} : '';
-		$classroom_building_slug = $this->airtable_api->get_classroom_building_slug( $classroom_building_code );
+		$classroom_building      = $this->airtable_api->get_classroom_building( $classroom_building_code );
+		$classroom_building_slug = isset( $classroom_building->fields->{'Slug'} ) ? $classroom_building->fields->{'Slug'} : '';
+		$building_alert_message  = isset( $classroom_building->fields->{'Alert Message'} ) ? $classroom_building->fields->{'Alert Message'} : '';
 
 		$classroom_options_links_raw = $this->airtable_api->get_classroom_options_links();
 		$classroom_options_links     = array();
@@ -220,6 +225,11 @@ class Spaces_Page_Handler {
 
 		// Set the flag to true only for this specific template.
 		$is_classroom_template = true;
+
+		$classroom->fields->{'Space Overview'}         = ( new Parsedown() )->text( $classroom->fields->{'Space Overview'} );
+		$classroom->fields->{'Accessibility Notes'}    = ( new Parsedown() )->text( $classroom->fields->{'Accessibility Notes'} );
+		$classroom->fields->{'Alert Message'}          = ( new Parsedown() )->text( $classroom->fields->{'Alert Message'} );
+		$classroom->fields->{'Building Alert Message'} = ( new Parsedown() )->text( $building_alert_message );
 
 		$template_name = 'classroom-single.php';
 		$args          = array(
@@ -241,6 +251,7 @@ class Spaces_Page_Handler {
 		}
 
 		$classroom_slug = get_query_var( 'classroom_slug' );
+		$classroom_slug = strtolower( $classroom_slug );
 
 		if ( ! $classroom_slug ) {
 			return $title; // Not a classroom page, return the default title

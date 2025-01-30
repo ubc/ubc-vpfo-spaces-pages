@@ -16,7 +16,7 @@
  * Plugin Name:       UBC VPFO Learning Spaces Virtual Pages
  * Plugin URI:        https://paper-leaf.com
  * Description:       Creates virtual pages for Learning Spaces buildings and classrooms and provides templates for those pages.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Paperleaf ZGM
  * Author URI:        https://paper-leaf.com/
  * License:           GPL-2.0+
@@ -39,7 +39,7 @@ require_once 'vendor/autoload.php';
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'UBC_VPFO_SPACES_PAGE_VERSION', '1.0.0' );
+define( 'UBC_VPFO_SPACES_PAGE_VERSION', '1.0.1' );
 
 /**
  * Enqueue plugin assets

@@ -164,9 +164,9 @@ class ComposerStaticInit67f47685293e5ccd2c0e9e9003274794
         ),
         'Illuminate\\Support\\' => 
         array (
-            0 => __DIR__ . '/..' . '/illuminate/macroable',
+            0 => __DIR__ . '/..' . '/illuminate/collections',
             1 => __DIR__ . '/..' . '/illuminate/conditionable',
-            2 => __DIR__ . '/..' . '/illuminate/collections',
+            2 => __DIR__ . '/..' . '/illuminate/macroable',
             3 => __DIR__ . '/..' . '/illuminate/support',
         ),
         'Illuminate\\Contracts\\' => 
@@ -201,6 +201,13 @@ class ComposerStaticInit67f47685293e5ccd2c0e9e9003274794
             'Stiphle' => 
             array (
                 0 => __DIR__ . '/..' . '/davedevelopment/stiphle/src',
+            ),
+        ),
+        'P' => 
+        array (
+            'Parsedown' => 
+            array (
+                0 => __DIR__ . '/..' . '/erusev/parsedown',
             ),
         ),
     );

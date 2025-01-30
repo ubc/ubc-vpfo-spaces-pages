@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Stiphle' => array($vendorDir . '/davedevelopment/stiphle/src'),
+    'Parsedown' => array($vendorDir . '/erusev/parsedown'),
 );
