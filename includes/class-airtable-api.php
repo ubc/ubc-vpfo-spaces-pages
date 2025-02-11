@@ -315,7 +315,7 @@ class Airtable_Api {
 	 * @return Airtable The airtable instance for the campus.
 	 */
 	public function negotiate_air_table_location( array $settings ): Airtable {
-		$this->site_location = strpos( wp_parse_url( home_url(), PHP_URL_HOST ), 'ok' ) !== false ? self::LOCATION_OKAN : self::LOCATION_VAN;
+		$this->site_location = $settings['airtable_location'] ?? 'van_airtable';
 
 		$api_key = $settings['api_key'];
 
