@@ -309,11 +309,13 @@ class Airtable_Api {
 	}
 
 	/**
-	 * @todo issue #3 magically determine the sites location, likely from the current blogs wp_options.
-	 *   Likely read from the plugin settings.
+	 * Determine the campus and return the correct airtable instance.
+	 *
+	 * @param array $settings The plugin settings.
+	 * @return Airtable The airtable instance for the campus.
 	 */
 	public function negotiate_air_table_location( array $settings ): Airtable {
-		$this->site_location = self::LOCATION_VAN;
+		$this->site_location = $settings['airtable_location'] ?? 'van_airtable';
 
 		$api_key = $settings['api_key'];
 
@@ -321,6 +323,11 @@ class Airtable_Api {
 			self::LOCATION_VAN  => $settings['base_id_van'],
 			self::LOCATION_OKAN => $settings['base_id_okan'],
 		};
+
+		// Default to prevent errors.
+		if ( ! $base_id ) {
+			$base_id = $settings['base_id_van'];
+		}
 
 		return new Airtable(
 			array(
