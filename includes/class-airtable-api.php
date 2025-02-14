@@ -282,23 +282,8 @@ class Airtable_Api {
 
 		$response = $this->airtable->getContent( $table, $params )->getResponse();
 
-		if ( isset( $response['error'] ) ) {
-			throw new \Exception(
-				'Invalid Airtable response ' .
-				wp_json_encode(
-					array(
-						'formula'  => $params['filterByFormula'] ?? null,
-						'error'    => $response['error'],
-						'params'   => $params,
-						'response' => $response,
-						'table'    => $table,
-					)
-				)
-			);
-		}
-
-		// If there's no records the slug is likely wrong.
-		if ( ! $response['records'] || empty( $response['records'] ) ) {
+		// If there's an error / no records the request is invalid.
+		if ( isset( $response['error'] ) || ! $response['records'] || empty( $response['records'] ) ) {
 			return null;
 		}
 
