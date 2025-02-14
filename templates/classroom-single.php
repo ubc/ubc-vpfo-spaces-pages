@@ -224,7 +224,7 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 		<?php
 		if ( ! empty( $classroom_image_gallery ) ) {
 			?>
-			<section class="classroom-image-gallery">
+			<section class="image-gallery">
 				<?php
 				if ( count( $classroom_image_gallery ) === 1 ) {
 					?>

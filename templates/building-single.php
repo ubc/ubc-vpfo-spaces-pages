@@ -85,17 +85,7 @@ $building_notes = isset( $building_fields['Building Notes'] ) && ( trim( $buildi
 
 $building_floor_plan = $building_fields['Floor Plans'][0]['url'] ?? null;
 
-$building_image        = $building_fields['Building Image'][0] ?? array();
-$building_image_url    = $building_image['url'] ?? null;
-$building_image_width  = $building_image['width'] ?? null;
-$building_image_height = $building_image['height'] ?? null;
-$building_image_alt    = $building_name ?? null;
-
-$building_image_string  = isset( $building_image_url ) ? '<img src="' . $building_image_url . '"' : '';
-$building_image_string .= isset( $building_image_width ) ? ' width="' . $building_image_width . '"' : '';
-$building_image_string .= isset( $building_image_height ) ? ' height="' . $building_image_height . '"' : '';
-$building_image_string .= isset( $building_image_alt ) ? ' alt="' . $building_image_alt . '"' : '';
-$building_image_string .= isset( $building_image_url ) ? '>' : '';
+$building_image_gallery = $building_fields['Building Image'] ?? array();
 
 $building_map = isset( $building_fields['Map Link'] ) ? $building_fields['Map Link'] : null;
 
@@ -155,7 +145,112 @@ $building_options_aed_naloxone_map          = $building_options_links['LINK_AED_
 			<?php } ?>
 		</section>
 
-		<section class="building-details">
+		<?php
+		if ( ! empty( $building_image_gallery ) ) {
+			?>
+			<section class="image-gallery">
+				<?php
+				if ( count( $building_image_gallery ) === 1 ) {
+					?>
+					<div class="classroom-image">
+						<?php
+						$image_thumbnails    = $building_image_gallery[0]['thumbnails'] ?? array();
+						$image_full          = $image_thumbnails['full'] ?? array();
+						$image_full_url      = $image_full['url'] ?? null;
+						$image_full_width    = $image_full['width'] ?? null;
+						$image_full_height   = $image_full['height'] ?? null;
+						$image_full_element  = '';
+						$image_full_element .= $image_full_url ? '<img src="' . $image_full_url . '"' : '';
+						$image_full_element .= $image_full_width ? ' width="' . $image_full_width . '"' : '';
+						$image_full_element .= $image_full_height ? ' height="' . $image_full_height . '"' : '';
+						$image_full_element .= ' alt=""'; // Mark this image as decorational, as we do not have accurate alt text.
+						$image_full_element .= $image_full_url ? '>' : '';
+
+						if ( $image_full_element ) {
+							echo wp_kses_post( $image_full_element );
+						}
+						?>
+					</div>
+					<?php
+				} else {
+					?>
+					<div class="glider-contain position-relative">
+						<div class="glider">
+							<?php
+							$image_full_counter = 0;
+							foreach ( $building_image_gallery as $image ) {
+								++$image_full_counter;
+								$image_thumbnails    = $image['thumbnails'] ?? array();
+								$image_full          = $image_thumbnails['full'] ?? array();
+								$image_full_url      = $image_full['url'] ?? null;
+								$image_full_width    = $image_full['width'] ?? null;
+								$image_full_height   = $image_full['height'] ?? null;
+								$image_full_element  = '';
+								$image_full_element .= $image_full_url ? '<img src="' . $image_full_url . '"' : '';
+								$image_full_element .= $image_full_width ? ' width="' . $image_full_width . '"' : '';
+								$image_full_element .= $image_full_height ? ' height="' . $image_full_height . '"' : '';
+								$image_full_element .= ' alt=""'; // Mark this image as decorational, as we do not have accurate alt text.
+								$image_full_element .= $image_full_url ? '>' : '';
+
+								if ( $image_full_element ) {
+									?>
+									<div class="glider-slide">
+										<?php echo wp_kses_post( $image_full_element ); ?>
+									</div>
+									<?php
+								}
+							}
+							?>
+						</div>
+
+						<div class="glider-thumbnails d-none d-md-flex justify-content-md-center align-items-md-center position-absolute p-1 p-md-3 p-lg-5 w-100">
+							<?php
+							$image_thumb_count   = count( $building_image_gallery );
+							$image_thumb_counter = 0;
+							foreach ( $building_image_gallery as $image ) {
+								++$image_thumb_counter;
+								$image_thumb_thumbnails = $image['thumbnails'] ?? array();
+								$image_thumb            = $image_thumb_thumbnails['large'] ?? array();
+								$image_thumb_url        = $image_thumb['url'] ?? null;
+								$image_thumb_width      = $image_thumb['width'] ?? null;
+								$image_thumb_height     = $image_thumb['height'] ?? null;
+								$image_thumb_alt        = $classroom_name . ' - Image Gallery ' . $image_thumb_counter;
+								$image_thumb_element    = '';
+								$image_thumb_element   .= $image_thumb_url ? '<img src="' . $image_thumb_url . '" data-index"' . $image_thumb_counter . '"' : '';
+								$image_thumb_element   .= $image_thumb_width ? ' width="' . $image_thumb_width . '"' : '';
+								$image_thumb_element   .= $image_thumb_height ? ' height="' . $image_thumb_height . '"' : '';
+								$image_thumb_element   .= $image_thumb_alt ? ' alt="' . $image_thumb_alt . '"' : '';
+								$image_thumb_element   .= $image_thumb_url ? '>' : '';
+
+								if ( $image_full_element ) {
+									?>
+									<div class="glider-thumbnail thumbs-<?php echo absint( $image_thumb_count ); ?>" tabindex="0" role="button" aria-label="Image <?php echo absint( $image_thumb_counter ); ?>">
+										<?php
+										echo wp_kses_post( $image_thumb_element );
+										?>
+									</div>
+									<?php
+								}
+							}
+							?>
+						</div>
+
+						<div class="glider-nav">
+							<button aria-label="Previous" class="glider-prev"><i class="fas fa-chevron-left"></i></button>
+							<button aria-label="Next" class="glider-next"><i class="fas fa-chevron-right"></i></button>
+						</div>
+
+						<div class="glider-dots d-md-none position-absolute pb-5 w-100"></div>
+					</div>
+					<?php
+				}
+				?>
+			</section>
+			<?php
+		}
+		?>
+
+		<section class="building-details mt-13 mt-md-9">
 			<div class="row">
 				<div class="col-lg-6 pe-lg-5 order-2 order-lg-1">
 					<div class="building-info px-5 py-7">
@@ -261,20 +356,12 @@ $building_options_aed_naloxone_map          = $building_options_links['LINK_AED_
 				</div>
 
 				<div class="col-lg-6 ps-lg-5 order-1 order-lg-2">
-					<?php if ( $building_map || ( $building_image_string && ! empty( $building_image_string ) ) ) { ?>
+					<?php if ( $building_map ) { ?>
 						<div class="row">
 							<?php if ( $building_map ) { ?>
 								<div class="col-md-6 col-lg-12">
 									<div class="building-map ratio mb-5 mb-md-0 mb-lg-5">
 										<iframe src="<?php echo esc_url( $building_map ); ?>" title="Wayfinding Map"></iframe>
-									</div>
-								</div>
-							<?php } ?>
-
-							<?php if ( $building_image_string && ! empty( $building_image_string ) ) { ?>
-								<div class="col-md-6 col-lg-12">
-									<div class="building-image">
-										<?php echo wp_kses_post( $building_image_string ); ?>
 									</div>
 								</div>
 							<?php } ?>
