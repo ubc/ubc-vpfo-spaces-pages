@@ -24,6 +24,11 @@ class Spaces_Page_Handler {
 	protected $airtable_api;
 
 	/**
+	 * Plugin settings, containing airtable information and base urls.
+	 */
+	protected array $settings;
+
+	/**
 	 * Define hooks related to page handling.
 	 *
 	 * @since    1.0.0
@@ -31,6 +36,7 @@ class Spaces_Page_Handler {
 	public function __construct( array $settings ) {
 		$this->define_hooks();
 
+		$this->settings     = $settings;
 		$this->airtable_api = new Airtable_Api( $settings );
 	}
 
@@ -236,6 +242,7 @@ class Spaces_Page_Handler {
 			'classroom'               => $classroom,
 			'classroom_building_slug' => $classroom_building_slug,
 			'classroom_options_links' => $classroom_options_links,
+			'campus'                  => $this->settings['airtable_location'] ?? 'van_airtable',
 		);
 
 		if ( ! locate_template( sprintf( 'spaces-page/%s', $template_name ), true, true, $args ) ) {
