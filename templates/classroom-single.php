@@ -28,6 +28,7 @@ $breadcrumb             .= $breadcrumb_building ? '<i class="fas fa-chevron-righ
 $breadcrumb             .= $classroom_name ? '<i class="fas fa-chevron-right mx-4"></i><span class="d-inline-block current-page">' . $classroom_name . '</span>' : '';
 
 $maps_base_url = 'van_airtable' === $campus ? 'https://maps.ubc.ca/?code=' : 'https://maps.ok.ubc.ca/?code=';
+$book_room_url = 'van_airtable' === $campus ? 'https://facultystaff.students.ubc.ca/enrolment-services/scheduling-records-systems-management/scheduling-services/room-booking-requests-general-teaching-space' : 'https://bookspace.ok.ubc.ca/';
 
 $classroom_is_informal = $classroom_fields['Is Informal Space'] ?? false;
 
@@ -716,7 +717,7 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 							<h2 class="mb-4 fw-bold"><?php esc_html_e( 'Book a space', 'ubc-vpfo-spaces-pages' ); ?></h2>
 							<p class="mt-0"><?php esc_html_e( 'To find out how to book this room, visit the Room Booking Request page.', 'ubc-vpfo-spaces-pages' ); ?></p>
 							<div class="d-flex flex-wrap align-items-center button-container">
-								<a href="<?php echo esc_url( 'https://facultystaff.students.ubc.ca/enrolment-services/scheduling-records-systems-management/scheduling-services/room-booking-requests-general-teaching-space' ); ?>" class="btn btn-primary" target="_blank" title="UBC Room Booking Requests">
+								<a href="<?php echo esc_url( $book_room_url ); ?>" class="btn btn-primary" target="_blank" title="UBC Room Booking Requests">
 									<span><?php esc_html_e( 'Book Space', 'ubc-vpfo-spaces-pages' ); ?></span>
 									<i class="fas fa-arrow-up-right-from-square ms-3"></i>
 								</a>
