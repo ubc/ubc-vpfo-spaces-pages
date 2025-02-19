@@ -254,8 +254,8 @@ $building_options_aed_naloxone_map          = $building_options_links['LINK_AED_
 					<?php if ( $building_map ) { ?>
 						<div class="row">
 							<?php if ( $building_map ) { ?>
-								<div class="col-md-6 col-lg-12">
-									<div class="building-map ratio mb-5 mb-md-0 mb-lg-5">
+								<div class="col col-md-6 col-lg-12">
+									<div class="building-map ratio mb-5 mb-lg-5">
 										<iframe src="<?php echo esc_url( $building_map ); ?>" title="Wayfinding Map"></iframe>
 									</div>
 								</div>
@@ -264,7 +264,7 @@ $building_options_aed_naloxone_map          = $building_options_links['LINK_AED_
 							<?php
 							if ( ! empty( $building_image_gallery ) ) {
 								?>
-								<section class="image-gallery">
+								<div class="col col-md-6 col-lg-12 image-gallery">
 									<?php
 									if ( count( $building_image_gallery ) === 1 ) {
 										?>
@@ -361,7 +361,7 @@ $building_options_aed_naloxone_map          = $building_options_links['LINK_AED_
 										<?php
 									}
 									?>
-								</section>
+								</div>
 								<?php
 							}
 							?>
