@@ -3,8 +3,8 @@ import Glider from 'glider-js';
 window.addEventListener(
 	'load',
 	function () {
-		const gliderElement           = document.querySelector( '.classroom-image-gallery .glider' );
-		const gliderThumbnailsElement = document.querySelector( '.classroom-image-gallery .glider-thumbnails' );
+		const gliderElement           = document.querySelector( '.image-gallery .glider' );
+		const gliderThumbnailsElement = document.querySelector( '.image-gallery .glider-thumbnails' );
 
 		// Check if the glider element exists
 		if ( ! gliderElement ) {
@@ -38,7 +38,7 @@ window.addEventListener(
 		gliderThumbnailsElement.style.opacity = '1';
 		gliderThumbnailsElement.style.height  = 'auto';
 
-		const thumbnails = document.querySelectorAll( '.classroom-image-gallery .glider-thumbnails .glider-thumbnail img' );
+		const thumbnails = document.querySelectorAll( '.image-gallery .glider-thumbnails .glider-thumbnail img' );
 
 		// Function to update the active class on thumbnails
 		function updateActiveThumbnail(index) {

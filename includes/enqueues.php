@@ -36,7 +36,8 @@ function ubc_vpfo_spaces_pages_enqueue_styles_scripts() {
 	global $is_classroom_template;
 	global $is_building_template;
 
-	if ( isset( $is_classroom_template ) && $is_classroom_template ) {
+	if ( ( isset( $is_classroom_template ) && $is_classroom_template )
+		|| ( isset( $is_building_template ) && $is_building_template ) ) {
 		wp_enqueue_script(
 			'vpfo-classrooms-image-gallery-glider',
 			plugin_dir_url( __DIR__ ) . 'js/classrooms-image-gallery-glider.js',
