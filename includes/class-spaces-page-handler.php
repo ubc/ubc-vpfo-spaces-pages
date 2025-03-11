@@ -106,6 +106,8 @@ class Spaces_Page_Handler {
 
 		$is_building_template = true;
 
+		$building->fields->{'Building Notes'} = ( new Parsedown() )->text( $building->fields->{'Building Notes'} );
+
 		$template_name = 'building-single.php';
 		$args          = array(
 			'building'               => $building,
