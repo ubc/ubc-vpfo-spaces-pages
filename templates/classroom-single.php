@@ -543,13 +543,15 @@ $classroom_options_av_helpdesk          = isset( $classroom_options_links['LINK_
 											if ( ! empty( $classroom_accessibility ) ) {
 												?>
 												<ul role="list">
-													<?php foreach ( $classroom_accessibility as $accessibility_item ) { ?>
-														<li role="listitem">
-															<?php
-															echo wp_kses_post( $accessibility_item );
-															?>
-														</li>
-														<?php
+													<?php foreach ( $classroom_accessibility as $accessibility_item ) { 
+														if ($accessibility_item !== 'Assistive Listening System - Any') {
+														?>
+															<li role="listitem">
+																<?php
+																echo wp_kses_post( $accessibility_item );
+																?>
+															</li>
+														<?php }
 													}
 													?>
 												</ul>
