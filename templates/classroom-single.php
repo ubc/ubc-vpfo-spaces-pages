@@ -28,7 +28,7 @@ $breadcrumb             .= $breadcrumb_building ? '<i class="fas fa-chevron-righ
 $breadcrumb             .= $classroom_name ? '<i class="fas fa-chevron-right mx-4"></i><span class="d-inline-block current-page">' . $classroom_name . '</span>' : '';
 
 $maps_base_url = 'van_airtable' === $campus ? 'https://maps.ubc.ca/?code=' : 'https://maps.ok.ubc.ca/?code=';
-$book_room_url = 'van_airtable' === $campus ? 'https://facultystaff.students.ubc.ca/enrolment-services/scheduling-records-systems-management/scheduling-services/room-booking-requests-general-teaching-space' : 'https://bookspace.ok.ubc.ca/';
+$book_room_url = 'van_airtable' === $campus ? 'https://enrolmentservices.ubc.ca/external-room-bookings' : 'https://bookspace.ok.ubc.ca/';
 
 $classroom_is_informal = $classroom_fields['Is Informal Space'] ?? false;
 
